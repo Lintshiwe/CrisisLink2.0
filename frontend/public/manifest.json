@@ -1,0 +1,39 @@
+{
+    "short_name": "CrisisLink",
+    "name": "CrisisLink - Emergency Response System",
+    "description": "One-tap disaster rescue system for emergency situations in South Africa",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "64x64 32x32 24x24 16x16",
+            "type": "image/x-icon"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#dc2626",
+    "background_color": "#0f172a",
+    "orientation": "portrait",
+    "scope": "/",
+    "categories": [
+        "utilities",
+        "safety",
+        "emergency"
+    ],
+    "lang": "en-ZA",
+    "dir": "ltr",
+    "shortcuts": [
+        {
+            "name": "Emergency SOS",
+            "short_name": "SOS",
+            "description": "Quick access to emergency SOS button",
+            "url": "/sos",
+            "icons": [
+                {
+                    "src": "logo192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
+}

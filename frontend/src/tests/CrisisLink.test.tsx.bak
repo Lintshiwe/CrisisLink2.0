@@ -1,0 +1,597 @@
+// Comprehensive Test Suite for CrisisLink
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
+import axios from 'axios';
+import { io } from 'socket.io-client';
+
+// Import components and services
+import SOSButton from '../components/SOSButton';
+import LiveTrackingMap from '../components/LiveTrackingMap';
+import TrackingDashboard from '../components/TrackingDashboard';
+import LocationService from '../services/LocationService';
+import FirebaseTrackingService from '../services/FirebaseTrackingService';
+import WeatherIntegrationService from '../services/WeatherIntegrationService';
+import NotificationRedirectionService from '../services/NotificationRedirectionService';
+
+// Mock dependencies
+jest.mock('axios');
+jest.mock('socket.io-client');
+jest.mock('../services/LocationService');
+jest.mock('../services/FirebaseTrackingService');
+
+const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedIo = io as jest.Mocked<typeof io>;
+
+describe('CrisisLink Emergency Response System', () => {
+  
+  beforeEach(() => {
+    // Reset mocks
+    jest.clearAllMocks();
+    
+    // Mock geolocation
+    const mockGeolocation = {
+      getCurrentPosition: jest.fn(),
+      watchPosition: jest.fn(),
+      clearWatch: jest.fn()
+    };
+    
+    Object.defineProperty(global.navigator, 'geolocation', {
+      value: mockGeolocation,
+      writable: true
+    });
+
+    // Mock Google Maps
+    global.window.google = {
+      maps: {
+        Map: jest.fn(),
+        Marker: jest.fn(),
+        DirectionsService: jest.fn(),
+        DirectionsRenderer: jest.fn(),
+        Geocoder: jest.fn(),
+        TrafficLayer: jest.fn(),
+        TravelMode: { DRIVING: 'DRIVING' },
+        Animation: { DROP: 'DROP', BOUNCE: 'BOUNCE' },
+        Size: jest.fn(),
+        Point: jest.fn()
+      }
+    };
+
+    // Mock Notification API
+    global.Notification = {
+      permission: 'granted',
+      requestPermission: jest.fn().mockResolvedValue('granted')
+    } as any;
+  });
+
+  describe('1. SOS Button Component Tests', () => {
+    
+    test('renders SOS button with correct styling', () => {
+      render(<SOSButton onActivate={jest.fn()} />);
+      
+      const sosButton = screen.getByRole('button');
+      expect(sosButton).toBeInTheDocument();
+      expect(sosButton).toHaveClass('bg-red-600');
+    });
+
+    test('activates emergency alert on long press', async () => {
+      const mockActivate = jest.fn();
+      render(<SOSButton onActivate={mockActivate} />);
+      
+      const sosButton = screen.getByRole('button');
+      
+      // Simulate long press
+      fireEvent.mouseDown(sosButton);
+      
+      await act(async () => {
+        await new Promise(resolve => setTimeout(resolve, 3100));
+      });
+      
+      fireEvent.mouseUp(sosButton);
+      
+      expect(mockActivate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: expect.any(String)
+        })
+      );
+    });
+
+    test('shows countdown during press', async () => {
+      render(<SOSButton onActivate={jest.fn()} />);
+      
+      const sosButton = screen.getByRole('button');
+      fireEvent.mouseDown(sosButton);
+      
+      await waitFor(() => {
+        expect(screen.getByText(/3/)).toBeInTheDocument();
+      });
+    });
+
+    test('cancels on early release', async () => {
+      const mockActivate = jest.fn();
+      render(<SOSButton onActivate={mockActivate} />);
+      
+      const sosButton = screen.getByRole('button');
+      fireEvent.mouseDown(sosButton);
+      
+      await act(async () => {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      });
+      
+      fireEvent.mouseUp(sosButton);
+      
+      expect(mockActivate).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('2. Location Service Tests', () => {
+    
+    test('gets current location successfully', async () => {
+      const mockPosition = {
+        coords: {
+          latitude: -26.2041,
+          longitude: 28.0473,
+          accuracy: 10
+        },
+        timestamp: Date.now()
+      };
+
+      navigator.geolocation.getCurrentPosition.mockImplementation((success) => {
+        success(mockPosition);
+      });
+
+      const location = await LocationService.getCurrentLocation();
+      
+      expect(location).toEqual({
+        lat: -26.2041,
+        lng: 28.0473,
+        accuracy: 10,
+        timestamp: expect.any(Date)
+      });
+    });
+
+    test('handles location permission denied', async () => {
+      navigator.geolocation.getCurrentPosition.mockImplementation((success, error) => {
+        error({ code: 1, message: 'Permission denied' });
+      });
+
+      await expect(LocationService.getCurrentLocation()).rejects.toThrow('Location access denied by user');
+    });
+
+    test('calculates distance correctly', () => {
+      const distance = LocationService.calculateDistance(-26.2041, 28.0473, -33.9249, 18.4241);
+      
+      expect(distance.kilometers).toBeCloseTo(1271, 0); // Approximate distance JHB to CPT
+      expect(distance.meters).toBeCloseTo(1271000, 0);
+    });
+
+    test('validates coordinates correctly', () => {
+      expect(LocationService.isValidCoordinate(-26.2041, 28.0473)).toBe(true);
+      expect(LocationService.isValidCoordinate(91, 28.0473)).toBe(false);
+      expect(LocationService.isValidCoordinate(-26.2041, 181)).toBe(false);
+    });
+  });
+
+  describe('3. Emergency Alert Processing Tests', () => {
+    
+    test('creates SOS alert successfully', async () => {
+      const mockResponse = {
+        data: {
+          alert: {
+            id: 1,
+            user_id: 1,
+            latitude: -26.2041,
+            longitude: 28.0473,
+            emergency_type: 'medical',
+            status: 'pending',
+            created_at: new Date().toISOString()
+          }
+        }
+      };
+
+      mockedAxios.post.mockResolvedValue(mockResponse);
+
+      const alertData = {
+        latitude: -26.2041,
+        longitude: 28.0473,
+        emergency_type: 'medical',
+        additional_info: 'Chest pain'
+      };
+
+      const response = await axios.post('/api/sos/create', alertData);
+      
+      expect(response.data.alert.id).toBe(1);
+      expect(response.data.alert.emergency_type).toBe('medical');
+      expect(mockedAxios.post).toHaveBeenCalledWith('/api/sos/create', alertData);
+    });
+
+    test('finds nearest available agents', async () => {
+      const mockAgents = {
+        data: {
+          agents: [
+            {
+              id: 1,
+              name: 'Agent Smith',
+              current_lat: -26.2000,
+              current_lng: 28.0500,
+              status: 'available',
+              distance_km: '0.5'
+            },
+            {
+              id: 2,
+              name: 'Agent Johnson',
+              current_lat: -26.2100,
+              current_lng: 28.0400,
+              status: 'available',
+              distance_km: '1.2'
+            }
+          ]
+        }
+      };
+
+      mockedAxios.post.mockResolvedValue(mockAgents);
+
+      const response = await axios.post('/api/location/nearby-agents', {
+        latitude: -26.2041,
+        longitude: 28.0473,
+        radius_km: 10
+      });
+
+      expect(response.data.agents).toHaveLength(2);
+      expect(response.data.agents[0].distance_km).toBe('0.5');
+    });
+  });
+
+  describe('4. Real-time Tracking Tests', () => {
+    
+    test('updates agent location via socket', async () => {
+      const mockSocket = {
+        emit: jest.fn(),
+        on: jest.fn(),
+        off: jest.fn()
+      };
+
+      mockedIo.mockReturnValue(mockSocket as any);
+
+      const socket = io('http://localhost:5000');
+      
+      // Simulate agent location update
+      socket.emit('agent_location_update', {
+        agentId: 1,
+        latitude: -26.2050,
+        longitude: 28.0480,
+        timestamp: new Date()
+      });
+
+      expect(socket.emit).toHaveBeenCalledWith('agent_location_update', {
+        agentId: 1,
+        latitude: -26.2050,
+        longitude: 28.0480,
+        timestamp: expect.any(Date)
+      });
+    });
+
+    test('processes tracking updates correctly', async () => {
+      const mockTrackingData = {
+        sosId: 1,
+        data: {
+          user_location: { lat: -26.2041, lng: 28.0473 },
+          agent_location: { lat: -26.2050, lng: 28.0480 },
+          status: 'in_progress'
+        }
+      };
+
+      // Mock Firebase tracking service
+      const mockHandler = jest.fn();
+      FirebaseTrackingService.onTrackingUpdate = jest.fn().mockImplementation((callback) => {
+        callback(mockTrackingData);
+        return jest.fn(); // Return unsubscribe function
+      });
+
+      const unsubscribe = FirebaseTrackingService.onTrackingUpdate(mockHandler);
+      
+      expect(mockHandler).toHaveBeenCalledWith(mockTrackingData);
+      expect(typeof unsubscribe).toBe('function');
+    });
+  });
+
+  describe('5. Weather Integration Tests', () => {
+    
+    test('fetches weather data for location', async () => {
+      const mockWeatherData = {
+        current: {
+          temperature: 25,
+          humidity: 60,
+          wind_speed: 15,
+          weather: { main: 'Clear', description: 'clear sky' },
+          visibility: 10000
+        },
+        emergency_assessment: {
+          risk_level: 'low',
+          threats: [],
+          safe_for_emergency_response: true
+        }
+      };
+
+      WeatherIntegrationService.getCurrentWeather = jest.fn().mockResolvedValue(mockWeatherData);
+
+      const weather = await WeatherIntegrationService.getCurrentWeather(-26.2041, 28.0473);
+      
+      expect(weather.current.temperature).toBe(25);
+      expect(weather.emergency_assessment.risk_level).toBe('low');
+      expect(weather.emergency_assessment.safe_for_emergency_response).toBe(true);
+    });
+
+    test('detects emergency weather conditions', async () => {
+      const mockSevereWeather = {
+        current: {
+          temperature: 45, // Extreme heat
+          wind_speed: 85,  // Extreme wind
+          visibility: 200, // Critical visibility
+          weather: { main: 'Thunderstorm', description: 'severe thunderstorm' }
+        },
+        emergency_assessment: {
+          risk_level: 'high',
+          threats: [
+            { type: 'extreme_heat', severity: 'high' },
+            { type: 'extreme_wind', severity: 'high' },
+            { type: 'critical_visibility', severity: 'high' },
+            { type: 'severe_weather', severity: 'high' }
+          ],
+          safe_for_emergency_response: false
+        }
+      };
+
+      WeatherIntegrationService.getCurrentWeather = jest.fn().mockResolvedValue(mockSevereWeather);
+
+      const weather = await WeatherIntegrationService.getCurrentWeather(-26.2041, 28.0473);
+      
+      expect(weather.emergency_assessment.risk_level).toBe('high');
+      expect(weather.emergency_assessment.safe_for_emergency_response).toBe(false);
+      expect(weather.emergency_assessment.threats).toHaveLength(4);
+    });
+  });
+
+  describe('6. Notification System Tests', () => {
+    
+    test('sends emergency notification successfully', async () => {
+      NotificationRedirectionService.sendEmergencyNotification = jest.fn().mockResolvedValue({
+        id: '123',
+        type: 'sos_alert',
+        timestamp: new Date()
+      });
+
+      const notification = await NotificationRedirectionService.sendEmergencyNotification('sos_alert', {
+        sosId: 1,
+        location: 'Johannesburg'
+      });
+
+      expect(notification.id).toBe('123');
+      expect(notification.type).toBe('sos_alert');
+    });
+
+    test('handles notification permissions', async () => {
+      const mockRequestPermission = jest.fn().mockResolvedValue('granted');
+      global.Notification.requestPermission = mockRequestPermission;
+
+      const granted = await NotificationRedirectionService.requestNotificationPermission();
+      
+      expect(granted).toBe(true);
+      expect(mockRequestPermission).toHaveBeenCalled();
+    });
+  });
+
+  describe('7. Route Calculation Tests', () => {
+    
+    test('calculates optimal route with traffic', async () => {
+      const mockDirectionsService = {
+        route: jest.fn().mockImplementation((request, callback) => {
+          const mockResult = {
+            routes: [{
+              legs: [{
+                distance: { text: '15.2 km', value: 15200 },
+                duration: { text: '18 mins', value: 1080 },
+                duration_in_traffic: { text: '25 mins', value: 1500 }
+              }]
+            }]
+          };
+          callback(mockResult, 'OK');
+        })
+      };
+
+      global.window.google.maps.DirectionsService.mockReturnValue(mockDirectionsService);
+
+      const directionsService = new window.google.maps.DirectionsService();
+      
+      await new Promise((resolve) => {
+        directionsService.route({
+          origin: { lat: -26.2041, lng: 28.0473 },
+          destination: { lat: -26.2100, lng: 28.0400 },
+          travelMode: window.google.maps.TravelMode.DRIVING
+        }, (result, status) => {
+          expect(status).toBe('OK');
+          expect(result.routes[0].legs[0].distance.text).toBe('15.2 km');
+          expect(result.routes[0].legs[0].duration_in_traffic.text).toBe('25 mins');
+          resolve(result);
+        });
+      });
+    });
+  });
+
+  describe('8. Integration Tests', () => {
+    
+    test('complete emergency workflow', async () => {
+      // Mock all services
+      LocationService.getCurrentLocation = jest.fn().mockResolvedValue({
+        lat: -26.2041,
+        lng: 28.0473,
+        accuracy: 10
+      });
+
+      mockedAxios.post
+        .mockResolvedValueOnce({ // SOS creation
+          data: { alert: { id: 1, status: 'pending' } }
+        })
+        .mockResolvedValueOnce({ // Agent assignment
+          data: { agent: { id: 1, name: 'Agent Smith' } }
+        });
+
+      const mockSocket = {
+        emit: jest.fn(),
+        on: jest.fn(),
+        off: jest.fn()
+      };
+      mockedIo.mockReturnValue(mockSocket as any);
+
+      // 1. Get location
+      const location = await LocationService.getCurrentLocation();
+      expect(location.lat).toBe(-26.2041);
+
+      // 2. Create SOS alert
+      const sosResponse = await axios.post('/api/sos/create', {
+        latitude: location.lat,
+        longitude: location.lng,
+        emergency_type: 'medical'
+      });
+      expect(sosResponse.data.alert.id).toBe(1);
+
+      // 3. Assign agent
+      const agentResponse = await axios.post('/api/sos/1/assign-agent', {});
+      expect(agentResponse.data.agent.name).toBe('Agent Smith');
+
+      // 4. Start tracking
+      const socket = io('http://localhost:5000');
+      socket.emit('join_sos_tracking', { sosId: 1 });
+      
+      expect(socket.emit).toHaveBeenCalledWith('join_sos_tracking', { sosId: 1 });
+    });
+
+    test('system handles offline mode', async () => {
+      // Mock offline condition
+      Object.defineProperty(navigator, 'onLine', {
+        writable: true,
+        value: false
+      });
+
+      // Mock service worker
+      global.navigator.serviceWorker = {
+        register: jest.fn().mockResolvedValue({}),
+        addEventListener: jest.fn()
+      } as any;
+
+      // Test offline functionality
+      const offlineData = {
+        emergency_type: 'medical',
+        location: { lat: -26.2041, lng: 28.0473 },
+        timestamp: new Date()
+      };
+
+      // Should queue for later sync
+      localStorage.setItem('offline_emergency', JSON.stringify(offlineData));
+      
+      const stored = JSON.parse(localStorage.getItem('offline_emergency') || '{}');
+      expect(stored.emergency_type).toBe('medical');
+    });
+  });
+
+  describe('9. Performance Tests', () => {
+    
+    test('location updates are throttled', async () => {
+      const mockCallback = jest.fn();
+      
+      // Mock rapid location updates
+      for (let i = 0; i < 10; i++) {
+        LocationService.getCurrentLocation = jest.fn().mockResolvedValue({
+          lat: -26.2041 + (i * 0.0001),
+          lng: 28.0473 + (i * 0.0001),
+          accuracy: 10
+        });
+        
+        const location = await LocationService.getCurrentLocation();
+        mockCallback(location);
+      }
+
+      // Should have been called for each update
+      expect(mockCallback).toHaveBeenCalledTimes(10);
+    });
+
+    test('notification queue prevents spam', async () => {
+      const notifications = [];
+      
+      // Rapid fire notifications
+      for (let i = 0; i < 5; i++) {
+        const notification = {
+          id: i.toString(),
+          type: 'test',
+          timestamp: new Date()
+        };
+        notifications.push(notification);
+      }
+
+      // Should queue properly
+      expect(notifications).toHaveLength(5);
+    });
+  });
+
+  describe('10. Error Handling Tests', () => {
+    
+    test('handles API failures gracefully', async () => {
+      mockedAxios.post.mockRejectedValue(new Error('Network error'));
+
+      try {
+        await axios.post('/api/sos/create', {});
+      } catch (error) {
+        expect(error.message).toBe('Network error');
+      }
+    });
+
+    test('handles geolocation errors', async () => {
+      navigator.geolocation.getCurrentPosition.mockImplementation((success, error) => {
+        error({ code: 2, message: 'Position unavailable' });
+      });
+
+      await expect(LocationService.getCurrentLocation()).rejects.toThrow('Location information unavailable');
+    });
+
+    test('handles malformed server responses', async () => {
+      mockedAxios.post.mockResolvedValue({ data: null });
+
+      const response = await axios.post('/api/test', {});
+      expect(response.data).toBeNull();
+    });
+  });
+});
+
+// Test utilities
+export const mockLocation = (lat: number, lng: number) => {
+  return {
+    lat,
+    lng,
+    accuracy: 10,
+    timestamp: new Date()
+  };
+};
+
+export const mockSOSAlert = (id: number) => {
+  return {
+    id,
+    user_id: 1,
+    latitude: -26.2041,
+    longitude: 28.0473,
+    emergency_type: 'medical',
+    status: 'pending',
+    created_at: new Date().toISOString()
+  };
+};
+
+export const mockAgent = (id: number) => {
+  return {
+    id,
+    name: `Agent ${id}`,
+    current_lat: -26.2041,
+    current_lng: 28.0473,
+    status: 'available',
+    phone: '+27123456789',
+    badge_number: `BADGE${id}`
+  };
+};

@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CrisisLink Rescue Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Leaflet Maps -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1e293b 50%,
+          #334155 100%
+        );
+        min-height: 100vh;
+      }
+
+      .glass-card {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        background: rgba(31, 41, 55, 0.8);
+        border: 1px solid rgba(75, 85, 99, 0.3);
+      }
+
+      .map-container {
+        height: 600px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      .rescuer-card {
+        transition: all 0.3s ease;
+        border-left: 4px solid #10b981;
+      }
+
+      .rescuer-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      }
+
+      .status-online {
+        color: #10b981;
+      }
+
+      .status-busy {
+        color: #f59e0b;
+      }
+
+      .status-offline {
+        color: #ef4444;
+      }
+
+      .pulse-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .custom-popup {
+        font-family: 'Inter', sans-serif;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+  </head>
+
+  <body class="text-white min-h-screen">
+    <!-- Header -->
+    <header class="glass-card border-b border-gray-700">
+      <div class="max-w-7xl mx-auto px-6 py-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div
+              class="w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-700 rounded-lg flex items-center justify-center"
+            >
+              <i class="fas fa-map-marked-alt text-white text-xl"></i>
+            </div>
+            <div>
+              <h1
+                class="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent"
+              >
+                Rescue Tracker
+              </h1>
+              <p class="text-gray-400">
+                Real-time Rescuer Location & Navigation
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="text-center">
+              <p class="text-xs text-gray-400">ACTIVE RESCUERS</p>
+              <p class="text-2xl font-bold text-green-400" id="activeCount">
+                0
+              </p>
+            </div>
+            <button
+              onclick="refreshLocations()"
+              class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+            >
+              <i class="fas fa-sync-alt mr-2"></i>
+              Refresh
+            </button>
+            <a
+              href="/"
+              class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors"
+            >
+              <i class="fas fa-arrow-left mr-2"></i>
+              Back
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <!-- Weather Dashboard -->
+      <div class="mb-6">
+        <div class="glass-card rounded-xl p-6">
+          <h2 class="text-xl font-bold text-white mb-4">
+            <i class="fas fa-cloud-sun text-blue-400 mr-3"></i>
+            South Africa Weather Conditions
+          </h2>
+          <div
+            id="weatherGrid"
+            class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4"
+          >
+            <!-- Weather cards will be populated here -->
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+        <!-- Map Section -->
+        <div class="xl:col-span-3">
+          <div class="glass-card rounded-xl p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-bold text-white">
+                <i class="fas fa-map text-green-400 mr-3"></i>
+                Live Rescuer Locations
+              </h2>
+              <div class="flex items-center space-x-4">
+                <button
+                  onclick="rescueTracker.centerMap()"
+                  class="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm transition-colors"
+                >
+                  <i class="fas fa-crosshairs mr-1"></i>
+                  Center
+                </button>
+                <button
+                  onclick="rescueTracker.toggleFullscreen()"
+                  class="px-3 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm transition-colors"
+                >
+                  <i class="fas fa-expand mr-1"></i>
+                  Fullscreen
+                </button>
+              </div>
+            </div>
+            <div id="map" class="map-container"></div>
+          </div>
+        </div>
+
+        <!-- Rescuer List -->
+        <div class="xl:col-span-1">
+          <div class="glass-card rounded-xl p-6">
+            <h2 class="text-xl font-bold text-white mb-6">
+              <i class="fas fa-users text-green-400 mr-3"></i>
+              Active Rescuers
+            </h2>
+            <div id="rescuerList" class="space-y-4">
+              <!-- Rescuer cards will be populated here -->
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="glass-card rounded-xl p-6 mt-6">
+            <h3 class="text-lg font-bold text-white mb-4">
+              <i class="fas fa-bolt text-yellow-400 mr-2"></i>
+              Quick Actions
+            </h3>
+            <div class="space-y-3">
+              <button
+                onclick="dispatchAll()"
+                class="w-full px-4 py-3 bg-red-600 hover:bg-red-700 rounded-lg text-left transition-colors"
+              >
+                <i class="fas fa-broadcast-tower mr-2"></i>
+                Emergency Dispatch
+              </button>
+              <button
+                onclick="showDirections()"
+                class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-left transition-colors"
+              >
+                <i class="fas fa-route mr-2"></i>
+                Show Directions
+              </button>
+              <button
+                onclick="exportData()"
+                class="w-full px-4 py-3 bg-gray-600 hover:bg-gray-700 rounded-lg text-left transition-colors"
+              >
+                <i class="fas fa-download mr-2"></i>
+                Export Locations
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direction Modal -->
+    <div
+      id="directionModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center"
+    >
+      <div class="glass-card rounded-xl p-6 max-w-md w-full mx-4">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-bold text-white">Navigation</h3>
+          <button
+            onclick="closeDirectionModal()"
+            class="text-gray-400 hover:text-white"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div id="directionContent">
+          <!-- Direction content will be populated here -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      class RescueTracker {
+        constructor() {
+          this.map = null
+          this.rescuers = new Map()
+          this.socket = null
+          this.selectedRescuer = null
+          this.weatherData = new Map()
+
+          this.init()
+        }
+
+        async init() {
+          await this.initializeMap()
+          this.setupSocket()
+          this.loadRescuerData()
+          this.startLocationUpdates()
+          this.loadWeatherData()
+        }
+
+        initializeMap() {
+          // Initialize map centered on Johannesburg
+          this.map = L.map('map').setView([-26.2041, 28.0473], 11)
+
+          // Add tile layer
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+          }).addTo(this.map)
+
+          // Custom icons for different rescuer types
+          this.rescuerIcons = {
+            medical: L.divIcon({
+              className: 'custom-marker',
+              html: '<div style="background: #ef4444; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"><i class="fas fa-user-md" style="color: white; font-size: 12px;"></i></div>',
+              iconSize: [30, 30],
+              iconAnchor: [15, 15],
+            }),
+            fire: L.divIcon({
+              className: 'custom-marker',
+              html: '<div style="background: #f59e0b; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"><i class="fas fa-fire" style="color: white; font-size: 12px;"></i></div>',
+              iconSize: [30, 30],
+              iconAnchor: [15, 15],
+            }),
+            police: L.divIcon({
+              className: 'custom-marker',
+              html: '<div style="background: #3b82f6; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"><i class="fas fa-shield-alt" style="color: white; font-size: 12px;"></i></div>',
+              iconSize: [30, 30],
+              iconAnchor: [15, 15],
+            }),
+            general: L.divIcon({
+              className: 'custom-marker',
+              html: '<div style="background: #10b981; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"><i class="fas fa-user" style="color: white; font-size: 12px;"></i></div>',
+              iconSize: [30, 30],
+              iconAnchor: [15, 15],
+            }),
+          }
+        }
+
+        setupSocket() {
+          this.socket = io()
+
+          this.socket.on('connect', () => {
+            console.log('Connected to rescue tracking')
+          })
+
+          this.socket.on('rescuer-location-update', (data) => {
+            this.updateRescuerLocation(data)
+          })
+
+          this.socket.on('rescuer-status-change', (data) => {
+            this.updateRescuerStatus(data)
+          })
+        }
+
+        async loadRescuerData() {
+          // Generate sample rescuer data for demo
+          const sampleRescuers = [
+            {
+              id: 'R001',
+              name: 'Lintshiwe Maluleke',
+              type: 'medical',
+              status: 'available',
+              location: { lat: -26.2041, lng: 28.0473 },
+              phone: '+27123456789',
+              lastUpdate: new Date(),
+              avatar: 'https://avatars.githubusercontent.com/u/84624124?v=4',
+              bio: 'Software Developer & Emergency Response Coordinator',
+              expertise: [
+                'Medical Response',
+                'Technical Rescue',
+                'Crisis Management',
+              ],
+              company: 'Emergency Response Tech',
+            },
+            {
+              id: 'R002',
+              name: 'Itumeleng Ramokgopa',
+              type: 'police',
+              status: 'busy',
+              location: { lat: -26.1951, lng: 28.0305 },
+              phone: '+27987654321',
+              lastUpdate: new Date(),
+              avatar:
+                'https://api.dicebear.com/7.x/avataaars/svg?seed=Itumeleng&backgroundColor=3b82f6',
+              bio: 'Emergency Response Unit Field Specialist',
+              expertise: ['Law Enforcement', 'Vehicle Rescue', 'Water Rescue'],
+              company: 'Emergency Response Unit',
+            },
+            {
+              id: 'R003',
+              name: 'Kagiso Mokwena',
+              type: 'fire',
+              status: 'available',
+              location: { lat: -26.2052, lng: 28.0498 },
+              phone: '+27555666777',
+              lastUpdate: new Date(),
+              avatar:
+                'https://api.dicebear.com/7.x/avataaars/svg?seed=Kagiso&backgroundColor=10b981',
+              bio: 'Crisis Response Team Medical Coordinator',
+              expertise: [
+                'Fire Safety',
+                'Emergency Medicine',
+                'Trauma Response',
+              ],
+              company: 'Crisis Response Team',
+            },
+            {
+              id: 'R004',
+              name: 'Buhle Mthembu',
+              type: 'general',
+              status: 'available',
+              location: { lat: -26.1985, lng: 28.0421 },
+              phone: '+27444555666',
+              lastUpdate: new Date(),
+              avatar:
+                'https://api.dicebear.com/7.x/avataaars/svg?seed=Buhle&backgroundColor=f59e0b',
+              bio: 'Community Safety Officer & Crisis Coordinator',
+              expertise: [
+                'Community Safety',
+                'Emergency Planning',
+                'Public Relations',
+              ],
+              company: 'Community Safety Office',
+            },
+          ]
+
+          sampleRescuers.forEach((rescuer) => {
+            this.addRescuerToMap(rescuer)
+            this.addRescuerToList(rescuer)
+          })
+
+          this.updateActiveCount()
+        }
+
+        addRescuerToMap(rescuer) {
+          const icon =
+            this.rescuerIcons[rescuer.type] || this.rescuerIcons.general
+
+          const marker = L.marker(
+            [rescuer.location.lat, rescuer.location.lng],
+            { icon }
+          ).addTo(this.map).bindPopup(`
+              <div class="custom-popup p-3">
+                <h4 class="font-bold text-gray-800">${rescuer.name}</h4>
+                <p class="text-sm text-gray-600 capitalize">${rescuer.type} • ${rescuer.status}</p>
+                <p class="text-xs text-gray-500 mt-1">📞 ${rescuer.phone}</p>
+                <div class="mt-2 space-x-2">
+                  <button onclick="tracker.callRescuer('${rescuer.id}')" class="px-2 py-1 bg-blue-500 text-white text-xs rounded">Call</button>
+                  <button onclick="tracker.getDirections('${rescuer.id}')" class="px-2 py-1 bg-green-500 text-white text-xs rounded">Directions</button>
+                </div>
+              </div>
+            `)
+
+          this.rescuers.set(rescuer.id, { ...rescuer, marker })
+        }
+
+        addRescuerToList(rescuer) {
+          const statusColor =
+            rescuer.status === 'available'
+              ? 'status-online'
+              : rescuer.status === 'busy'
+                ? 'status-busy'
+                : 'status-offline'
+
+          const rescuerCard = document.createElement('div')
+          rescuerCard.className = 'rescuer-card glass-card rounded-lg p-4'
+          rescuerCard.innerHTML = `
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
+                  <i class="fas fa-${rescuer.type === 'medical' ? 'user-md' : rescuer.type === 'fire' ? 'fire' : rescuer.type === 'police' ? 'shield-alt' : 'user'} text-white text-sm"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-white">${rescuer.name}</h4>
+                  <p class="text-xs text-gray-400 capitalize">${rescuer.type} Rescuer</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="pulse-dot bg-${rescuer.status === 'available' ? 'green' : rescuer.status === 'busy' ? 'yellow' : 'red'}-400"></div>
+                <span class="text-xs ${statusColor} capitalize font-medium">${rescuer.status}</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center mt-3">
+              <span class="text-xs text-gray-400">Last seen: Just now</span>
+              <div class="flex space-x-2">
+                <button onclick="tracker.focusRescuer('${rescuer.id}')" class="px-2 py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs transition-colors">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button onclick="tracker.callRescuer('${rescuer.id}')" class="px-2 py-1 bg-green-600 hover:bg-green-700 rounded text-xs transition-colors">
+                  <i class="fas fa-phone"></i>
+                </button>
+              </div>
+            </div>
+          `
+
+          document.getElementById('rescuerList').appendChild(rescuerCard)
+        }
+
+        updateRescuerLocation(data) {
+          const rescuer = this.rescuers.get(data.rescuerId)
+          if (rescuer) {
+            rescuer.location = data.location
+            rescuer.marker.setLatLng([data.location.lat, data.location.lng])
+            rescuer.lastUpdate = new Date()
+          }
+        }
+
+        updateActiveCount() {
+          const activeCount = Array.from(this.rescuers.values()).filter(
+            (r) => r.status !== 'offline'
+          ).length
+          document.getElementById('activeCount').textContent = activeCount
+        }
+
+        focusRescuer(rescuerId) {
+          const rescuer = this.rescuers.get(rescuerId)
+          if (rescuer) {
+            this.map.setView([rescuer.location.lat, rescuer.location.lng], 15)
+            rescuer.marker.openPopup()
+          }
+        }
+
+        callRescuer(rescuerId) {
+          const rescuer = this.rescuers.get(rescuerId)
+          if (rescuer) {
+            // Simulate calling functionality
+            alert(`Calling ${rescuer.name} at ${rescuer.phone}`)
+          }
+        }
+
+        getDirections(rescuerId) {
+          const rescuer = this.rescuers.get(rescuerId)
+          if (rescuer) {
+            const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${rescuer.location.lat},${rescuer.location.lng}`
+            window.open(directionsUrl, '_blank')
+          }
+        }
+
+        startLocationUpdates() {
+          // Simulate real-time location updates
+          setInterval(() => {
+            this.rescuers.forEach((rescuer, id) => {
+              if (Math.random() > 0.7) {
+                // 30% chance to update location
+                const newLat =
+                  rescuer.location.lat + (Math.random() - 0.5) * 0.01
+                const newLng =
+                  rescuer.location.lng + (Math.random() - 0.5) * 0.01
+
+                this.updateRescuerLocation({
+                  rescuerId: id,
+                  location: { lat: newLat, lng: newLng },
+                })
+              }
+            })
+          }, 5000) // Update every 5 seconds
+        }
+
+        async loadWeatherData() {
+          const southAfricaCities = [
+            { name: 'Cape Town', lat: -33.9249, lng: 18.4241 },
+            { name: 'Johannesburg', lat: -26.2041, lng: 28.0473 },
+            { name: 'Durban', lat: -29.8587, lng: 31.0218 },
+            { name: 'Pretoria', lat: -25.7479, lng: 28.2293 },
+            { name: 'Port Elizabeth', lat: -33.9608, lng: 25.6022 },
+          ]
+
+          try {
+            for (const city of southAfricaCities) {
+              // Simulate weather data (in production, use real weather API)
+              const weather = {
+                city: city.name,
+                temperature: Math.round(15 + Math.random() * 20),
+                condition: ['Sunny', 'Cloudy', 'Rainy', 'Partly Cloudy'][
+                  Math.floor(Math.random() * 4)
+                ],
+                humidity: Math.round(30 + Math.random() * 50),
+                windSpeed: Math.round(Math.random() * 20),
+                icon: this.getWeatherIcon(
+                  ['Sunny', 'Cloudy', 'Rainy', 'Partly Cloudy'][
+                    Math.floor(Math.random() * 4)
+                  ]
+                ),
+              }
+              this.weatherData.set(city.name, weather)
+            }
+            this.renderWeatherCards()
+          } catch (error) {
+            console.log('Weather data simulation running')
+            this.renderWeatherCards()
+          }
+        }
+
+        getWeatherIcon(condition) {
+          const icons = {
+            Sunny: 'fas fa-sun text-yellow-400',
+            Cloudy: 'fas fa-cloud text-gray-400',
+            Rainy: 'fas fa-cloud-rain text-blue-400',
+            'Partly Cloudy': 'fas fa-cloud-sun text-yellow-300',
+          }
+          return icons[condition] || 'fas fa-sun text-yellow-400'
+        }
+
+        renderWeatherCards() {
+          const weatherGrid = document.getElementById('weatherGrid')
+          if (!weatherGrid) return
+
+          weatherGrid.innerHTML = ''
+
+          this.weatherData.forEach((weather, city) => {
+            const card = document.createElement('div')
+            card.className =
+              'glass-card rounded-lg p-4 transition-all hover:scale-105'
+            card.innerHTML = `
+              <div class="text-center">
+                <h3 class="text-white font-semibold mb-2">${weather.city}</h3>
+                <div class="text-2xl mb-2">
+                  <i class="${weather.icon}"></i>
+                </div>
+                <div class="text-2xl font-bold text-white mb-1">${weather.temperature}°C</div>
+                <div class="text-gray-300 text-sm mb-2">${weather.condition}</div>
+                <div class="text-xs text-gray-400">
+                  <div>Humidity: ${weather.humidity}%</div>
+                  <div>Wind: ${weather.windSpeed} km/h</div>
+                </div>
+              </div>
+            `
+            weatherGrid.appendChild(card)
+          })
+        }
+
+        centerMap() {
+          if (this.map) {
+            this.map.setView([-26.2041, 28.0473], 11)
+          }
+        }
+
+        toggleFullscreen() {
+          const mapContainer = document.querySelector('.map-container')
+          if (mapContainer && mapContainer.requestFullscreen) {
+            mapContainer.requestFullscreen()
+          }
+        }
+      }
+
+      // Global functions
+      function refreshLocations() {
+        location.reload()
+      }
+
+      function centerMap() {
+        if (rescueTracker && rescueTracker.map) {
+          rescueTracker.centerMap()
+        }
+      }
+
+      function toggleFullscreen() {
+        if (rescueTracker) {
+          rescueTracker.toggleFullscreen()
+        }
+      }
+
+      function dispatchAll() {
+        alert('Emergency dispatch sent to all available rescuers!')
+      }
+
+      function showDirections() {
+        if (rescueTracker.selectedRescuer) {
+          const rescuer = rescueTracker.rescuers.get(
+            rescueTracker.selectedRescuer
+          )
+          if (rescuer) {
+            const url = `https://www.openstreetmap.org/directions?from=${rescuer.location.lat},${rescuer.location.lng}`
+            window.open(url, '_blank')
+          }
+        } else {
+          alert('Please select a rescuer first!')
+        }
+      }
+
+      function exportData() {
+        if (!rescueTracker) return
+
+        const data = Array.from(rescueTracker.rescuers.values()).map((r) => ({
+          name: r.name,
+          type: r.type,
+          status: r.status,
+          location: r.location,
+          lastUpdate: r.lastUpdate,
+        }))
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: 'application/json',
+        })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `rescue-data-${new Date().toISOString().split('T')[0]}.json`
+        a.click()
+        URL.revokeObjectURL(url)
+      }
+
+      // Initialize tracker
+      let rescueTracker
+      document.addEventListener('DOMContentLoaded', () => {
+        rescueTracker = new RescueTracker()
+      })
+    </script>
+  </body>
+</html>

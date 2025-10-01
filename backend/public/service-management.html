@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,    <!-- Main Dashboard -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+      <!-- Weather Dashboard -->
+      <div class="mb-8">
+        <div class="glass-card rounded-xl p-6">
+          <h2 class="text-xl font-bold text-white mb-4">
+            <i class="fas fa-cloud-sun text-blue-400 mr-3"></i>
+            South Africa Weather Conditions
+          </h2>
+          <div id="weatherGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <!-- Weather cards will be populated here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- System Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8\">tial-scale=1.0" />
+    <title>CrisisLink Service Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Suppress Tailwind CDN warning in development
+      if (typeof window !== 'undefined') {
+        const originalWarn = console.warn
+        console.warn = function (...args) {
+          const message = args[0] && args[0].toString ? args[0].toString() : ''
+          if (
+            message.includes('cdn.tailwindcss.com') ||
+            message.includes('should not be used in production')
+          ) {
+            return // Suppress Tailwind warnings
+          }
+          originalWarn.apply(console, args)
+        }
+      }
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1e293b 50%,
+          #334155 100%
+        );
+        min-height: 100vh;
+      }
+      .glass-card {
+        backdrop-filter: blur(16px);
+        background: rgba(31, 41, 55, 0.8);
+        border: 1px solid rgba(75, 85, 99, 0.3);
+      }
+      .status-operational {
+        color: #10b981;
+      }
+      .status-degraded {
+        color: #f59e0b;
+      }
+      .status-error {
+        color: #ef4444;
+      }
+      .status-optional {
+        color: #8b5cf6;
+      }
+      .pulse-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+      .metric-card {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+      }
+      .metric-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(59, 130, 246, 0.4);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body class="text-white min-h-screen">
+    <!-- Header -->
+    <header class="glass-card border-b border-gray-700">
+      <div class="max-w-7xl mx-auto px-6 py-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div
+              class="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center"
+            >
+              <i class="fas fa-cogs text-white text-xl"></i>
+            </div>
+            <div>
+              <h1
+                class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+              >
+                Service Management
+              </h1>
+              <p class="text-gray-400">Real-time System Monitoring & Control</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <button
+              onclick="refreshStatus()"
+              class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+            >
+              <i class="fas fa-sync-alt mr-2"></i>
+              Refresh
+            </button>
+            <a
+              href="/rescue-tracker"
+              class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors"
+            >
+              <i class="fas fa-map-marked-alt mr-2"></i>
+              Rescue Tracker
+            </a>
+            <a
+              href="/"
+              class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors"
+            >
+              <i class="fas fa-arrow-left mr-2"></i>
+              Back
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+      <!-- System Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="glass-card metric-card rounded-xl p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-400 text-sm">System Status</p>
+              <p class="text-2xl font-bold" id="systemStatus">Loading...</p>
+            </div>
+            <i class="fas fa-server text-2xl" id="systemIcon"></i>
+          </div>
+        </div>
+        <div class="glass-card metric-card rounded-xl p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-400 text-sm">Uptime</p>
+              <p class="text-2xl font-bold text-green-400" id="uptime">0s</p>
+            </div>
+            <i class="fas fa-clock text-green-400 text-2xl"></i>
+          </div>
+        </div>
+        <div class="glass-card metric-card rounded-xl p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-400 text-sm">Memory Usage</p>
+              <p class="text-2xl font-bold text-blue-400" id="memoryUsage">
+                0 MB
+              </p>
+            </div>
+            <i class="fas fa-memory text-blue-400 text-2xl"></i>
+          </div>
+        </div>
+        <div class="glass-card metric-card rounded-xl p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-400 text-sm">Services Healthy</p>
+              <p
+                class="text-2xl font-bold text-purple-400"
+                id="healthyServices"
+              >
+                0/0
+              </p>
+            </div>
+            <i class="fas fa-heartbeat text-purple-400 text-2xl"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="servicesGrid">
+        <!-- Services will be populated here -->
+      </div>
+
+      <!-- Last Updated -->
+      <div class="glass-card rounded-xl p-4 mt-8">
+        <div class="flex items-center justify-between text-sm text-gray-400">
+          <span>Last updated: <span id="lastUpdated">Never</span></span>
+          <span>Auto-refresh every 30 seconds</span>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      let statusData = null
+      let refreshInterval = null
+
+      // Initialize dashboard
+      document.addEventListener('DOMContentLoaded', function () {
+        refreshStatus()
+        loadWeatherData()
+        startAutoRefresh()
+      })
+
+      async function loadWeatherData() {
+        const southAfricaCities = [
+          { name: 'Cape Town', lat: -33.9249, lng: 18.4241 },
+          { name: 'Johannesburg', lat: -26.2041, lng: 28.0473 },
+          { name: 'Durban', lat: -29.8587, lng: 31.0218 },
+          { name: 'Pretoria', lat: -25.7479, lng: 28.2293 },
+          { name: 'Port Elizabeth', lat: -33.9608, lng: 25.6022 }
+        ]
+
+        try {
+          const weatherGrid = document.getElementById('weatherGrid')
+          if (!weatherGrid) return
+
+          weatherGrid.innerHTML = ''
+
+          for (const city of southAfricaCities) {
+            // Simulate weather data (in production, use real weather API)
+            const weather = {
+              city: city.name,
+              temperature: Math.round(15 + Math.random() * 20),
+              condition: ['Sunny', 'Cloudy', 'Rainy', 'Partly Cloudy'][Math.floor(Math.random() * 4)],
+              humidity: Math.round(30 + Math.random() * 50),
+              windSpeed: Math.round(Math.random() * 20),
+              icon: getWeatherIcon(['Sunny', 'Cloudy', 'Rainy', 'Partly Cloudy'][Math.floor(Math.random() * 4)])
+            }
+
+            const card = document.createElement('div')
+            card.className = 'glass-card rounded-lg p-4 transition-all hover:scale-105'
+            card.innerHTML = `
+              <div class="text-center">
+                <h3 class="text-white font-semibold mb-2">${weather.city}</h3>
+                <div class="text-2xl mb-2">
+                  <i class="${weather.icon}"></i>
+                </div>
+                <div class="text-2xl font-bold text-white mb-1">${weather.temperature}°C</div>
+                <div class="text-gray-300 text-sm mb-2">${weather.condition}</div>
+                <div class="text-xs text-gray-400">
+                  <div>Humidity: ${weather.humidity}%</div>
+                  <div>Wind: ${weather.windSpeed} km/h</div>
+                </div>
+              </div>
+            `
+            weatherGrid.appendChild(card)
+          }
+        } catch (error) {
+          console.log('Weather data simulation running')
+        }
+      }
+
+      function getWeatherIcon(condition) {
+        const icons = {
+          'Sunny': 'fas fa-sun text-yellow-400',
+          'Cloudy': 'fas fa-cloud text-gray-400',
+          'Rainy': 'fas fa-cloud-rain text-blue-400',
+          'Partly Cloudy': 'fas fa-cloud-sun text-yellow-300'
+        }
+        return icons[condition] || 'fas fa-sun text-yellow-400'
+      }
+
+      async function refreshStatus() {
+        try {
+          const response = await fetch('/api/system/status')
+          statusData = await response.json()
+          updateDashboard()
+          updateLastUpdated()
+        } catch (error) {
+          console.error('Failed to fetch status:', error)
+          showError('Failed to fetch system status')
+        }
+      }
+
+      function updateDashboard() {
+        if (!statusData) return
+
+        // Update system overview
+        updateSystemOverview()
+
+        // Update services grid
+        updateServicesGrid()
+      }
+
+      function updateSystemOverview() {
+        const { system } = statusData
+
+        // System status
+        const statusEl = document.getElementById('systemStatus')
+        const iconEl = document.getElementById('systemIcon')
+        statusEl.textContent = system.status.toUpperCase()
+        statusEl.className = `text-2xl font-bold status-${system.status.replace('_', '-')}`
+        iconEl.className = `fas fa-server text-2xl status-${system.status.replace('_', '-')}`
+
+        // Uptime
+        const uptimeFormatted = formatUptime(system.uptime)
+        document.getElementById('uptime').textContent = uptimeFormatted
+
+        // Memory usage
+        const memoryText = `${system.memory.used} MB (${system.memory.percentage}%)`
+        document.getElementById('memoryUsage').textContent = memoryText
+
+        // Healthy services
+        document.getElementById('healthyServices').textContent =
+          `${system.servicesOperational}/${system.totalServices}`
+      }
+
+      function updateServicesGrid() {
+        const grid = document.getElementById('servicesGrid')
+        grid.innerHTML = ''
+
+        Object.entries(statusData.services).forEach(([key, service]) => {
+          const serviceCard = createServiceCard(key, service)
+          grid.appendChild(serviceCard)
+        })
+      }
+
+      function createServiceCard(key, service) {
+        const card = document.createElement('div')
+        card.className = 'glass-card rounded-xl p-6'
+
+        const statusClass = `status-${service.status.replace('_', '-')}`
+        const statusIcon = getStatusIcon(service.status)
+        const pulseClass = service.healthy ? 'bg-green-500' : 'bg-red-500'
+
+        let componentsHtml = ''
+        if (service.components) {
+          componentsHtml = `
+                    <div class="mt-4 space-y-2">
+                        <p class="text-sm font-medium text-gray-300">Components:</p>
+                        ${Object.entries(service.components)
+                          .map(
+                            ([name, comp]) => `
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-400">${name}</span>
+                                <span class="${comp.enabled ? 'text-green-400' : 'text-gray-500'}">
+                                    ${comp.status}
+                                </span>
+                            </div>
+                        `
+                          )
+                          .join('')}
+                    </div>
+                `
+        }
+
+        let metricsHtml = ''
+        if (service.connections !== undefined) {
+          metricsHtml = `
+                    <div class="mt-3 text-sm text-gray-400">
+                        Active connections: <span class="text-blue-400">${service.connections}</span>
+                    </div>
+                `
+        }
+
+        if (service.endpoints) {
+          metricsHtml = `
+                    <div class="mt-3 text-sm text-gray-400">
+                        Endpoints: <span class="text-blue-400">${Object.keys(service.endpoints).length}</span>
+                    </div>
+                `
+        }
+
+        card.innerHTML = `
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="pulse-dot ${pulseClass}"></div>
+                        <div>
+                            <h3 class="text-lg font-semibold">${service.name}</h3>
+                            <p class="text-sm ${statusClass}">${service.status.toUpperCase()}</p>
+                        </div>
+                    </div>
+                    <i class="fas ${statusIcon} text-xl ${statusClass}"></i>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-3">${service.message}</p>
+                
+                ${componentsHtml}
+                ${metricsHtml}
+                
+                <div class="mt-4 pt-3 border-t border-gray-600">
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <span>Last checked</span>
+                        <span>${formatTime(service.lastChecked)}</span>
+                    </div>
+                </div>
+            `
+
+        return card
+      }
+
+      function getStatusIcon(status) {
+        switch (status) {
+          case 'operational':
+            return 'fa-check-circle'
+          case 'degraded':
+            return 'fa-exclamation-triangle'
+          case 'error':
+            return 'fa-times-circle'
+          case 'optional':
+            return 'fa-info-circle'
+          default:
+            return 'fa-question-circle'
+        }
+      }
+
+      function formatUptime(seconds) {
+        const days = Math.floor(seconds / 86400)
+        const hours = Math.floor((seconds % 86400) / 3600)
+        const minutes = Math.floor((seconds % 3600) / 60)
+
+        if (days > 0) return `${days}d ${hours}h`
+        if (hours > 0) return `${hours}h ${minutes}m`
+        return `${minutes}m`
+      }
+
+      function formatTime(timestamp) {
+        return new Date(timestamp).toLocaleTimeString()
+      }
+
+      function updateLastUpdated() {
+        document.getElementById('lastUpdated').textContent =
+          new Date().toLocaleTimeString()
+      }
+
+      function startAutoRefresh() {
+        refreshInterval = setInterval(refreshStatus, 30000) // 30 seconds
+      }
+
+      function stopAutoRefresh() {
+        if (refreshInterval) {
+          clearInterval(refreshInterval)
+          refreshInterval = null
+        }
+      }
+
+      function showError(message) {
+        const errorDiv = document.createElement('div')
+        errorDiv.className =
+          'fixed top-4 right-4 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg z-50'
+        errorDiv.textContent = message
+        document.body.appendChild(errorDiv)
+
+        setTimeout(() => {
+          errorDiv.remove()
+        }, 5000)
+      }
+
+      // Cleanup on page unload
+      window.addEventListener('beforeunload', stopAutoRefresh)
+    </script>
+  </body>
+</html>
