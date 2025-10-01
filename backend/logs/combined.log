@@ -5582,3 +5582,1102 @@
 2025-10-01T17:13:09.519Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:13:09 +0000] "GET /api/admin/stats HTTP/1.1" 200 228 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
 2025-10-01T17:14:09.256Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:14:09 +0000] "GET /api/admin/stats HTTP/1.1" 200 228 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
 2025-10-01T17:15:26.445Z [[32minfo[39m]: Client disconnected: M40Avnb9v2f1_EMpAAAD
+2025-10-01T17:22:43.538Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:22:43 +0000] "GET /api/admin/stats HTTP/1.1" 200 229 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:22:44.429Z [[32minfo[39m]: Client connected: gU7Zho6iKe0c90A6AAAH
+2025-10-01T17:22:44.460Z [[32minfo[39m]: Agent AGENT-PMO6 joined agents room
+2025-10-01T17:23:05.311Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:23:05 +0000] "GET /api/admin/stats HTTP/1.1" 200 229 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:23:35.443Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:23:35 +0000] "GET /api/admin/stats HTTP/1.1" 200 229 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:24:09.494Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:24:09 +0000] "GET /api/admin/stats HTTP/1.1" 200 228 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:25:10.781Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:25:10 +0000] "GET /api/admin/stats HTTP/1.1" 200 229 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:26:25.651Z [[32minfo[39m]: Client disconnected: gU7Zho6iKe0c90A6AAAH
+2025-10-01T17:27:30.629Z [[32minfo[39m]: Client connected: 2kw-0Z_eeOFLKZptAAAK
+2025-10-01T17:27:30.874Z [[32minfo[39m]: User registered: USER-1759339650669 - Lintshiwe
+2025-10-01T17:27:30.943Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:30 +0000] "GET /favicon.ico HTTP/1.1" 204 - "http://localhost:3000/test-tracking" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:33.428Z [[32minfo[39m]: Client connected: xfXPdHR7_YzOM0x0AAAN
+2025-10-01T17:27:33.516Z [[32minfo[39m]: User registered: USER-1759339653435 - Lintshiwe
+2025-10-01T17:27:33.527Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:33 +0000] "GET /favicon.ico HTTP/1.1" 204 - "http://localhost:3000/admin/services" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:34.194Z [[32minfo[39m]: User location update: USER-1759339653435 at -25.88343455390335, 29.270373717472122
+2025-10-01T17:27:47.243Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:27:47 +0000] "GET /api/admin/stats HTTP/1.1" 200 228 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:48.090Z [[32minfo[39m]: Client connected: JwBhzd-rxskxzW9WAAAP
+2025-10-01T17:27:48.108Z [[32minfo[39m]: Agent AGENT-PMO6 joined agents room
+2025-10-01T17:27:51.059Z [[32minfo[39m]: Client connected: F_bT-i9N7fNiGao1AAAS
+2025-10-01T17:27:51.111Z [[32minfo[39m]: User registered: USER-1759339671105 - Lintshiwe
+2025-10-01T17:27:51.642Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:51 +0000] "GET /favicon.ico HTTP/1.1" 204 - "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:51.664Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:51.708Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:51 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:51.736Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:51.745Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:51 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:52.092Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:52.096Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:52 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:52.430Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:52.436Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:52 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:52.767Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:52.771Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:52 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:53.112Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:53.116Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:53 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:53.455Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:53.459Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:53 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:53.782Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:53.788Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:53 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:54.115Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:54.123Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:54 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:54.461Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:54.467Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:54 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:54.780Z [[32minfo[39m]: User location update: USER-1759339671105 at -25.883452089041096, 29.27037228310502
+2025-10-01T17:27:54.796Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:54.800Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:54 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:55.051Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:55.057Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:55 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:55.123Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:55.126Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:55 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:55.382Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:55.386Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:55 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:55.457Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:55.462Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:55 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:55.708Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:55.713Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:55 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:55.783Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:55.787Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:55 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:56.038Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:56.041Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:56 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:56.110Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:56.115Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:56 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:56.378Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:56.383Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:56 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:56.436Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:56.442Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:56 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:56.705Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:56.708Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:56 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:56.764Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:56.772Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:56 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:57.042Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:57.047Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:57 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:57.098Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:57.108Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:57 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:57.375Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:57.380Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:57 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:57.429Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:57.437Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:57 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:57.705Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:57.708Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:57 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:57.763Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:57.767Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:57 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:58.047Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:58.055Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:58 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:58.095Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:58.099Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:58 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:58.378Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:58.381Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:58 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:58.427Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:58.431Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:58 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:58.710Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:58.714Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:58 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:58.756Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:58.759Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:58 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:59.048Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:59.052Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:59 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:59.081Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:59.087Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:59 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:59.393Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:59.398Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:59 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:59.462Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:59.467Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:59 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:59.732Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:59.735Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:59 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:27:59.805Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:27:59.810Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:27:59 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:00.054Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:00.058Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:00 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:00.129Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:00.133Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:00 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:00.379Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:00.383Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:00 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:00.455Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:00.461Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:00 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:00.700Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:00.704Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:00 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:00.782Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:00.786Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:00 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:01.078Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:01.081Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:01 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:01.107Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:01.111Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:01 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:01.404Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:01.408Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:01 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:01.427Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:01.430Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:01 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:01.727Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:01.730Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:01 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:01.750Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:01.754Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:01 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:02.051Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:02.055Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:02 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:02.079Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:02.083Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:02 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:02.375Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:02.378Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:02 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:02.407Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:02.413Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:02 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:02.718Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:02.724Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:02 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:02.742Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:02.745Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:02 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:03.074Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:03.079Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:03 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:03.406Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:03.409Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:03 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:03.729Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:03.733Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:03 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:04.058Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:04.062Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:04 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:04.182Z [[32minfo[39m]: User location update: USER-1759339653435 at -25.88343455390335, 29.270373717472122
+2025-10-01T17:28:04.387Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:04.391Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:04 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:04.726Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:04.731Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:04 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:05.055Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:05.060Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:05 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:05.070Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:28:05 +0000] "GET /api/admin/stats HTTP/1.1" 200 229 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:05.379Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:05.383Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:05 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:05.725Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:05.733Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:05 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:06.115Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:06.123Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:06 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:06.447Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:06.449Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:06 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:06.727Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:06.733Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:06 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:06.771Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:06.776Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:06 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:07.073Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:07.077Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:07 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:07.099Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:07.105Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:07 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:07.403Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:07.406Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:07 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:07.433Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:07.438Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:07 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:08.033Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:08.054Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:08 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:08.076Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:08.080Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:08 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:08.408Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:08.412Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:08 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:08.738Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:08.743Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:08 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:08.993Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:08.997Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:08 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:09.069Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:09.076Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:09 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:09.324Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:09.330Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:09 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:09.399Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:09.403Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:09 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:09.657Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:09.661Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:09 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:09.720Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:09.724Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:09 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:09.990Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:09.995Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:09 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:10.052Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:10.056Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:10 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:10.326Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:10.329Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:10 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:10.385Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:10.390Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:10 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:10.650Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:10.654Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:10 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:10.716Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:10.721Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:10 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:10.975Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:10.981Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:10 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:11.051Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:11.055Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:11 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:11.307Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:11.313Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:11 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:11.376Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:11.380Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:11 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:11.641Z [[31merror[39m]: SequelizeConnectionRefusedError
+    at Client._connectionCallback (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\sequelize\lib\dialects\postgres\connection-manager.js:133:24)
+    at Client._handleErrorWhileConnecting (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:336:19)
+    at Client._handleErrorEvent (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\client.js:346:19)
+    at Connection.emit (node:events:518:28)
+    at Socket.reportStreamError (C:\Users\ntoam\Desktop\Projects\CrisisLink2.0\backend\node_modules\pg\lib\connection.js:57:12)
+    at Socket.emit (node:events:518:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-10-01T17:28:11.645Z [[32minfo[39m]: 127.0.0.1 - - [01/Oct/2025:17:28:11 +0000] "GET /api/sos/history HTTP/1.1" 500 51 "http://localhost:3000/sos" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:21.314Z [[32minfo[39m]: User location update: USER-1759339671105 at -25.883452089041096, 29.27037228310502
+2025-10-01T17:28:34.234Z [[32minfo[39m]: User location update: USER-1759339653435 at -25.88343455390335, 29.270373717472122
+2025-10-01T17:28:35.210Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:28:35 +0000] "GET /api/admin/stats HTTP/1.1" 200 229 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:28:51.198Z [[32minfo[39m]: User location update: USER-1759339671105 at -25.883452089041096, 29.27037228310502
+2025-10-01T17:29:04.015Z [[32minfo[39m]: User location update: USER-1759339653435 at -25.88343455390335, 29.270373717472122
+2025-10-01T17:29:10.010Z [[32minfo[39m]: ::1 - - [01/Oct/2025:17:29:10 +0000] "GET /api/admin/stats HTTP/1.1" 200 229 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+2025-10-01T17:29:21.257Z [[32minfo[39m]: User location update: USER-1759339671105 at -25.883452089041096, 29.27037228310502
+2025-10-01T17:29:34.005Z [[32minfo[39m]: User location update: USER-1759339653435 at -25.88343455390335, 29.270373717472122
