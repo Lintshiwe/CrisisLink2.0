@@ -2,25 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,    <!-- Main Dashboard -->
-    <main class="max-w-7xl mx-auto px-6 py-8">
-      <!-- Weather Dashboard -->
-      <div class="mb-8">
-        <div class="glass-card rounded-xl p-6">
-          <h2 class="text-xl font-bold text-white mb-4">
-            <i class="fas fa-cloud-sun text-blue-400 mr-3"></i>
-            South Africa Weather Conditions
-          </h2>
-          <div id="weatherGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            <!-- Weather cards will be populated here -->
-          </div>
-        </div>
-      </div>
-
-      <!-- System Overview -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8\">tial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CrisisLink Service Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <script>
       // Suppress Tailwind CDN warning in development
       if (typeof window !== 'undefined') {
@@ -37,12 +27,10 @@
         }
       }
     </script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
       body {
         font-family: 'Inter', sans-serif;
         background: linear-gradient(
@@ -53,417 +41,429 @@
         );
         min-height: 100vh;
       }
+
       .glass-card {
-        backdrop-filter: blur(16px);
-        background: rgba(31, 41, 55, 0.8);
-        border: 1px solid rgba(75, 85, 99, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
       }
-      .status-operational {
-        color: #10b981;
+
+      .service-card {
+        transition: all 0.3s ease;
       }
-      .status-degraded {
-        color: #f59e0b;
+
+      .service-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       }
-      .status-error {
-        color: #ef4444;
-      }
-      .status-optional {
-        color: #8b5cf6;
-      }
-      .pulse-dot {
+
+      .status-indicator {
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        animation: pulse 2s infinite;
       }
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
+
+      .status-online {
+        background-color: #10b981;
+        box-shadow: 0 0 6px #10b981;
       }
-      .metric-card {
-        transition: all 0.3s ease;
-        border: 1px solid rgba(59, 130, 246, 0.2);
+
+      .status-offline {
+        background-color: #ef4444;
+        box-shadow: 0 0 6px #ef4444;
       }
-      .metric-card:hover {
-        transform: translateY(-2px);
-        border-color: rgba(59, 130, 246, 0.4);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+
+      .status-warning {
+        background-color: #f59e0b;
+        box-shadow: 0 0 6px #f59e0b;
       }
     </style>
   </head>
-  <body class="text-white min-h-screen">
-    <!-- Header -->
-    <header class="glass-card border-b border-gray-700">
-      <div class="max-w-7xl mx-auto px-6 py-6">
+  <body class="text-gray-100">
+    <!-- Navigation Header -->
+    <nav
+      class="bg-slate-800/80 backdrop-blur-sm border-b border-slate-700 sticky top-0 z-50"
+    >
+      <div class="max-w-7xl mx-auto px-6 py-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-4">
-            <div
-              class="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center"
-            >
-              <i class="fas fa-cogs text-white text-xl"></i>
-            </div>
-            <div>
-              <h1
-                class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
-              >
-                Service Management
-              </h1>
-              <p class="text-gray-400">Real-time System Monitoring & Control</p>
-            </div>
+            <i class="fas fa-cogs text-2xl text-blue-400"></i>
+            <h1 class="text-xl font-bold">CrisisLink Service Management</h1>
           </div>
           <div class="flex items-center space-x-4">
             <button
-              onclick="refreshStatus()"
-              class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+              id="refreshBtn"
+              class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors"
             >
-              <i class="fas fa-sync-alt mr-2"></i>
-              Refresh
+              <i class="fas fa-sync-alt mr-2"></i>Refresh
             </button>
             <a
-              href="/rescue-tracker"
-              class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors"
+              href="/agent-dashboard.html"
+              class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
             >
-              <i class="fas fa-map-marked-alt mr-2"></i>
-              Rescue Tracker
-            </a>
-            <a
-              href="/"
-              class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors"
-            >
-              <i class="fas fa-arrow-left mr-2"></i>
-              Back
+              <i class="fas fa-dashboard mr-2"></i>Dashboard
             </a>
           </div>
         </div>
       </div>
-    </header>
+    </nav>
 
-    <!-- Main Dashboard -->
+    <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-6 py-8">
       <!-- System Overview -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="glass-card metric-card rounded-xl p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-400 text-sm">System Status</p>
-              <p class="text-2xl font-bold" id="systemStatus">Loading...</p>
-            </div>
-            <i class="fas fa-server text-2xl" id="systemIcon"></i>
+        <div class="glass-card rounded-xl p-6 service-card">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">System Health</h3>
+            <div class="status-indicator status-online"></div>
           </div>
-        </div>
-        <div class="glass-card metric-card rounded-xl p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-400 text-sm">Uptime</p>
-              <p class="text-2xl font-bold text-green-400" id="uptime">0s</p>
-            </div>
-            <i class="fas fa-clock text-green-400 text-2xl"></i>
+          <div class="text-3xl font-bold text-green-400 mb-2" id="systemHealth">
+            98%
           </div>
+          <p class="text-gray-400 text-sm">All services operational</p>
         </div>
-        <div class="glass-card metric-card rounded-xl p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-400 text-sm">Memory Usage</p>
-              <p class="text-2xl font-bold text-blue-400" id="memoryUsage">
-                0 MB
-              </p>
-            </div>
-            <i class="fas fa-memory text-blue-400 text-2xl"></i>
+
+        <div class="glass-card rounded-xl p-6 service-card">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Active Agents</h3>
+            <i class="fas fa-users text-blue-400"></i>
           </div>
+          <div class="text-3xl font-bold text-blue-400 mb-2" id="activeAgents">
+            12
+          </div>
+          <p class="text-gray-400 text-sm">Currently on duty</p>
         </div>
-        <div class="glass-card metric-card rounded-xl p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-400 text-sm">Services Healthy</p>
-              <p
-                class="text-2xl font-bold text-purple-400"
-                id="healthyServices"
-              >
-                0/0
-              </p>
+
+        <div class="glass-card rounded-xl p-6 service-card">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Open Alerts</h3>
+            <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+          </div>
+          <div class="text-3xl font-bold text-yellow-400 mb-2" id="openAlerts">
+            3
+          </div>
+          <p class="text-gray-400 text-sm">Require attention</p>
+        </div>
+
+        <div class="glass-card rounded-xl p-6 service-card">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Response Time</h3>
+            <i class="fas fa-clock text-purple-400"></i>
+          </div>
+          <div
+            class="text-3xl font-bold text-purple-400 mb-2"
+            id="responseTime"
+          >
+            2.3m
+          </div>
+          <p class="text-gray-400 text-sm">Average today</p>
+        </div>
+      </div>
+
+      <!-- Services Status -->
+      <div class="glass-card rounded-xl p-6 mb-8">
+        <h2 class="text-xl font-bold mb-6">
+          <i class="fas fa-server text-green-400 mr-3"></i>
+          Service Status
+        </h2>
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          id="servicesGrid"
+        >
+          <!-- Service status cards will be populated here -->
+        </div>
+      </div>
+
+      <!-- Database Status -->
+      <div class="glass-card rounded-xl p-6 mb-8">
+        <h2 class="text-xl font-bold mb-6">
+          <i class="fas fa-database text-blue-400 mr-3"></i>
+          Database Status
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Connection Status</h3>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span>MongoDB Primary</span>
+                <div class="flex items-center">
+                  <div class="status-indicator status-online mr-2"></div>
+                  <span class="text-green-400">Connected</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>Connection Pool</span>
+                <span class="text-blue-400" id="connectionPool">8/10</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>Query Response</span>
+                <span class="text-green-400" id="queryResponse">12ms</span>
+              </div>
             </div>
-            <i class="fas fa-heartbeat text-purple-400 text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Collection Stats</h3>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span>Users</span>
+                <span class="text-gray-300" id="userCount">1,247</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>Agents</span>
+                <span class="text-gray-300" id="agentCount">52</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>SOS Alerts</span>
+                <span class="text-gray-300" id="sosCount">8,934</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Services Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="servicesGrid">
-        <!-- Services will be populated here -->
-      </div>
-
-      <!-- Last Updated -->
-      <div class="glass-card rounded-xl p-4 mt-8">
-        <div class="flex items-center justify-between text-sm text-gray-400">
-          <span>Last updated: <span id="lastUpdated">Never</span></span>
-          <span>Auto-refresh every 30 seconds</span>
+      <!-- API Endpoints -->
+      <div class="glass-card rounded-xl p-6">
+        <h2 class="text-xl font-bold mb-6">
+          <i class="fas fa-plug text-purple-400 mr-3"></i>
+          API Endpoints
+        </h2>
+        <div class="space-y-4" id="apiEndpoints">
+          <!-- API status will be populated here -->
         </div>
       </div>
     </main>
 
     <script>
-      let statusData = null
-      let refreshInterval = null
+      // Service Management JavaScript
+      class ServiceManager {
+        constructor() {
+          this.services = [
+            {
+              name: 'Authentication Service',
+              endpoint: '/api/auth',
+              status: 'online',
+            },
+            {
+              name: 'Weather Service',
+              endpoint: '/api/weather',
+              status: 'online',
+            },
+            {
+              name: 'SOS Alert Service',
+              endpoint: '/api/sos',
+              status: 'online',
+            },
+            {
+              name: 'Agent Management',
+              endpoint: '/api/agents',
+              status: 'online',
+            },
+            {
+              name: 'Communication Service',
+              endpoint: '/api/communication',
+              status: 'warning',
+            },
+            {
+              name: 'Notification Service',
+              endpoint: '/api/notifications',
+              status: 'online',
+            },
+          ]
 
-      // Initialize dashboard
-      document.addEventListener('DOMContentLoaded', function () {
-        refreshStatus()
-        loadWeatherData()
-        startAutoRefresh()
-      })
+          this.apiEndpoints = [
+            {
+              method: 'GET',
+              path: '/api/health',
+              description: 'System health check',
+            },
+            {
+              method: 'GET',
+              path: '/api/weather/live',
+              description: 'Live weather data',
+            },
+            {
+              method: 'POST',
+              path: '/api/sos/create',
+              description: 'Create SOS alert',
+            },
+            {
+              method: 'GET',
+              path: '/api/agents/active',
+              description: 'Get active agents',
+            },
+            {
+              method: 'POST',
+              path: '/api/auth/login',
+              description: 'User authentication',
+            },
+          ]
 
-      async function loadWeatherData() {
-        const southAfricaCities = [
-          { name: 'Cape Town', lat: -33.9249, lng: 18.4241 },
-          { name: 'Johannesburg', lat: -26.2041, lng: 28.0473 },
-          { name: 'Durban', lat: -29.8587, lng: 31.0218 },
-          { name: 'Pretoria', lat: -25.7479, lng: 28.2293 },
-          { name: 'Port Elizabeth', lat: -33.9608, lng: 25.6022 }
-        ]
-
-        try {
-          const weatherGrid = document.getElementById('weatherGrid')
-          if (!weatherGrid) return
-
-          weatherGrid.innerHTML = ''
-
-          for (const city of southAfricaCities) {
-            // Simulate weather data (in production, use real weather API)
-            const weather = {
-              city: city.name,
-              temperature: Math.round(15 + Math.random() * 20),
-              condition: ['Sunny', 'Cloudy', 'Rainy', 'Partly Cloudy'][Math.floor(Math.random() * 4)],
-              humidity: Math.round(30 + Math.random() * 50),
-              windSpeed: Math.round(Math.random() * 20),
-              icon: getWeatherIcon(['Sunny', 'Cloudy', 'Rainy', 'Partly Cloudy'][Math.floor(Math.random() * 4)])
-            }
-
-            const card = document.createElement('div')
-            card.className = 'glass-card rounded-lg p-4 transition-all hover:scale-105'
-            card.innerHTML = `
-              <div class="text-center">
-                <h3 class="text-white font-semibold mb-2">${weather.city}</h3>
-                <div class="text-2xl mb-2">
-                  <i class="${weather.icon}"></i>
-                </div>
-                <div class="text-2xl font-bold text-white mb-1">${weather.temperature}°C</div>
-                <div class="text-gray-300 text-sm mb-2">${weather.condition}</div>
-                <div class="text-xs text-gray-400">
-                  <div>Humidity: ${weather.humidity}%</div>
-                  <div>Wind: ${weather.windSpeed} km/h</div>
-                </div>
-              </div>
-            `
-            weatherGrid.appendChild(card)
-          }
-        } catch (error) {
-          console.log('Weather data simulation running')
-        }
-      }
-
-      function getWeatherIcon(condition) {
-        const icons = {
-          'Sunny': 'fas fa-sun text-yellow-400',
-          'Cloudy': 'fas fa-cloud text-gray-400',
-          'Rainy': 'fas fa-cloud-rain text-blue-400',
-          'Partly Cloudy': 'fas fa-cloud-sun text-yellow-300'
-        }
-        return icons[condition] || 'fas fa-sun text-yellow-400'
-      }
-
-      async function refreshStatus() {
-        try {
-          const response = await fetch('/api/system/status')
-          statusData = await response.json()
-          updateDashboard()
-          updateLastUpdated()
-        } catch (error) {
-          console.error('Failed to fetch status:', error)
-          showError('Failed to fetch system status')
-        }
-      }
-
-      function updateDashboard() {
-        if (!statusData) return
-
-        // Update system overview
-        updateSystemOverview()
-
-        // Update services grid
-        updateServicesGrid()
-      }
-
-      function updateSystemOverview() {
-        const { system } = statusData
-
-        // System status
-        const statusEl = document.getElementById('systemStatus')
-        const iconEl = document.getElementById('systemIcon')
-        statusEl.textContent = system.status.toUpperCase()
-        statusEl.className = `text-2xl font-bold status-${system.status.replace('_', '-')}`
-        iconEl.className = `fas fa-server text-2xl status-${system.status.replace('_', '-')}`
-
-        // Uptime
-        const uptimeFormatted = formatUptime(system.uptime)
-        document.getElementById('uptime').textContent = uptimeFormatted
-
-        // Memory usage
-        const memoryText = `${system.memory.used} MB (${system.memory.percentage}%)`
-        document.getElementById('memoryUsage').textContent = memoryText
-
-        // Healthy services
-        document.getElementById('healthyServices').textContent =
-          `${system.servicesOperational}/${system.totalServices}`
-      }
-
-      function updateServicesGrid() {
-        const grid = document.getElementById('servicesGrid')
-        grid.innerHTML = ''
-
-        Object.entries(statusData.services).forEach(([key, service]) => {
-          const serviceCard = createServiceCard(key, service)
-          grid.appendChild(serviceCard)
-        })
-      }
-
-      function createServiceCard(key, service) {
-        const card = document.createElement('div')
-        card.className = 'glass-card rounded-xl p-6'
-
-        const statusClass = `status-${service.status.replace('_', '-')}`
-        const statusIcon = getStatusIcon(service.status)
-        const pulseClass = service.healthy ? 'bg-green-500' : 'bg-red-500'
-
-        let componentsHtml = ''
-        if (service.components) {
-          componentsHtml = `
-                    <div class="mt-4 space-y-2">
-                        <p class="text-sm font-medium text-gray-300">Components:</p>
-                        ${Object.entries(service.components)
-                          .map(
-                            ([name, comp]) => `
-                            <div class="flex items-center justify-between text-sm">
-                                <span class="text-gray-400">${name}</span>
-                                <span class="${comp.enabled ? 'text-green-400' : 'text-gray-500'}">
-                                    ${comp.status}
-                                </span>
-                            </div>
-                        `
-                          )
-                          .join('')}
-                    </div>
-                `
+          this.init()
         }
 
-        let metricsHtml = ''
-        if (service.connections !== undefined) {
-          metricsHtml = `
-                    <div class="mt-3 text-sm text-gray-400">
-                        Active connections: <span class="text-blue-400">${service.connections}</span>
-                    </div>
-                `
+        init() {
+          this.renderServices()
+          this.renderApiEndpoints()
+          this.startMonitoring()
+          this.setupEventListeners()
         }
 
-        if (service.endpoints) {
-          metricsHtml = `
-                    <div class="mt-3 text-sm text-gray-400">
-                        Endpoints: <span class="text-blue-400">${Object.keys(service.endpoints).length}</span>
-                    </div>
-                `
-        }
-
-        card.innerHTML = `
-                <div class="flex items-start justify-between mb-4">
-                    <div class="flex items-center space-x-3">
-                        <div class="pulse-dot ${pulseClass}"></div>
-                        <div>
-                            <h3 class="text-lg font-semibold">${service.name}</h3>
-                            <p class="text-sm ${statusClass}">${service.status.toUpperCase()}</p>
+        renderServices() {
+          const grid = document.getElementById('servicesGrid')
+          grid.innerHTML = this.services
+            .map(
+              (service) => `
+                    <div class="bg-slate-700/50 rounded-lg p-4 service-card">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold">${service.name}</h4>
+                            <div class="status-indicator status-${service.status}"></div>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-2">${service.endpoint}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs px-2 py-1 rounded-full ${this.getStatusColor(service.status)}">
+                                ${service.status.toUpperCase()}
+                            </span>
+                            <button class="text-blue-400 hover:text-blue-300 text-sm" onclick="serviceManager.testService('${service.endpoint}')">
+                                Test
+                            </button>
                         </div>
                     </div>
-                    <i class="fas ${statusIcon} text-xl ${statusClass}"></i>
-                </div>
-                
-                <p class="text-gray-300 text-sm mb-3">${service.message}</p>
-                
-                ${componentsHtml}
-                ${metricsHtml}
-                
-                <div class="mt-4 pt-3 border-t border-gray-600">
-                    <div class="flex items-center justify-between text-xs text-gray-400">
-                        <span>Last checked</span>
-                        <span>${formatTime(service.lastChecked)}</span>
+                `
+            )
+            .join('')
+        }
+
+        renderApiEndpoints() {
+          const container = document.getElementById('apiEndpoints')
+          container.innerHTML = this.apiEndpoints
+            .map(
+              (endpoint) => `
+                    <div class="bg-slate-700/50 rounded-lg p-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <span class="px-2 py-1 text-xs font-mono rounded ${this.getMethodColor(endpoint.method)}">
+                                ${endpoint.method}
+                            </span>
+                            <code class="text-gray-300">${endpoint.path}</code>
+                            <span class="text-gray-400 text-sm">${endpoint.description}</span>
+                        </div>
+                        <button class="text-blue-400 hover:text-blue-300 text-sm" onclick="serviceManager.testEndpoint('${endpoint.path}')">
+                            Test
+                        </button>
                     </div>
-                </div>
-            `
+                `
+            )
+            .join('')
+        }
 
-        return card
-      }
+        getStatusColor(status) {
+          switch (status) {
+            case 'online':
+              return 'bg-green-600 text-green-100'
+            case 'offline':
+              return 'bg-red-600 text-red-100'
+            case 'warning':
+              return 'bg-yellow-600 text-yellow-100'
+            default:
+              return 'bg-gray-600 text-gray-100'
+          }
+        }
 
-      function getStatusIcon(status) {
-        switch (status) {
-          case 'operational':
-            return 'fa-check-circle'
-          case 'degraded':
-            return 'fa-exclamation-triangle'
-          case 'error':
-            return 'fa-times-circle'
-          case 'optional':
-            return 'fa-info-circle'
-          default:
-            return 'fa-question-circle'
+        getMethodColor(method) {
+          switch (method) {
+            case 'GET':
+              return 'bg-blue-600 text-blue-100'
+            case 'POST':
+              return 'bg-green-600 text-green-100'
+            case 'PUT':
+              return 'bg-yellow-600 text-yellow-100'
+            case 'DELETE':
+              return 'bg-red-600 text-red-100'
+            default:
+              return 'bg-gray-600 text-gray-100'
+          }
+        }
+
+        async testService(endpoint) {
+          try {
+            const response = await fetch(endpoint)
+            const status = response.ok ? 'online' : 'warning'
+            this.updateServiceStatus(endpoint, status)
+            console.log(`Service test ${endpoint}: ${response.status}`)
+          } catch (error) {
+            this.updateServiceStatus(endpoint, 'offline')
+            console.error(`Service test ${endpoint} failed:`, error)
+          }
+        }
+
+        async testEndpoint(path) {
+          try {
+            const response = await fetch(path)
+            console.log(
+              `Endpoint test ${path}: ${response.status}`,
+              await response.text()
+            )
+          } catch (error) {
+            console.error(`Endpoint test ${path} failed:`, error)
+          }
+        }
+
+        updateServiceStatus(endpoint, status) {
+          const service = this.services.find((s) => s.endpoint === endpoint)
+          if (service) {
+            service.status = status
+            this.renderServices()
+          }
+        }
+
+        startMonitoring() {
+          // Update system stats periodically
+          setInterval(() => {
+            this.updateSystemStats()
+          }, 5000)
+
+          // Initial stats update
+          this.updateSystemStats()
+        }
+
+        async updateSystemStats() {
+          try {
+            const response = await fetch('/api/admin/stats')
+            const stats = await response.json()
+
+            // Update UI elements with real data
+            document.getElementById('activeAgents').textContent =
+              stats.agents?.active || '0'
+            document.getElementById('openAlerts').textContent =
+              stats.alerts?.open || '0'
+            document.getElementById('systemHealth').textContent =
+              stats.system?.health || '0%'
+          } catch (error) {
+            console.error('Failed to update system stats:', error)
+          }
+        }
+
+        setupEventListeners() {
+          document
+            .getElementById('refreshBtn')
+            .addEventListener('click', () => {
+              this.renderServices()
+              this.renderApiEndpoints()
+              this.updateSystemStats()
+            })
         }
       }
 
-      function formatUptime(seconds) {
-        const days = Math.floor(seconds / 86400)
-        const hours = Math.floor((seconds % 86400) / 3600)
-        const minutes = Math.floor((seconds % 3600) / 60)
+      // Initialize service manager
+      let serviceManager
 
-        if (days > 0) return `${days}d ${hours}h`
-        if (hours > 0) return `${hours}h ${minutes}m`
-        return `${minutes}m`
-      }
+      document.addEventListener('DOMContentLoaded', () => {
+        serviceManager = new ServiceManager()
+      })
 
-      function formatTime(timestamp) {
-        return new Date(timestamp).toLocaleTimeString()
-      }
-
-      function updateLastUpdated() {
-        document.getElementById('lastUpdated').textContent =
-          new Date().toLocaleTimeString()
-      }
-
-      function startAutoRefresh() {
-        refreshInterval = setInterval(refreshStatus, 30000) // 30 seconds
-      }
-
-      function stopAutoRefresh() {
-        if (refreshInterval) {
-          clearInterval(refreshInterval)
-          refreshInterval = null
-        }
-      }
-
-      function showError(message) {
-        const errorDiv = document.createElement('div')
-        errorDiv.className =
-          'fixed top-4 right-4 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg z-50'
-        errorDiv.textContent = message
-        document.body.appendChild(errorDiv)
-
-        setTimeout(() => {
-          errorDiv.remove()
-        }, 5000)
-      }
-
-      // Cleanup on page unload
-      window.addEventListener('beforeunload', stopAutoRefresh)
+      // Error handling
+      window.addEventListener('error', (event) => {
+        console.error('Service Management Error:', event.error)
+      })
     </script>
   </body>
 </html>

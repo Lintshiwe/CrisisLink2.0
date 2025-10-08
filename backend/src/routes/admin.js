@@ -224,4 +224,197 @@ router.get('/logs', async (req, res) => {
   }
 })
 
+// Get active emergencies for admin console
+router.get('/emergencies', async (req, res) => {
+  try {
+    // For now, return mock data since we're working with live system
+    // In production, this would query the SosAlert collection
+    const emergencies = []
+
+    // Check if there are any active alerts in global storage
+    if (global.activeEmergencyAlerts && global.activeEmergencyAlerts.size > 0) {
+      global.activeEmergencyAlerts.forEach((alert) => {
+        emergencies.push({
+          id: alert.alertId,
+          userId: alert.userId,
+          type: alert.type,
+          description: alert.description,
+          severity: alert.severity,
+          status: alert.status,
+          timestamp: alert.timestamp,
+          location: alert.location,
+          userInfo: alert.userInfo,
+        })
+      })
+    }
+
+    res.json(emergencies)
+  } catch (error) {
+    console.error('Error fetching emergencies:', error)
+    res.status(500).json({ error: 'Failed to fetch emergency data' })
+  }
+})
+
+// Export data endpoints for admin console
+router.get('/export/:type', async (req, res) => {
+  try {
+    const { type } = req.params
+    const { format } = req.query
+
+    let data = {}
+    let filename = `crisislink_${type}_${new Date().toISOString().split('T')[0]}`
+
+    switch (type) {
+      case 'emergencies':
+        // Get emergency data
+        const emergencies = []
+        if (global.activeEmergencyAlerts) {
+          global.activeEmergencyAlerts.forEach((alert) => {
+            emergencies.push({
+              id: alert.alertId,
+              userId: alert.userId,
+              type: alert.type,
+              description: alert.description,
+              severity: alert.severity,
+              status: alert.status,
+              timestamp: alert.timestamp,
+              location: alert.location,
+              userInfo: alert.userInfo,
+            })
+          })
+        }
+        data = { emergencies, exportTime: new Date().toISOString() }
+        break
+
+      case 'logs':
+        // Get system activity logs
+        data = {
+          logs: [
+            {
+              timestamp: new Date().toISOString(),
+              level: 'info',
+              message: 'Data export requested',
+              source: 'admin-console',
+              details: { type, format },
+            },
+          ],
+          exportTime: new Date().toISOString(),
+        }
+        break
+
+      case 'audit':
+        // Get audit trail data
+        data = {
+          auditTrail: [
+            {
+              timestamp: new Date().toISOString(),
+              action: 'Data export',
+              user: 'System Administrator',
+              details: `Exported ${type} data in ${format} format`,
+            },
+          ],
+          exportTime: new Date().toISOString(),
+        }
+        break
+
+      default:
+        return res.status(400).json({ error: 'Invalid export type' })
+    }
+
+    // Set appropriate headers based on format
+    if (format === 'excel') {
+      res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      )
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${filename}.xlsx"`
+      )
+      // For now, return JSON as we don't have Excel generation library
+      // In production, you'd use a library like exceljs
+      res.json(data)
+    } else {
+      res.setHeader('Content-Type', 'application/json')
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${filename}.json"`
+      )
+      res.json(data)
+    }
+  } catch (error) {
+    console.error('Error exporting data:', error)
+    res.status(500).json({ error: 'Failed to export data' })
+  }
+})
+
+// Earthquake monitoring endpoints
+router.get('/earthquakes/current', (req, res) => {
+  try {
+    if (!global.earthquakeService) {
+      return res
+        .status(503)
+        .json({ error: 'Earthquake monitoring service not available' })
+    }
+
+    const data = global.earthquakeService.getCurrentData()
+    res.json(data)
+  } catch (error) {
+    console.error('Error fetching earthquake data:', error)
+    res.status(500).json({ error: 'Failed to fetch earthquake data' })
+  }
+})
+
+router.get('/earthquakes/south-africa', (req, res) => {
+  try {
+    if (!global.earthquakeService) {
+      return res
+        .status(503)
+        .json({ error: 'Earthquake monitoring service not available' })
+    }
+
+    const data = global.earthquakeService.getSouthAfricaQuakes()
+    res.json(data)
+  } catch (error) {
+    console.error('Error fetching South Africa earthquake data:', error)
+    res
+      .status(500)
+      .json({ error: 'Failed to fetch South Africa earthquake data' })
+  }
+})
+
+router.get('/earthquakes/level/:level', (req, res) => {
+  try {
+    const { level } = req.params
+
+    if (!global.earthquakeService) {
+      return res
+        .status(503)
+        .json({ error: 'Earthquake monitoring service not available' })
+    }
+
+    const data = global.earthquakeService.getQuakesByLevel(level)
+    res.json(data)
+  } catch (error) {
+    console.error('Error fetching earthquake data by level:', error)
+    res.status(500).json({ error: 'Failed to fetch earthquake data by level' })
+  }
+})
+
+router.post('/earthquakes/refresh', async (req, res) => {
+  try {
+    if (!global.earthquakeService) {
+      return res
+        .status(503)
+        .json({ error: 'Earthquake monitoring service not available' })
+    }
+
+    const result = await global.earthquakeService.fetchEarthquakeData()
+    res.json(result)
+  } catch (error) {
+    console.error('Error refreshing earthquake data:', error)
+    res.status(500).json({ error: 'Failed to refresh earthquake data' })
+  }
+})
+
 module.exports = router

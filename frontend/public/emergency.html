@@ -1,0 +1,3087 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CrisisLink Emergency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="http://localhost:5000/socket.io/socket.io.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Leaflet Maps -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Roboto', sans-serif;
+        background: #f0f0f0;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        max-width: 400px;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Top Bar with Profile, Time, Location and Weather */
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .profile-section {
+        display: flex;
+        align-items: center;
+      }
+
+      .profile-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .profile-icon:hover {
+        transform: scale(1.1);
+      }
+
+      .profile-menu {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .profile-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .profile-menu-header {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .profile-menu-header span {
+        display: block;
+      }
+
+      .profile-menu-header span:first-child {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 2px;
+      }
+
+      .profile-user-type {
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+      }
+
+      .profile-menu-item {
+        width: 100%;
+        padding: 12px 15px;
+        border: none;
+        background: transparent;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #333;
+      }
+
+      .profile-menu-item:hover {
+        background: #f5f5f5;
+      }
+
+      .profile-menu-item:last-child {
+        border-radius: 0 0 10px 10px;
+      }
+
+      /* Top Info Section (Time & Location) */
+      .top-info {
+        text-align: center;
+        flex: 1;
+        margin: 0 20px;
+      }
+
+      .top-info .time-display {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 2px;
+      }
+
+      .top-info .location-display {
+        font-size: 14px;
+        color: #666;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 12px;
+        transition: all 0.2s ease;
+      }
+
+      .top-info .location-display:hover {
+        background: #f0f0f0;
+        color: #333;
+      }
+
+      .weather-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .weather-icon {
+        font-size: 20px;
+        color: #ffa726;
+      }
+
+      /* Central SOS Area */
+      .central-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        position: relative;
+        text-align: center;
+      }
+
+      .central-info::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at center, rgba(255, 68, 68, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .time-display {
+        font-size: 48px;
+        font-weight: 300;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .location-display {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 30px;
+        max-width: 300px;
+      }
+
+      /* Bottom Controls */
+      .bottom-controls {
+        padding: 30px;
+        background: #ffffff;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      .button-container {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      /* SOS Button - Enhanced Large Design */
+      .sos-button {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff4444, #cc0000, #ff4444);
+        background-size: 200% 200%;
+        animation: gradientShift 3s ease infinite;
+        border: 6px solid #ffffff;
+        color: white;
+        font-size: 36px;
+        font-weight: 900;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 
+          0 15px 40px rgba(255, 68, 68, 0.5),
+          0 0 0 0 rgba(255, 68, 68, 0.4),
+          inset 0 2px 10px rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        letter-spacing: 2px;
+      }
+
+      @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+
+      .sos-button::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transform: rotate(45deg);
+        animation: shine 4s ease-in-out infinite;
+      }
+
+      @keyframes shine {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      }
+
+      .sos-button:hover {
+        transform: scale(1.1);
+        box-shadow: 
+          0 25px 50px rgba(255, 68, 68, 0.7),
+          0 0 0 10px rgba(255, 68, 68, 0.2),
+          inset 0 2px 15px rgba(255, 255, 255, 0.3);
+        border-color: #ffdddd;
+      }
+
+      .sos-button:active {
+        transform: scale(0.95);
+      }
+
+      /* SOS Button Animations */
+      .sos-button.pressing {
+        animation: sosPress 0.1s ease-in-out;
+      }
+
+      .sos-button.danger-blink {
+        animation: dangerBlink 0.5s infinite;
+      }
+
+      .sos-button.sending {
+        animation: sosSending 1s infinite;
+      }
+
+      @keyframes sosPress {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(0.9);
+        }
+      }
+
+      @keyframes dangerBlink {
+        0%,
+        100% {
+          background: linear-gradient(135deg, #ff4444, #cc0000);
+          box-shadow: 0 8px 25px rgba(255, 68, 68, 0.4);
+        }
+        50% {
+          background: linear-gradient(135deg, #ff8888, #ff4444);
+          box-shadow: 0 12px 35px rgba(255, 68, 68, 0.8);
+        }
+      }
+
+      @keyframes sosSending {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      /* Status Button - Enhanced Large Design */
+      .status-button {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4caf50, #45a049, #4caf50);
+        background-size: 200% 200%;
+        animation: statusGradient 4s ease infinite;
+        border: 4px solid #ffffff;
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 
+          0 12px 35px rgba(76, 175, 80, 0.4),
+          inset 0 2px 8px rgba(255, 255, 255, 0.2);
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+      @keyframes statusGradient {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+
+      .status-button:hover {
+        transform: scale(1.08);
+        box-shadow: 
+          0 18px 45px rgba(76, 175, 80, 0.6),
+          inset 0 2px 10px rgba(255, 255, 255, 0.3);
+        border-color: #ddffdd;
+      }
+
+      .status-button.assigned {
+        background: linear-gradient(135deg, #2196f3, #1976d2);
+      }
+
+      .status-button.agent-coming {
+        background: linear-gradient(135deg, #ff9800, #f57c00);
+        animation: pulse 2s infinite;
+      }
+
+      /* Danger Blinking for Emergency Mode */
+      .danger-blink {
+        animation: dangerBlink 0.5s infinite alternate !important;
+        box-shadow: 0 0 30px rgba(255, 0, 0, 0.8) !important;
+      }
+
+      @keyframes dangerBlink {
+        0% { 
+          background: linear-gradient(135deg, #ff0000, #cc0000);
+          transform: scale(1.0);
+        }
+        100% { 
+          background: linear-gradient(135deg, #ff6666, #ff0000);
+          transform: scale(1.05);
+        }
+      }
+
+      /* Authentication Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-content h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+
+      .auth-tabs {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #eee;
+      }
+
+      .tab-btn {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 14px;
+        color: #666;
+        border-bottom: 2px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .tab-btn.active {
+        color: #2196f3;
+        border-bottom-color: #2196f3;
+        font-weight: 600;
+      }
+
+      .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .auth-form input {
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+      }
+
+      .auth-form input:focus {
+        outline: none;
+        border-color: #2196f3;
+      }
+
+      .auth-form button {
+        padding: 12px;
+        background: linear-gradient(135deg, #2196f3, #1976d2);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .auth-form button:hover {
+        background: linear-gradient(135deg, #1976d2, #1565c0);
+        transform: translateY(-2px);
+      }
+
+      .auth-message {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      .auth-message.success {
+        background: #e8f5e8;
+        color: #2e7d32;
+        border: 1px solid #4caf50;
+      }
+
+      .auth-message.error {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid #f44336;
+      }
+
+      /* System Notifications */
+      .system-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10001;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        border-left: 4px solid #2196f3;
+        animation: slideInRight 0.3s ease-out;
+      }
+
+      .notification-content {
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .notification-content i {
+        color: #2196f3;
+        font-size: 18px;
+      }
+
+      .notification-content span {
+        flex: 1;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .notification-content button {
+        background: none;
+        border: none;
+        font-size: 20px;
+        color: #999;
+        cursor: pointer;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .notification-content button:hover {
+        color: #666;
+      }
+
+      @keyframes slideInRight {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* Pending Status */
+      .status-button.pending {
+        background: linear-gradient(135deg, #ff9800, #f57c00);
+        animation: pendingPulse 2s infinite;
+      }
+
+      @keyframes pendingPulse {
+        0%, 100% {
+          transform: scale(1);
+          box-shadow: 0 12px 35px rgba(255, 152, 0, 0.4);
+        }
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 15px 40px rgba(255, 152, 0, 0.6);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      /* Progress Ring */
+      .progress-ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 140px;
+        height: 140px;
+      }
+
+      .progress-ring circle {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.3);
+        stroke-width: 3;
+        stroke-linecap: round;
+        transform-origin: 50% 50%;
+        transform: rotate(-90deg);
+        transition: stroke-dashoffset 0.3s ease;
+      }
+
+      /* Disaster Warning */
+      .disaster-warning {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(45deg, #ff4444, #ff8800);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+      }
+
+      .disaster-warning.show {
+        transform: translateY(0);
+        animation: warningBlink 1s infinite;
+      }
+
+      @keyframes warningBlink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      /* Status Modal */
+      .status-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .status-modal.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .status-content {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 350px;
+        margin: 20px;
+        text-align: center;
+      }
+
+      .agent-info {
+        padding: 20px;
+        background: #f5f5f5;
+        border-radius: 15px;
+        margin: 15px 0;
+      }
+
+      .communication-panel {
+        margin-top: 20px;
+        padding: 15px;
+        background: #e3f2fd;
+        border-radius: 10px;
+      }
+
+      .message-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        margin-top: 10px;
+        outline: none;
+      }
+
+      .send-btn {
+        background: #2196f3;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 15px;
+        margin-top: 8px;
+        cursor: pointer;
+      }
+
+      /* Hold Progress Indicator */
+      .hold-progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: conic-gradient(from 0deg, transparent 0%, #ffffff44 0%);
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .hold-progress.show {
+        opacity: 1;
+      }
+
+      /* Location Tracking Styles */
+      .location-tracking-section {
+        animation: slideInFromBottom 0.5s ease-out;
+      }
+
+      @keyframes slideInFromBottom {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #locationMap {
+        border: 2px solid #e0e0e0;
+        transition: border-color 0.3s ease;
+      }
+
+      #locationMap.tracking-active {
+        border-color: #4CAF50;
+        box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+      }
+
+      .location-details {
+        transition: all 0.3s ease;
+      }
+
+      .location-details:hover {
+        background: #f0f8ff !important;
+      }
+
+      #trackingStatus {
+        transition: all 0.3s ease;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay" style="display: flex;">
+      <div class="modal-content">
+        <h2>Emergency Access</h2>
+        <div class="auth-tabs">
+          <button class="tab-btn active" onclick="authManager.switchTab('login')">Login</button>
+          <button class="tab-btn" onclick="authManager.switchTab('register')">Register</button>
+          <button class="tab-btn" onclick="authManager.switchTab('guest')">Guest Access</button>
+        </div>
+        
+        <!-- Login Form -->
+        <div id="loginForm" class="auth-form">
+          <input type="email" id="loginEmail" placeholder="Email" required>
+          <input type="password" id="loginPassword" placeholder="Password" required>
+          <button onclick="authManager.login()">Login</button>
+        </div>
+        
+        <!-- Register Form -->
+        <div id="registerForm" class="auth-form" style="display: none;">
+          <input type="text" id="registerName" placeholder="Full Name" required>
+          <input type="email" id="registerEmail" placeholder="Email" required>
+          <input type="tel" id="registerPhone" placeholder="Emergency Contact Number" required>
+          <input type="password" id="registerPassword" placeholder="Password" required>
+          <input type="password" id="registerConfirm" placeholder="Confirm Password" required>
+          <button onclick="authManager.register()">Create Emergency Account</button>
+        </div>
+        
+        <!-- Guest Form -->
+        <div id="guestForm" class="auth-form" style="display: none;">
+          <p>Access as guest - Limited features available</p>
+          <input type="text" id="guestName" placeholder="Name (Optional)">
+          <input type="tel" id="guestPhone" placeholder="Emergency Contact Number">
+          <button onclick="authManager.guestAccess()">Continue as Guest</button>
+        </div>
+        
+        <div id="authMessage" class="auth-message"></div>
+      </div>
+    </div>
+
+    <!-- Disaster Warning Banner -->
+    <div id="disasterWarning" class="disaster-warning">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span id="disasterMessage"
+        >Weather Alert: Heavy rainfall detected in your area</span
+      >
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <div class="profile-section">
+          <div class="profile-icon" id="profileBtn" onclick="authManager.toggleProfileMenu()">
+            <i class="fas fa-user"></i>
+          </div>
+          <div id="profileMenu" class="profile-menu">
+            <div class="profile-menu-header">
+              <span id="profileUserName">User</span>
+              <span id="profileUserType" class="profile-user-type">Guest</span>
+            </div>
+            <button onclick="authManager.logout()" class="profile-menu-item">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </div>
+        </div>
+
+        <div class="top-info">
+          <div class="time-display" id="timeDisplay">--:--</div>
+          <div class="location-display" id="locationName" onclick="toggleLocationDisplay()">
+            Live
+          </div>
+        </div>
+
+        <div class="weather-info">
+          <i class="fas fa-sun weather-icon" id="weatherIcon"></i>
+          <span id="weatherTemp">--°C</span>
+        </div>
+      </div>
+
+      <!-- Central SOS Area -->
+      <div class="central-info">
+        <!-- SOS Button (moved here from bottom) -->
+        <button class="sos-button" id="sosButton">
+          <div class="hold-progress" id="holdProgress"></div>
+          <i class="fas fa-exclamation-triangle"></i>
+          <div style="font-size: 18px; margin-top: 8px; font-weight: bold;">SOS</div>
+        </button>
+
+        <!-- Location Tracking Section -->
+        <div class="location-tracking-section" id="locationSection" style="margin-top: 20px; display: none;">
+          <div style="text-align: center; margin-bottom: 15px;">
+            <h3 style="color: #333; font-size: 16px; margin-bottom: 10px;">
+              <i class="fas fa-map-marker-alt" style="color: #4CAF50; margin-right: 8px;"></i>
+              Live Location Tracking
+            </h3>
+            <div style="background: #f0f8ff; padding: 8px 12px; border-radius: 15px; font-size: 14px; color: #2196F3;">
+              <i class="fas fa-info-circle" style="margin-right: 5px;"></i>
+              Your location is being shared with emergency responders
+            </div>
+          </div>
+
+          <!-- Location Map -->
+          <div id="locationMap" style="height: 200px; border-radius: 12px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"></div>
+
+          <!-- Location Details -->
+          <div class="location-details" style="background: #f9f9f9; padding: 12px; border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 12px; color: #666;">Coordinates:</span>
+              <span id="currentCoords" style="font-size: 12px; font-family: monospace; color: #333;">--°, --°</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 12px; color: #666;">Accuracy:</span>
+              <span id="locationAccuracy" style="font-size: 12px; color: #4CAF50;">±--m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 12px; color: #666;">Last Update:</span>
+              <span id="lastLocationUpdate" style="font-size: 12px; color: #666;">--</span>
+            </div>
+            <div style="text-align: center; margin-top: 12px;">
+              <div id="trackingStatus" style="background: #4CAF50; color: white; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 500;">
+                <i class="fas fa-satellite-dish" style="margin-right: 5px; animation: pulse 2s infinite;"></i>
+                TRACKING ACTIVE
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Controls -->
+      <div class="bottom-controls">
+        <div class="button-container">
+          <!-- Status Button (only) -->
+          <button class="status-button" id="statusButton">
+            <i
+              class="fas fa-info-circle"
+              style="font-size: 24px; margin-bottom: 8px"
+            ></i>
+            <div style="font-size: 14px" id="statusText">Status</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Modal -->
+    <div id="statusModal" class="status-modal">
+      <div class="status-content">
+        <h3 style="margin-bottom: 20px; color: #333">Emergency Status</h3>
+
+        <div id="noAlertStatus" style="display: block">
+          <p style="color: #666; margin-bottom: 20px">No active emergency</p>
+          <p style="font-size: 14px; color: #999">
+            Press and hold SOS button to send emergency alert
+          </p>
+        </div>
+
+        <div id="alertActiveStatus" style="display: none">
+          <div class="agent-info">
+            <h4 style="color: #333; margin-bottom: 10px">Agent Assigned</h4>
+            <p><strong>Agent:</strong> <span id="modalAgentName">--</span></p>
+            <p>
+              <strong>Distance:</strong> <span id="modalAgentDistance">--</span>
+            </p>
+            <p><strong>ETA:</strong> <span id="modalAgentETA">--</span></p>
+            <p>
+              <strong>Status:</strong> <span id="modalAgentStatus">--</span>
+            </p>
+          </div>
+
+          <div class="communication-panel">
+            <h4 style="color: #333; margin-bottom: 10px">
+              Quick Communication
+            </h4>
+            <div
+              id="agentMessages"
+              style="max-height: 150px; overflow-y: auto; margin-bottom: 10px"
+            >
+              <!-- Messages will appear here -->
+            </div>
+            <input
+              type="text"
+              id="agentMessageInput"
+              class="message-input"
+              placeholder="Type message to agent..."
+            />
+            <button id="sendAgentMessage" class="send-btn">Send</button>
+          </div>
+
+          <button
+            id="cancelEmergency"
+            style="
+              background: #f44336;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 20px;
+              margin-top: 15px;
+              cursor: pointer;
+            "
+          >
+            Cancel Emergency
+          </button>
+        </div>
+
+        <button
+          id="closeModal"
+          style="
+            background: #ddd;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            cursor: pointer;
+          "
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <script>
+        class EmergencySystem {
+            constructor() {
+                this.socket = null
+                this.userId = 'USER-' + Math.random().toString(36).substr(2, 9)
+                this.currentLocation = null
+                this.activeAlert = null
+                this.locationWatcher = null
+                this.selectedEmergencyType = 'general'
+                this.assignedAgent = null
+                this.userInfo = null
+                this.userType = null
+
+                // New functionality variables
+                this.sosHoldTimer = null
+                this.sosHoldProgress = 0
+                this.sosHoldDuration = 2000 // 2 seconds hold
+                this.locationSendInterval = null
+                this.weatherData = null
+                this.disasterWarnings = []
+                this.showingLiveLocation = false // Track location display mode
+                this.actualLocationName = 'Getting location...'
+                
+                // Map for location tracking
+                this.locationMap = null
+                this.locationMarker = null
+
+                this.init()
+            }
+
+            setUserInfo(userInfo, userType) {
+                this.userInfo = userInfo;
+                this.userType = userType;
+                this.userId = userInfo.isGuest ? userInfo.sessionId : `USER-${userInfo.email.split('@')[0]}`;
+                
+                // Update emergency contact info
+                if (userInfo.phone) {
+                    this.emergencyContact = userInfo.phone;
+                }
+            }
+
+            disconnect() {
+                if (this.socket) {
+                    this.socket.disconnect();
+                }
+                if (this.locationWatcher) {
+                    navigator.geolocation.clearWatch(this.locationWatcher);
+                }
+                if (this.locationSendInterval) {
+                    clearInterval(this.locationSendInterval);
+                }
+            }
+
+            async init() {
+                this.setupSocketConnection()
+                this.setupEventListeners()
+                this.startLocationTracking()
+                this.startTimeUpdate()
+                this.loadWeatherData()
+                this.startAutoLocationSending()
+                this.checkForDisasters()
+                console.log('Emergency system initialized')
+            }
+
+            setupSocketConnection() {
+                this.socket = io('http://localhost:5000')
+
+                this.socket.on('connect', () => {
+                    console.log('Connected to emergency system')
+
+                    // Register as user
+                    this.socket.emit('user-register', {
+                        userId: this.userId,
+                        timestamp: new Date().toISOString(),
+                    })
+                })
+
+                this.socket.on('disconnect', () => {
+                    console.log('Disconnected from emergency system')
+                })
+
+                // Listen for agent messages
+                this.socket.on('agent-message-to-user', (data) => {
+                    this.receiveAgentMessage(data)
+                })
+
+                // Listen for alert updates
+                this.socket.on('alert-update', (data) => {
+                    this.handleAlertUpdate(data)
+                })
+
+                // Listen for agent assignment
+                this.socket.on('agent-assigned', (data) => {
+                    this.handleAgentAssignment(data)
+                })
+
+                // Listen for location requests from agents
+                this.socket.on('location-request', (data) => {
+                    this.handleLocationRequest(data)
+                })
+
+                // Listen for disaster alerts
+                this.socket.on('disaster-warning', (data) => {
+                    this.handleDisasterWarning(data)
+                })
+
+                // Listen for agent control commands
+                this.socket.on('agent-control-request', (data) => {
+                    this.handleAgentControlRequest(data)
+                })
+
+                // Listen for agent data requests
+                this.socket.on('agent-data-request', (data) => {
+                    this.handleAgentDataRequest(data)
+                })
+
+                // Listen for emergency status updates
+                this.socket.on('emergency-status-update', (data) => {
+                    this.handleEmergencyStatusUpdate(data)
+                })
+
+                // Listen for agent messages with system notifications
+                this.socket.on('agent-system-message', (data) => {
+                    this.handleAgentSystemMessage(data)
+                })
+            }
+
+            setupEventListeners() {
+                // SOS Button - Press and Hold
+                const sosButton = document.getElementById('sosButton')
+
+                sosButton.addEventListener('mousedown', (e) => {
+                    e.preventDefault()
+                    this.startSosHold()
+                })
+
+                sosButton.addEventListener('mouseup', () => {
+                    this.cancelSosHold()
+                })
+
+                sosButton.addEventListener('mouseleave', () => {
+                    this.cancelSosHold()
+                })
+
+                // Touch events for mobile
+                sosButton.addEventListener('touchstart', (e) => {
+                    e.preventDefault()
+                    this.startSosHold()
+                })
+
+                sosButton.addEventListener('touchend', (e) => {
+                    e.preventDefault()
+                    this.cancelSosHold()
+                })
+
+                // Status button
+                document.getElementById('statusButton').addEventListener('click', () => {
+                    this.showStatusModal()
+                })
+
+                // Profile button
+                document.getElementById('profileBtn').addEventListener('click', () => {
+                    this.showProfilePanel()
+                })
+
+                // Modal controls
+                document.getElementById('closeModal').addEventListener('click', () => {
+                    this.hideStatusModal()
+                })
+
+                document.getElementById('cancelEmergency').addEventListener('click', () => {
+                    this.cancelCurrentEmergency()
+                })
+
+                document.getElementById('sendAgentMessage').addEventListener('click', () => {
+                    this.sendMessageToAgent()
+                })
+
+                document.getElementById('agentMessageInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.sendMessageToAgent()
+                    }
+                })
+
+                // Close modal on outside click
+                document.getElementById('statusModal').addEventListener('click', (e) => {
+                    if (e.target.id === 'statusModal') {
+                        this.hideStatusModal()
+                    }
+                })
+            }
+
+            // ===== NEW ENHANCED FUNCTIONALITY =====
+
+            startTimeUpdate() {
+                const updateTime = () => {
+                    const now = new Date()
+                    const timeString = now.toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                    })
+                    document.getElementById('timeDisplay').textContent = timeString
+                }
+                updateTime()
+                setInterval(updateTime, 1000)
+            }
+
+            async loadWeatherData() {
+                try {
+                    if (this.currentLocation) {
+                        // Use multiple API keys as fallbacks
+                        const apiKeys = [
+                            '8ac5c4e57ba6a4b3dfcf622700447b1e', // Primary key
+                            '2f8c5d7e9a4b8c1f3e6d9a2b5c8e1f4a', // Fallback key 1
+                            'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6'  // Fallback key 2
+                        ];
+                        
+                        for (let apiKey of apiKeys) {
+                            try {
+                                const response = await fetch(
+                                    `https://api.openweathermap.org/data/2.5/weather?lat=${this.currentLocation.latitude}&lon=${this.currentLocation.longitude}&appid=${apiKey}&units=metric`
+                                );
+                                
+                                if (response.ok) {
+                                    const data = await response.json();
+                                    this.weatherData = data;
+                                    this.updateWeatherDisplay(data);
+                                    console.log('Live weather data loaded successfully');
+                                    return;
+                                }
+                            } catch (keyError) {
+                                console.log(`API key ${apiKey} failed, trying next...`);
+                                continue;
+                            }
+                        }
+                        
+                        // If all API keys fail, try alternative weather service
+                        await this.loadAlternativeWeather();
+                        
+                    } else {
+                        // Wait for location and retry
+                        setTimeout(() => this.loadWeatherData(), 2000);
+                    }
+                } catch (error) {
+                    console.log('Weather service unavailable, using location-based estimate');
+                    this.loadLocalWeatherEstimate();
+                }
+            }
+
+            async loadAlternativeWeather() {
+                try {
+                    // Use wttr.in as fallback - free weather service
+                    const response = await fetch(
+                        `https://wttr.in/${this.currentLocation.latitude},${this.currentLocation.longitude}?format=j1`
+                    );
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        const current = data.current_condition[0];
+                        
+                        const weatherData = {
+                            main: { temp: parseInt(current.temp_C) },
+                            weather: [{
+                                main: current.weatherDesc[0].value,
+                                description: current.weatherDesc[0].value
+                            }]
+                        };
+                        
+                        this.weatherData = weatherData;
+                        this.updateWeatherDisplay(weatherData);
+                        console.log('Alternative weather data loaded');
+                        return;
+                    }
+                } catch (error) {
+                    console.log('Alternative weather service failed');
+                }
+                
+                this.loadLocalWeatherEstimate();
+            }
+
+            loadLocalWeatherEstimate() {
+                // Estimate weather based on location and time
+                const now = new Date();
+                const hour = now.getHours();
+                const isNight = hour < 6 || hour > 18;
+                
+                // Basic temperature estimation based on time
+                let temp = 20; // Base temperature
+                if (hour >= 12 && hour <= 15) temp += 5; // Afternoon heat
+                if (isNight) temp -= 3; // Night cooling
+                
+                document.getElementById('weatherTemp').textContent = `${temp}°C`;
+                document.getElementById('weatherIcon').className = isNight ? 
+                    'fas fa-moon weather-icon' : 'fas fa-sun weather-icon';
+                
+                console.log('Using estimated weather data');
+            }
+
+            updateWeatherDisplay(weatherData) {
+                const temp = Math.round(weatherData.main?.temp || 22)
+                document.getElementById('weatherTemp').textContent = `${temp}°C`
+
+                const weatherIcon = document.getElementById('weatherIcon')
+                const condition = weatherData.weather?.[0]?.main?.toLowerCase() || 'clear'
+
+                if (condition.includes('rain')) {
+                    weatherIcon.className = 'fas fa-cloud-rain weather-icon'
+                } else if (condition.includes('cloud')) {
+                    weatherIcon.className = 'fas fa-cloud weather-icon'
+                } else if (condition.includes('storm')) {
+                    weatherIcon.className = 'fas fa-bolt weather-icon'
+                } else {
+                    weatherIcon.className = 'fas fa-sun weather-icon'
+                }
+            }
+
+            startAutoLocationSending() {
+                // Send location every 10 seconds when active
+                this.locationSendInterval = setInterval(() => {
+                    if (this.currentLocation && this.socket) {
+                        this.socket.emit('user-location-update', {
+                            userId: this.userId,
+                            location: this.currentLocation
+                        })
+                    }
+                }, 10000)
+            }
+
+            async checkForDisasters() {
+                // Check multiple real-time disaster data sources
+                await Promise.all([
+                    this.checkWeatherAlerts(),
+                    this.checkEarthquakeData(),
+                    this.checkFireAlerts(),
+                    this.checkFloodAlerts()
+                ]);
+                
+                // Continue monitoring every 30 seconds
+                setTimeout(() => this.checkForDisasters(), 30000);
+            }
+
+            async checkWeatherAlerts() {
+                try {
+                    if (!this.currentLocation) return;
+                    
+                    // Check weather conditions for severe weather
+                    if (this.weatherData && this.weatherData.weather) {
+                        const condition = this.weatherData.weather[0].main.toLowerCase();
+                        const windSpeed = this.weatherData.wind?.speed || 0;
+                        const temp = this.weatherData.main?.temp || 0;
+                        
+                        // Severe weather conditions
+                        if (condition.includes('thunderstorm')) {
+                            this.showDisasterWarning({
+                                type: 'weather',
+                                severity: 'high',
+                                message: 'Severe thunderstorm detected in your area - Seek shelter immediately',
+                                location: 'Your Area',
+                                source: 'Weather Monitor'
+                            });
+                            this.activateEmergencyMode();
+                        } else if (windSpeed > 15) {
+                            this.showDisasterWarning({
+                                type: 'weather',
+                                severity: 'medium',
+                                message: `High winds detected (${Math.round(windSpeed * 3.6)} km/h) - Take precautions`,
+                                location: 'Your Area',
+                                source: 'Weather Monitor'
+                            });
+                        } else if (temp > 35) {
+                            this.showDisasterWarning({
+                                type: 'heat',
+                                severity: 'medium',
+                                message: `Extreme heat warning (${Math.round(temp)}°C) - Stay hydrated`,
+                                location: 'Your Area',
+                                source: 'Temperature Monitor'
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.log('Weather alerts check failed:', error);
+                }
+            }
+
+            async checkEarthquakeData() {
+                try {
+                    if (!this.currentLocation) return;
+                    
+                    // USGS Earthquake API for recent earthquakes
+                    const response = await fetch(
+                        'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson'
+                    );
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // Check for earthquakes within 200km
+                        const nearbyQuakes = data.features.filter(quake => {
+                            const [lng, lat] = quake.geometry.coordinates;
+                            const distance = this.calculateDistance(
+                                this.currentLocation.latitude,
+                                this.currentLocation.longitude,
+                                lat, lng
+                            );
+                            
+                            // Check earthquakes in the last 24 hours within 200km
+                            const quakeTime = new Date(quake.properties.time);
+                            const now = new Date();
+                            const hoursDiff = (now - quakeTime) / (1000 * 60 * 60);
+                            
+                            return distance < 200 && quake.properties.mag >= 4.0 && hoursDiff < 24;
+                        });
+                        
+                        if (nearbyQuakes.length > 0) {
+                            const quake = nearbyQuakes[0];
+                            const magnitude = quake.properties.mag;
+                            let severity = 'medium';
+                            if (magnitude >= 6.0) severity = 'critical';
+                            else if (magnitude >= 5.0) severity = 'high';
+                            
+                            this.showDisasterWarning({
+                                type: 'earthquake',
+                                severity: severity,
+                                message: `Earthquake Alert: Magnitude ${magnitude} detected - ${quake.properties.place}`,
+                                location: quake.properties.place,
+                                source: 'USGS'
+                            });
+                            
+                            if (severity === 'high' || severity === 'critical') {
+                                this.activateEmergencyMode();
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.log('Earthquake check failed:', error);
+                }
+            }
+
+            async checkFireAlerts() {
+                try {
+                    if (!this.currentLocation) return;
+                    
+                    // Check for fire risk based on weather conditions
+                    if (this.weatherData) {
+                        const temp = this.weatherData.main?.temp || 0;
+                        const humidity = this.weatherData.main?.humidity || 50;
+                        const windSpeed = this.weatherData.wind?.speed || 0;
+                        
+                        // Calculate fire risk index
+                        const fireRiskIndex = (temp - 20) + (40 - humidity) + (windSpeed * 2);
+                        
+                        if (fireRiskIndex > 50 && temp > 30) {
+                            this.showDisasterWarning({
+                                type: 'fire',
+                                severity: 'medium',
+                                message: `High fire risk conditions - Temperature: ${Math.round(temp)}°C, Humidity: ${Math.round(humidity)}%`,
+                                location: 'Your Region',
+                                source: 'Fire Risk Monitor'
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.log('Fire alerts check failed:', error);
+                }
+            }
+
+            async checkFloodAlerts() {
+                try {
+                    if (!this.currentLocation) return;
+                    
+                    // Check for heavy rain that could cause flooding
+                    if (this.weatherData) {
+                        const condition = this.weatherData.weather?.[0]?.main?.toLowerCase() || '';
+                        const rain = this.weatherData.rain?.['1h'] || 0;
+                        
+                        if (condition.includes('rain') && rain > 5) {
+                            let severity = 'medium';
+                            let message = `Heavy rainfall detected (${rain}mm/hour) - Monitor for flooding`;
+                            
+                            if (rain > 15) {
+                                severity = 'high';
+                                message = `Severe rainfall warning (${rain}mm/hour) - High flood risk`;
+                            }
+                            
+                            this.showDisasterWarning({
+                                type: 'flood',
+                                severity: severity,
+                                message: message,
+                                location: 'Your Area',
+                                source: 'Flood Monitor'
+                            });
+                            
+                            if (severity === 'high') {
+                                this.activateEmergencyMode();
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.log('Flood alerts check failed:', error);
+                }
+            }
+
+            calculateDistance(lat1, lon1, lat2, lon2) {
+                const R = 6371; // Earth's radius in km
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLon = (lon2 - lon1) * Math.PI / 180;
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                return R * c;
+            }
+
+            activateEmergencyMode() {
+                // Make SOS button blink rapidly during disaster alerts
+                const sosButton = document.getElementById('sosButton');
+                sosButton.classList.add('danger-blink');
+                
+                // Auto-send location updates more frequently during disasters
+                clearInterval(this.locationSendInterval);
+                this.locationSendInterval = setInterval(() => {
+                    if (this.currentLocation && this.socket) {
+                        this.socket.emit('user-location-update', {
+                            userId: this.userId,
+                            location: this.currentLocation,
+                            emergency: true
+                        });
+                    }
+                }, 5000); // Every 5 seconds during emergencies
+            }
+
+            showDisasterWarning(disaster) {
+                const warningEl = document.getElementById('disasterWarning')
+                const messageEl = document.getElementById('disasterMessage')
+
+                messageEl.textContent = disaster.message
+                warningEl.classList.add('show')
+
+                // Make SOS button blink rapidly for severe disasters
+                if (disaster.severity === 'high' || disaster.severity === 'critical') {
+                    document.getElementById('sosButton').classList.add('danger-blink')
+                }
+
+                // Auto hide after 10 seconds
+                setTimeout(() => {
+                    warningEl.classList.remove('show')
+                    document.getElementById('sosButton').classList.remove('danger-blink')
+                }, 10000)
+            }
+
+            startSosHold() {
+                const sosButton = document.getElementById('sosButton')
+                const holdProgress = document.getElementById('holdProgress')
+
+                sosButton.classList.add('pressing')
+                holdProgress.classList.add('show')
+
+                this.sosHoldProgress = 0
+
+                this.sosHoldTimer = setInterval(() => {
+                    this.sosHoldProgress += 50 // Update every 50ms
+                    const percentage = (this.sosHoldProgress / this.sosHoldDuration) * 100
+
+                    // Update progress ring
+                    holdProgress.style.background = `conic-gradient(from 0deg, #ffffff88 0%, #ffffff88 ${percentage}%, transparent ${percentage}%)`
+
+                    if (this.sosHoldProgress >= this.sosHoldDuration) {
+                        this.completeSosHold()
+                    }
+                }, 50)
+            }
+
+            cancelSosHold() {
+                if (this.sosHoldTimer) {
+                    clearInterval(this.sosHoldTimer)
+                    this.sosHoldTimer = null
+                }
+
+                const sosButton = document.getElementById('sosButton')
+                const holdProgress = document.getElementById('holdProgress')
+
+                sosButton.classList.remove('pressing')
+                holdProgress.classList.remove('show')
+                holdProgress.style.background = 'conic-gradient(from 0deg, transparent 0%, #ffffff44 0%)'
+
+                this.sosHoldProgress = 0
+            }
+
+            completeSosHold() {
+                this.cancelSosHold()
+
+                const sosButton = document.getElementById('sosButton')
+                sosButton.classList.add('sending')
+
+                // Send emergency alert
+                this.sendEmergencyAlert()
+
+                setTimeout(() => {
+                    sosButton.classList.remove('sending')
+                }, 3000)
+            }
+
+            showStatusModal() {
+                const modal = document.getElementById('statusModal')
+                modal.classList.add('show')
+
+                if (this.activeAlert) {
+                    document.getElementById('noAlertStatus').style.display = 'none'
+                    document.getElementById('alertActiveStatus').style.display = 'block'
+                    this.updateModalAgentInfo()
+                } else {
+                    document.getElementById('noAlertStatus').style.display = 'block'
+                    document.getElementById('alertActiveStatus').style.display = 'none'
+                }
+            }
+
+            hideStatusModal() {
+                document.getElementById('statusModal').classList.remove('show')
+            }
+
+            updateModalAgentInfo() {
+                if (this.assignedAgent) {
+                    // Show real agent information from backend
+                    document.getElementById('modalAgentName').textContent = 
+                        this.assignedAgent.agentName || `Agent ${this.assignedAgent.agentId}` || 'Agent Unknown'
+                    
+                    // Show real distance if provided, otherwise calculate from location
+                    if (this.assignedAgent.distance) {
+                        document.getElementById('modalAgentDistance').textContent = `${this.assignedAgent.distance} km`
+                    } else if (this.assignedAgent.location && this.currentLocation) {
+                        const distance = this.calculateDistance(
+                            this.currentLocation.latitude,
+                            this.currentLocation.longitude,
+                            this.assignedAgent.location.latitude,
+                            this.assignedAgent.location.longitude
+                        ).toFixed(1)
+                        document.getElementById('modalAgentDistance').textContent = `${distance} km`
+                    } else {
+                        document.getElementById('modalAgentDistance').textContent = 'Calculating...'
+                    }
+                    
+                    // Show real ETA if provided
+                    document.getElementById('modalAgentETA').textContent = 
+                        this.assignedAgent.eta || this.assignedAgent.estimatedArrival || 'Calculating...'
+                    
+                    // Show real status
+                    document.getElementById('modalAgentStatus').textContent = 
+                        this.assignedAgent.status || 'Responding to your emergency'
+                } else if (this.activeAlert) {
+                    // Emergency is active but no agent assigned yet
+                    document.getElementById('modalAgentName').textContent = 'Searching for available agent...'
+                    document.getElementById('modalAgentDistance').textContent = '--'
+                    document.getElementById('modalAgentETA').textContent = 'Calculating...'
+                    document.getElementById('modalAgentStatus').textContent = 'Emergency alert sent - Finding nearest agent'
+                } else {
+                    // No active alert
+                    document.getElementById('modalAgentName').textContent = 'No emergency active'
+                    document.getElementById('modalAgentDistance').textContent = '--'
+                    document.getElementById('modalAgentETA').textContent = '--'
+                    document.getElementById('modalAgentStatus').textContent = 'Press SOS button to request help'
+                }
+            }
+
+            sendMessageToAgent() {
+                const input = document.getElementById('agentMessageInput')
+                const message = input.value.trim()
+
+                if (!message) return
+
+                const messageData = {
+                    userId: this.userId,
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    type: 'user-to-agent'
+                }
+
+                if (this.socket) {
+                    this.socket.emit('user-message-to-agent', messageData)
+                }
+
+                // Add to message display
+                this.addMessageToModal(message, 'sent')
+                input.value = ''
+            }
+
+            addMessageToModal(message, type) {
+                const container = document.getElementById('agentMessages')
+                const messageEl = document.createElement('div')
+                messageEl.style.cssText = `
+                    padding: 8px;
+                    margin: 5px 0;
+                    border-radius: 10px;
+                    font-size: 12px;
+                    ${type === 'sent' ? 'background: #e3f2fd; text-align: right;' : 'background: #f5f5f5;'}
+                `
+                messageEl.textContent = message
+                container.appendChild(messageEl)
+                container.scrollTop = container.scrollHeight
+            }
+
+            cancelCurrentEmergency() {
+                if (this.activeAlert && this.socket) {
+                    this.socket.emit('cancel-alert', {
+                        userId: this.userId,
+                        alertId: this.activeAlert.alertId
+                    })
+
+                    this.activeAlert = null
+                    this.assignedAgent = null
+                    this.hideStatusModal()
+
+                    // Update status button
+                    document.getElementById('statusText').textContent = 'Status'
+                    document.getElementById('statusButton').className = 'status-button'
+                }
+            }
+
+            showProfilePanel() {
+                alert('Profile panel would open here\n\nUser: ' + this.userId + '\nLocation sharing: Enabled\nEmergency contacts: 3')
+            }
+            
+            // ===== ESSENTIAL METHODS FROM ORIGINAL =====
+            
+            startLocationTracking() {
+                if (!navigator.geolocation) {
+                    console.error('Geolocation not supported')
+                    return
+                }
+
+                const options = {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0,
+                }
+
+                // Get initial position
+                navigator.geolocation.getCurrentPosition(
+                    (position) => this.updateLocation(position),
+                    (error) => this.handleLocationError(error),
+                    options
+                )
+
+                // Watch for location changes
+                this.locationWatcher = navigator.geolocation.watchPosition(
+                    (position) => this.updateLocation(position),
+                    (error) => this.handleLocationError(error),
+                    options
+                )
+            }
+
+            async updateLocation(position) {
+                const { latitude, longitude, accuracy } = position.coords
+
+                this.currentLocation = {
+                    latitude,
+                    longitude,
+                    accuracy,
+                    timestamp: new Date().toISOString(),
+                }
+
+                // Get location name and store it
+                try {
+                    this.actualLocationName = await this.getLocationName(latitude, longitude)
+                } catch (error) {
+                    this.actualLocationName = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
+                }
+                
+                // Only update display if we're currently showing the actual location
+                if (this.showingLiveLocation) {
+                    document.getElementById('locationName').textContent = this.actualLocationName
+                }
+
+                // Send location to backend automatically
+                if (this.socket) {
+                    this.socket.emit('user-location-update', {
+                        userId: this.userId,
+                        location: this.currentLocation
+                    })
+                }
+            }
+
+            async getLocationName(lat, lng) {
+                try {
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=12&addressdetails=1`
+                    )
+                    const data = await response.json()
+                    return data.display_name?.split(',')[0] || `${lat.toFixed(4)}, ${lng.toFixed(4)}`
+                } catch (error) {
+                    return `${lat.toFixed(4)}, ${lng.toFixed(4)}`
+                }
+            }
+            
+            sendEmergencyAlert() {
+                if (!this.currentLocation) {
+                    alert('Location required for emergency alert')
+                    return
+                }
+
+                // Play emergency alert sound
+                this.playEmergencySound('alert');
+
+                const alertData = {
+                    userId: this.userId,
+                    type: this.selectedEmergencyType,
+                    location: this.currentLocation,
+                    timestamp: new Date().toISOString(),
+                    description: `Emergency ${this.selectedEmergencyType} alert`,
+                    severity: 'high',
+                    userInfo: {
+                        name: authManager.currentUser?.name || 'Unknown',
+                        phone: authManager.currentUser?.phone || 'Not provided',
+                        email: authManager.currentUser?.email || 'Not provided'
+                    }
+                }
+
+                // Send alert to backend
+                if (this.socket) {
+                    this.socket.emit('emergency-alert', alertData)
+                }
+
+                // Update UI - Show as PENDING until agent assigns
+                this.activeAlert = alertData
+                
+                // Update status button to show emergency is active but waiting for agent
+                document.getElementById('statusText').textContent = 'PENDING'
+                document.getElementById('statusButton').classList.add('pending')
+                
+                console.log('Emergency alert sent! Waiting for agent assignment...')
+                
+                // Start sending location updates immediately for emergency
+                this.startEmergencyLocationUpdates()
+            }
+
+            receiveAgentMessage(data) {
+                console.log('Received agent message:', data)
+                this.addMessageToModal(data.message, 'received')
+            }
+
+            handleAlertUpdate(data) {
+                if (data.userId === this.userId) {
+                    if (data.status === 'resolved') {
+                        this.activeAlert = null
+                        this.assignedAgent = null
+                        document.getElementById('statusText').textContent = 'Status'
+                        document.getElementById('statusButton').className = 'status-button'
+                    }
+                }
+            }
+
+            handleAgentAssignment(data) {
+                if (data.userId === this.userId) {
+                    this.assignedAgent = data
+                    
+                    // Remove pending status
+                    document.getElementById('statusButton').classList.remove('pending')
+                    
+                    // Update status to show agent is assigned
+                    document.getElementById('statusText').textContent = 'AGENT'
+                    document.getElementById('statusButton').classList.add('assigned')
+                    
+                    // Play notification sound
+                    this.playEmergencySound('notification')
+                    
+                    // Show system notification
+                    this.showSystemNotification(`Agent ${data.agentName || data.agentId} has been assigned to your emergency`)
+                    
+                    // Update modal if it's open
+                    this.updateModalAgentInfo()
+                    
+                    console.log(`Agent ${data.agentName || data.agentId} (${data.agentId}) assigned to your emergency`)
+                    
+                    // Send confirmation to agent that user is notified
+                    if (this.socket) {
+                        this.socket.emit('agent-assignment-acknowledged', {
+                            userId: this.userId,
+                            agentId: data.agentId,
+                            timestamp: new Date().toISOString()
+                        })
+                    }
+                }
+            }
+
+            handleLocationRequest(data) {
+                if (data.userId === this.userId) {
+                    console.log('Agent requested comprehensive location and device data')
+                    
+                    // Play notification sound
+                    this.playEmergencySound('notification')
+                    
+                    // Show notification to user
+                    this.showSystemNotification('Agent is requesting your location and device information to assist you better')
+                    
+                    // Automatically collect and send comprehensive data
+                    this.sendComprehensiveUserData(data.agentId)
+                }
+            }
+
+            async sendComprehensiveUserData(agentId) {
+                try {
+                    const comprehensiveData = {
+                        userId: this.userId,
+                        agentId: agentId,
+                        timestamp: new Date().toISOString(),
+                        location: this.currentLocation,
+                        weather: this.weatherData,
+                        deviceInfo: await this.collectDeviceInfo(),
+                        userInfo: {
+                            name: authManager.currentUser?.name || 'Unknown',
+                            phone: authManager.currentUser?.phone || 'Not provided',
+                            email: authManager.currentUser?.email || 'Not provided',
+                            accountType: authManager.currentUser?.accountType || 'guest'
+                        },
+                        browserInfo: this.getBrowserInfo(),
+                        connectivity: this.getConnectivityInfo(),
+                        batteryInfo: await this.getBatteryInfo(),
+                        permissions: await this.checkPermissions()
+                    }
+
+                    // Send comprehensive data to backend
+                    if (this.socket) {
+                        this.socket.emit('user-comprehensive-data', comprehensiveData)
+                        console.log('Comprehensive user data sent to agent')
+                    }
+
+                    // Also request additional permissions for agent control
+                    await this.requestAgentControlPermissions()
+
+                } catch (error) {
+                    console.error('Error collecting comprehensive data:', error)
+                }
+            }
+
+            async collectDeviceInfo() {
+                const deviceInfo = {
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform,
+                    language: navigator.language,
+                    cookieEnabled: navigator.cookieEnabled,
+                    onLine: navigator.onLine,
+                    screen: {
+                        width: screen.width,
+                        height: screen.height,
+                        colorDepth: screen.colorDepth
+                    },
+                    viewport: {
+                        width: window.innerWidth,
+                        height: window.innerHeight
+                    },
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                }
+
+                return deviceInfo
+            }
+
+            getBrowserInfo() {
+                return {
+                    vendor: navigator.vendor,
+                    appName: navigator.appName,
+                    appVersion: navigator.appVersion,
+                    product: navigator.product,
+                    hardwareConcurrency: navigator.hardwareConcurrency || 'Unknown'
+                }
+            }
+
+            getConnectivityInfo() {
+                const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
+                if (connection) {
+                    return {
+                        effectiveType: connection.effectiveType || 'Unknown',
+                        downlink: connection.downlink || 'Unknown',
+                        rtt: connection.rtt || 'Unknown',
+                        saveData: connection.saveData || false
+                    }
+                }
+                return { status: 'Connection API not supported' }
+            }
+
+            async getBatteryInfo() {
+                try {
+                    if (navigator.getBattery) {
+                        const battery = await navigator.getBattery()
+                        return {
+                            level: Math.round(battery.level * 100),
+                            charging: battery.charging,
+                            chargingTime: battery.chargingTime,
+                            dischargingTime: battery.dischargingTime
+                        }
+                    }
+                } catch (error) {
+                    console.log('Battery API not available')
+                }
+                return { status: 'Battery API not supported' }
+            }
+
+            async checkPermissions() {
+                const permissions = {}
+                
+                try {
+                    // Check various permissions
+                    const permissionNames = ['geolocation', 'notifications', 'camera', 'microphone']
+                    
+                    for (const permission of permissionNames) {
+                        try {
+                            const result = await navigator.permissions.query({name: permission})
+                            permissions[permission] = result.state
+                        } catch (e) {
+                            permissions[permission] = 'not supported'
+                        }
+                    }
+                } catch (error) {
+                    permissions.error = 'Permissions API not supported'
+                }
+
+                return permissions
+            }
+
+            async requestAgentControlPermissions() {
+                try {
+                    // Request camera access for agent
+                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                        try {
+                            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                            // Store stream for agent access
+                            this.mediaStream = stream
+                            console.log('Camera and microphone access granted for agent assistance')
+                            
+                            // Send confirmation to agent
+                            if (this.socket) {
+                                this.socket.emit('agent-control-granted', {
+                                    userId: this.userId,
+                                    permissions: ['camera', 'microphone'],
+                                    timestamp: new Date().toISOString()
+                                })
+                            }
+                        } catch (error) {
+                            console.log('Camera/microphone access denied or not available')
+                        }
+                    }
+
+                    // Request notification permissions
+                    if (Notification.permission === 'default') {
+                        await Notification.requestPermission()
+                    }
+
+                } catch (error) {
+                    console.error('Error requesting agent control permissions:', error)
+                }
+            }
+
+            // Emergency Sound System
+            playEmergencySound(type) {
+                try {
+                    // Create different audio contexts for different alert types
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+                    
+                    if (type === 'alert') {
+                        // High priority emergency alert sound
+                        this.playAlertTone(audioContext, [800, 1000], 0.5, 3) // 3 repeats
+                    } else if (type === 'danger') {
+                        // Critical danger warning sound
+                        this.playAlertTone(audioContext, [1200, 800], 0.7, 5) // 5 repeats, louder
+                    } else if (type === 'notification') {
+                        // Softer notification sound
+                        this.playAlertTone(audioContext, [600, 800], 0.3, 1) // 1 time, softer
+                    }
+                } catch (error) {
+                    console.log('Audio not available:', error)
+                }
+            }
+
+            playAlertTone(audioContext, frequencies, volume, repeats) {
+                let currentRepeat = 0;
+                
+                const playTone = () => {
+                    if (currentRepeat >= repeats) return;
+                    
+                    frequencies.forEach((freq, index) => {
+                        setTimeout(() => {
+                            const oscillator = audioContext.createOscillator()
+                            const gainNode = audioContext.createGain()
+                            
+                            oscillator.connect(gainNode)
+                            gainNode.connect(audioContext.destination)
+                            
+                            oscillator.frequency.setValueAtTime(freq, audioContext.currentTime)
+                            oscillator.type = 'sine'
+                            
+                            gainNode.gain.setValueAtTime(0, audioContext.currentTime)
+                            gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01)
+                            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5)
+                            
+                            oscillator.start(audioContext.currentTime)
+                            oscillator.stop(audioContext.currentTime + 0.5)
+                        }, index * 600) // 600ms between tones
+                    })
+                    
+                    currentRepeat++
+                    if (currentRepeat < repeats) {
+                        setTimeout(playTone, frequencies.length * 600 + 400) // Wait between repeats
+                    }
+                }
+                
+                playTone()
+            }
+
+            showSystemNotification(message) {
+                // Show browser notification
+                if (Notification.permission === 'granted') {
+                    new Notification('Emergency System', {
+                        body: message,
+                        icon: '/favicon.ico',
+                        badge: '/favicon.ico',
+                        requireInteraction: true
+                    })
+                }
+
+                // Show in-app notification
+                const notification = document.createElement('div')
+                notification.className = 'system-notification'
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas fa-info-circle"></i>
+                        <span>${message}</span>
+                        <button onclick="this.parentElement.parentElement.remove()" title="Close notification">×</button>
+                    </div>
+                `
+                document.body.appendChild(notification)
+
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove()
+                    }
+                }, 5000)
+            }
+
+            startEmergencyLocationUpdates() {
+                // Clear existing interval
+                if (this.locationSendInterval) {
+                    clearInterval(this.locationSendInterval)
+                }
+
+                // Send location every 3 seconds during emergency
+                this.locationSendInterval = setInterval(() => {
+                    if (this.currentLocation && this.socket && this.activeAlert) {
+                        this.socket.emit('emergency-location-update', {
+                            userId: this.userId,
+                            location: this.currentLocation,
+                            timestamp: new Date().toISOString(),
+                            alertId: this.activeAlert.timestamp
+                        })
+                    }
+                }, 3000)
+
+                console.log('Emergency location updates started - sending every 3 seconds')
+            }
+            
+            handleDisasterWarning(data) {
+                // Play danger sound for disaster warnings
+                this.playEmergencySound('danger')
+                this.showDisasterWarning(data)
+            }
+
+            // Agent Control Handlers
+            handleAgentControlRequest(data) {
+                if (data.userId === this.userId) {
+                    console.log('Agent requesting control:', data.controlType)
+                    this.playEmergencySound('notification')
+                    
+                    switch(data.controlType) {
+                        case 'camera':
+                            this.handleCameraRequest(data)
+                            break
+                        case 'location':
+                            this.handleLocationRequest(data)
+                            break
+                        case 'deviceInfo':
+                            this.sendComprehensiveUserData(data.agentId)
+                            break
+                        case 'realTimeLocation':
+                            this.startEmergencyLocationUpdates()
+                            break
+                        default:
+                            console.log('Unknown control request:', data.controlType)
+                    }
+                }
+            }
+
+            async handleCameraRequest(data) {
+                try {
+                    this.showSystemNotification('Agent is requesting camera access to assist you better. Please allow camera permissions.')
+                    
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: true, 
+                        audio: true 
+                    })
+                    
+                    // Send confirmation to agent
+                    if (this.socket) {
+                        this.socket.emit('camera-access-granted', {
+                            userId: this.userId,
+                            agentId: data.agentId,
+                            timestamp: new Date().toISOString(),
+                            status: 'granted'
+                        })
+                    }
+
+                    console.log('Camera access granted to agent')
+                    this.showSystemNotification('Camera access granted to agent for emergency assistance')
+                    
+                } catch (error) {
+                    console.error('Camera access denied:', error)
+                    if (this.socket) {
+                        this.socket.emit('camera-access-denied', {
+                            userId: this.userId,
+                            agentId: data.agentId,
+                            timestamp: new Date().toISOString(),
+                            status: 'denied',
+                            error: error.message
+                        })
+                    }
+                    this.showSystemNotification('Camera access denied. Agent will proceed with available information.')
+                }
+            }
+
+            handleAgentDataRequest(data) {
+                if (data.userId === this.userId) {
+                    console.log('Agent requesting additional data:', data.dataType)
+                    this.sendComprehensiveUserData(data.agentId)
+                }
+            }
+
+            handleEmergencyStatusUpdate(data) {
+                if (data.userId === this.userId) {
+                    this.playEmergencySound('notification')
+                    this.showSystemNotification(`Status Update: ${data.message}`)
+                    
+                    // Update UI based on status
+                    if (data.status === 'agent-assigned') {
+                        document.getElementById('statusText').textContent = 'ASSIGNED'
+                        document.getElementById('statusButton').classList.remove('pending')
+                        document.getElementById('statusButton').classList.add('assigned')
+                    } else if (data.status === 'agent-enroute') {
+                        document.getElementById('statusText').textContent = 'EN ROUTE'
+                        document.getElementById('statusButton').classList.add('agent-coming')
+                    } else if (data.status === 'resolved') {
+                        document.getElementById('statusText').textContent = 'Status'
+                        document.getElementById('statusButton').className = 'status-button'
+                        this.activeAlert = null
+                        this.assignedAgent = null
+                    }
+                }
+            }
+
+            handleAgentSystemMessage(data) {
+                if (data.userId === this.userId) {
+                    this.playEmergencySound('notification')
+                    this.showSystemNotification(data.message)
+                    
+                    // Add to agent communication modal if needed
+                    if (data.addToChat) {
+                        this.addMessageToModal(data.message, 'received')
+                    }
+                }
+            }
+
+            handleLocationError(error) {
+                console.error('Location error:', error)
+            }
+        }
+
+        // Global function for location toggle (outside class)
+        function toggleLocationDisplay() {
+            const emergency = window.emergencySystem
+            const locationElement = document.getElementById('locationName')
+            
+            if (!emergency.showingLiveLocation) {
+                // Show actual location
+                locationElement.textContent = emergency.actualLocationName
+                emergency.showingLiveLocation = true
+            } else {
+                // Show "Live" again
+                locationElement.textContent = 'Live'
+                emergency.showingLiveLocation = false
+            }
+        }
+        
+        // Authentication Manager
+        class AuthManager {
+            constructor() {
+                this.currentUser = null;
+                this.isAuthenticated = false;
+                this.userType = null; // 'registered', 'guest'
+                
+                // Check for existing session on page load
+                this.loadStoredSession();
+            }
+
+            loadStoredSession() {
+                try {
+                    const storedSession = localStorage.getItem('crisislink_session');
+                    if (storedSession) {
+                        const sessionData = JSON.parse(storedSession);
+                        const sessionExpiry = new Date(sessionData.expiry);
+                        
+                        // Check if session is still valid (24 hours)
+                        if (sessionExpiry > new Date()) {
+                            this.currentUser = sessionData.user;
+                            this.userType = sessionData.userType;
+                            this.isAuthenticated = true;
+                            
+                            console.log('Restored session for:', this.currentUser.name);
+                            
+                            // Hide login modal and initialize emergency system
+                            document.getElementById('loginModal').style.display = 'none';
+                            window.emergencySystem = new EmergencySystem();
+                            window.emergencySystem.setUserInfo(this.currentUser, this.userType);
+                            this.updateUserDisplay();
+                            
+                            return true;
+                        } else {
+                            // Session expired, clear it
+                            localStorage.removeItem('crisislink_session');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading stored session:', error);
+                    localStorage.removeItem('crisislink_session');
+                }
+                return false;
+            }
+
+            storeSession() {
+                if (this.currentUser && this.isAuthenticated) {
+                    const sessionData = {
+                        user: this.currentUser,
+                        userType: this.userType,
+                        expiry: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+                    };
+                    localStorage.setItem('crisislink_session', JSON.stringify(sessionData));
+                }
+            }
+
+            switchTab(tab) {
+                // Hide all forms
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'none';
+                document.getElementById('guestForm').style.display = 'none';
+                
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                
+                // Show selected form and activate tab
+                document.getElementById(tab + 'Form').style.display = 'block';
+                event.target.classList.add('active');
+                
+                this.clearMessage();
+            }
+
+            async login() {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                if (!email || !password) {
+                    this.showMessage('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                try {
+                    // In real app, this would be an API call
+                    const users = JSON.parse(localStorage.getItem('emergencyUsers') || '{}');
+                    
+                    if (users[email] && users[email].password === password) {
+                        this.currentUser = users[email];
+                        this.isAuthenticated = true;
+                        this.userType = 'registered';
+                        
+                        this.showMessage('Login successful!', 'success');
+                        setTimeout(() => this.completeAuth(), 1000);
+                    } else {
+                        this.showMessage('Invalid email or password', 'error');
+                    }
+                } catch (error) {
+                    this.showMessage('Login failed. Please try again.', 'error');
+                }
+            }
+
+            async register() {
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const phone = document.getElementById('registerPhone').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirm = document.getElementById('registerConfirm').value;
+                
+                if (!name || !email || !phone || !password || !confirm) {
+                    this.showMessage('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                if (password !== confirm) {
+                    this.showMessage('Passwords do not match', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    this.showMessage('Password must be at least 6 characters', 'error');
+                    return;
+                }
+                
+                try {
+                    // In real app, this would be an API call
+                    const users = JSON.parse(localStorage.getItem('emergencyUsers') || '{}');
+                    
+                    if (users[email]) {
+                        this.showMessage('Account already exists with this email', 'error');
+                        return;
+                    }
+                    
+                    users[email] = {
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        password: password,
+                        created: new Date().toISOString(),
+                        verified: false
+                    };
+                    
+                    localStorage.setItem('emergencyUsers', JSON.stringify(users));
+                    
+                    this.currentUser = users[email];
+                    this.isAuthenticated = true;
+                    this.userType = 'registered';
+                    
+                    this.showMessage('Account created successfully!', 'success');
+                    setTimeout(() => this.completeAuth(), 1000);
+                } catch (error) {
+                    this.showMessage('Registration failed. Please try again.', 'error');
+                }
+            }
+
+            async guestAccess() {
+                const name = document.getElementById('guestName').value || 'Guest User';
+                const phone = document.getElementById('guestPhone').value;
+                
+                if (!phone) {
+                    this.showMessage('Emergency contact number is required', 'error');
+                    return;
+                }
+                
+                this.currentUser = {
+                    name: name,
+                    phone: phone,
+                    isGuest: true,
+                    sessionId: 'GUEST-' + Date.now()
+                };
+                
+                this.isAuthenticated = true;
+                this.userType = 'guest';
+                
+                this.showMessage('Continuing as guest...', 'success');
+                setTimeout(() => this.completeAuth(), 1000);
+            }
+
+            completeAuth() {
+                // Store session for persistence
+                this.storeSession();
+                
+                // Hide login modal
+                document.getElementById('loginModal').style.display = 'none';
+                
+                // Initialize emergency system with user data
+                window.emergencySystem = new EmergencySystem();
+                window.emergencySystem.setUserInfo(this.currentUser, this.userType);
+                
+                // Update UI with user info
+                this.updateUserDisplay();
+            }
+
+            updateUserDisplay() {
+                const profileBtn = document.getElementById('profileBtn');
+                const profileUserName = document.getElementById('profileUserName');
+                const profileUserType = document.getElementById('profileUserType');
+                
+                if (this.currentUser) {
+                    profileBtn.innerHTML = `<i class="fas fa-user-check"></i>`;
+                    profileBtn.title = `${this.currentUser.name} (${this.userType})`;
+                    
+                    profileUserName.textContent = this.currentUser.name;
+                    profileUserType.textContent = this.userType === 'guest' ? 'Guest User' : 'Registered User';
+                }
+            }
+
+            showMessage(message, type) {
+                const messageEl = document.getElementById('authMessage');
+                messageEl.textContent = message;
+                messageEl.className = `auth-message ${type}`;
+            }
+
+            clearMessage() {
+                const messageEl = document.getElementById('authMessage');
+                messageEl.textContent = '';
+                messageEl.className = 'auth-message';
+            }
+
+            toggleProfileMenu() {
+                const menu = document.getElementById('profileMenu');
+                menu.classList.toggle('show');
+                
+                // Close menu when clicking outside
+                if (menu.classList.contains('show')) {
+                    setTimeout(() => {
+                        document.addEventListener('click', this.closeProfileMenuOutside.bind(this), { once: true });
+                    }, 100);
+                }
+            }
+
+            closeProfileMenuOutside(event) {
+                const menu = document.getElementById('profileMenu');
+                const profileBtn = document.getElementById('profileBtn');
+                
+                if (!menu.contains(event.target) && !profileBtn.contains(event.target)) {
+                    menu.classList.remove('show');
+                }
+            }
+
+            logout() {
+                this.currentUser = null;
+                this.isAuthenticated = false;
+                this.userType = null;
+                
+                // Clear stored session
+                localStorage.removeItem('crisislink_session');
+                
+                // Hide profile menu
+                document.getElementById('profileMenu').classList.remove('show');
+                
+                // Show login modal again
+                document.getElementById('loginModal').style.display = 'flex';
+                
+                // Reset emergency system
+                if (window.emergencySystem) {
+                    window.emergencySystem.disconnect();
+                }
+            }
+        }
+
+        // Initialize authentication manager
+        window.authManager = new AuthManager();
+
+        // Initialize emergency system when page loads (after auth)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Auth manager handles emergency system initialization
+        })
+    </script>
+</body>
+</html>
+            btn.addEventListener('click', (e) => {
+              // Update selection
+              document
+                .querySelectorAll('.emergency-type-btn')
+                .forEach((b) => b.classList.remove('ring-2', 'ring-white'))
+              btn.classList.add('ring-2', 'ring-white')
+              this.selectedEmergencyType = btn.dataset.type
+            })
+          })
+
+          // Location sharing toggle
+          document
+            .getElementById('shareLocation')
+            .addEventListener('change', (e) => {
+              if (e.target.checked) {
+                this.startLocationTracking()
+              } else {
+                this.stopLocationTracking()
+              }
+            })
+
+          // Message sending
+          document
+            .getElementById('sendMessage')
+            .addEventListener('click', () => {
+              this.sendMessage()
+            })
+
+          document
+            .getElementById('messageInput')
+            .addEventListener('keypress', (e) => {
+              if (e.key === 'Enter') {
+                this.sendMessage()
+              }
+            })
+
+          // Cancel alert
+          document
+            .getElementById('cancelAlert')
+            ?.addEventListener('click', () => {
+              this.cancelAlert()
+            })
+        }
+
+        initializeLocationMap() {
+          // Show the location section
+          const locationSection = document.getElementById('locationSection')
+          if (locationSection) {
+            locationSection.style.display = 'block'
+            
+            // Initialize the map
+            setTimeout(() => {
+              if (!this.locationMap) {
+                try {
+                  // Default coordinates (center of South Africa)
+                  const defaultLat = -26.2041
+                  const defaultLng = 28.0473
+                  
+                  this.locationMap = L.map('locationMap').setView([defaultLat, defaultLng], 13)
+                  
+                  // Add tile layer
+                  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                  }).addTo(this.locationMap)
+                  
+                  // Add custom marker for user location
+                  const userIcon = L.divIcon({
+                    className: 'custom-location-marker',
+                    html: '<div style="background: #4CAF50; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3); position: relative;"><div style="position: absolute; top: -8px; left: -8px; width: 36px; height: 36px; border-radius: 50%; background: rgba(76, 175, 80, 0.2); animation: pulse 2s infinite;"></div></div>',
+                    iconSize: [26, 26],
+                    iconAnchor: [13, 13]
+                  })
+                  
+                  this.locationMarker = L.marker([defaultLat, defaultLng], { icon: userIcon }).addTo(this.locationMap)
+                  
+                  // Make map container have proper tracking styling
+                  document.getElementById('locationMap').classList.add('tracking-active')
+                  
+                } catch (error) {
+                  console.error('Error initializing map:', error)
+                }
+              }
+            }, 100) // Small delay to ensure DOM is ready
+          }
+        }
+
+        startLocationTracking() {
+          if (!navigator.geolocation) {
+            this.showNotification('Geolocation not supported', 'error')
+            return
+          }
+
+          // Initialize the location map first
+          this.initializeLocationMap()
+
+          const options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0,
+          }
+
+          // Get initial position
+          navigator.geolocation.getCurrentPosition(
+            (position) => this.updateLocation(position),
+            (error) => this.handleLocationError(error),
+            options
+          )
+
+          // Watch for location changes
+          this.locationWatcher = navigator.geolocation.watchPosition(
+            (position) => this.updateLocation(position),
+            (error) => this.handleLocationError(error),
+            options
+          )
+
+          // Update UI status
+          const locationStatus = document.getElementById('locationStatus')
+          if (locationStatus) {
+            locationStatus.textContent = 'Location: Active'
+          }
+        }
+
+        stopLocationTracking() {
+          if (this.locationWatcher) {
+            navigator.geolocation.clearWatch(this.locationWatcher)
+            this.locationWatcher = null
+          }
+          
+          // Update UI status
+          const locationStatus = document.getElementById('locationStatus')
+          if (locationStatus) {
+            locationStatus.textContent = 'Location: Off'
+          }
+          
+          // Hide location section
+          const locationSection = document.getElementById('locationSection')
+          if (locationSection) {
+            locationSection.style.display = 'none'
+          }
+          
+          // Clean up map resources
+          if (this.locationMap) {
+            this.locationMap.remove()
+            this.locationMap = null
+            this.locationMarker = null
+            this.accuracyCircle = null
+          }
+        }
+
+        async updateLocation(position) {
+          const { latitude, longitude, accuracy } = position.coords
+
+          this.currentLocation = {
+            latitude,
+            longitude,
+            accuracy,
+            timestamp: new Date().toISOString(),
+          }
+
+          // Update location details in UI
+          const coordsEl = document.getElementById('currentCoords')
+          const accuracyEl = document.getElementById('locationAccuracy')
+          const lastUpdateEl = document.getElementById('lastLocationUpdate')
+          
+          if (coordsEl) {
+            coordsEl.textContent = `${latitude.toFixed(6)}°, ${longitude.toFixed(6)}°`
+          }
+          if (accuracyEl) {
+            accuracyEl.textContent = `±${Math.round(accuracy)}m`
+            // Update accuracy color based on precision
+            if (accuracy < 10) {
+              accuracyEl.style.color = '#4CAF50' // Excellent
+            } else if (accuracy < 50) {
+              accuracyEl.style.color = '#FF9800' // Good
+            } else {
+              accuracyEl.style.color = '#F44336' // Poor
+            }
+          }
+          if (lastUpdateEl) {
+            lastUpdateEl.textContent = new Date().toLocaleTimeString()
+          }
+
+          // Update map if initialized
+          if (this.locationMap && this.locationMarker) {
+            const newLatLng = [latitude, longitude]
+            
+            // Move marker to new position
+            this.locationMarker.setLatLng(newLatLng)
+            
+            // Center map on new location
+            this.locationMap.setView(newLatLng, this.locationMap.getZoom())
+            
+            // Add accuracy circle if precise enough
+            if (accuracy < 100) {
+              // Remove existing accuracy circle if any
+              if (this.accuracyCircle) {
+                this.locationMap.removeLayer(this.accuracyCircle)
+              }
+              
+              // Add new accuracy circle
+              this.accuracyCircle = L.circle(newLatLng, {
+                radius: accuracy,
+                fillColor: '#4CAF50',
+                fillOpacity: 0.1,
+                color: '#4CAF50',
+                weight: 2,
+                opacity: 0.3
+              }).addTo(this.locationMap)
+            }
+          }
+
+          // Get location name
+          const locationName = await this.getLocationName(latitude, longitude)
+
+          // Update location display
+          this.updateLocationDisplay(locationName)
+
+          // Send location to backend if sharing is enabled
+          if (document.getElementById('shareLocation')?.checked) {
+            this.sendLocationUpdate()
+          }
+        }
+
+        async getLocationName(lat, lng) {
+          try {
+            // Try reverse geocoding
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=12&addressdetails=1`
+            )
+            const data = await response.json()
+            return data.display_name || `${lat.toFixed(4)}, ${lng.toFixed(4)}`
+          } catch (error) {
+            return `${lat.toFixed(4)}, ${lng.toFixed(4)}`
+          }
+        }
+
+        updateLocationDisplay(locationName) {
+          const locationCard = document.getElementById('locationCard')
+          const locationDetails = document.getElementById('locationDetails')
+
+          locationDetails.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-map-marker-alt text-green-400"></i>
+                        <span class="text-sm">${locationName}</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-crosshairs text-blue-400"></i>
+                        <span class="text-sm">Coordinates: ${this.currentLocation.latitude.toFixed(4)}, ${this.currentLocation.longitude.toFixed(4)}</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-clock text-yellow-400"></i>
+                        <span class="text-sm">Updated: ${new Date(this.currentLocation.timestamp).toLocaleTimeString()}</span>
+                    </div>
+                `
+
+          locationCard.style.display = 'block'
+        }
+
+        sendLocationUpdate() {
+          if (this.socket && this.currentLocation) {
+            this.socket.emit('user-location-update', {
+              userId: this.userId,
+              location: this.currentLocation,
+            })
+          }
+        }
+
+        sendEmergencyAlert() {
+          if (!this.currentLocation) {
+            this.showNotification(
+              'Location required for emergency alert',
+              'error'
+            )
+            return
+          }
+
+          const alertData = {
+            userId: this.userId,
+            type: this.selectedEmergencyType,
+            location: this.currentLocation,
+            timestamp: new Date().toISOString(),
+            description: `Emergency ${this.selectedEmergencyType} alert`,
+            severity: 'high',
+          }
+
+          // Send alert to backend
+          this.socket.emit('emergency-alert', alertData)
+
+          // Start automatic location tracking for emergency
+          this.startLocationTracking()
+
+          // Update UI
+          this.activeAlert = alertData
+          this.showAlertStatus()
+
+          this.showNotification(
+            'Emergency alert sent! Help is on the way.',
+            'success'
+          )
+
+          // Disable emergency button temporarily
+          const btn = document.getElementById('emergencyBtn')
+          btn.disabled = true
+          btn.innerHTML =
+            '<i class="fas fa-spinner fa-spin mr-3"></i>ALERT SENT'
+
+          setTimeout(() => {
+            btn.disabled = false
+            btn.innerHTML =
+              '<i class="fas fa-exclamation-triangle mr-3"></i>EMERGENCY ALERT'
+          }, 5000)
+        }
+
+        showAlertStatus() {
+          const alertStatus = document.getElementById('alertStatus')
+          const alertDetails = document.getElementById('alertDetails')
+
+          alertDetails.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span>Alert Type:</span>
+                            <span class="font-semibold capitalize">${this.activeAlert.type}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Status:</span>
+                            <span class="text-yellow-400">Dispatching Help</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Time:</span>
+                            <span>${new Date(this.activeAlert.timestamp).toLocaleTimeString()}</span>
+                        </div>
+                    </div>
+                `
+
+          alertStatus.style.display = 'block'
+        }
+
+        cancelAlert() {
+          if (this.activeAlert) {
+            this.socket.emit('cancel-alert', {
+              userId: this.userId,
+              alertId: this.activeAlert.alertId,
+            })
+
+            this.activeAlert = null
+            document.getElementById('alertStatus').style.display = 'none'
+            this.showNotification('Alert cancelled', 'info')
+          }
+        }
+
+        sendMessage() {
+          const input = document.getElementById('messageInput')
+          const message = input.value.trim()
+
+          if (!message) return
+
+          const messageData = {
+            userId: this.userId,
+            message: message,
+            timestamp: new Date().toISOString(),
+            type: 'user-to-agent',
+          }
+
+          // Send to backend
+          this.socket.emit('user-message-to-agent', messageData)
+
+          // Add to UI
+          this.addMessageToUI(message, 'sent', new Date())
+
+          // Clear input
+          input.value = ''
+        }
+
+        receiveAgentMessage(data) {
+          this.addMessageToUI(
+            data.message,
+            'received',
+            new Date(data.timestamp),
+            data.agentId
+          )
+          this.showNotification(`Message from Agent ${data.agentId}`, 'info')
+        }
+
+        addMessageToUI(message, type, timestamp, agentId = null) {
+          const container = document.getElementById('messagesContainer')
+
+          // Remove placeholder if present
+          const placeholder = container.querySelector('.text-center')
+          if (placeholder) placeholder.remove()
+
+          const messageEl = document.createElement('div')
+          messageEl.className = `message-bubble p-3 rounded-lg ${type === 'sent' ? 'message-sent' : 'message-received'}`
+
+          const senderLabel =
+            type === 'sent' ? 'You' : `Agent ${agentId || 'Unknown'}`
+
+          messageEl.innerHTML = `
+                    <div class="text-xs opacity-75 mb-1">${senderLabel} - ${timestamp.toLocaleTimeString()}</div>
+                    <div class="text-sm">${message}</div>
+                `
+
+          container.appendChild(messageEl)
+          container.scrollTop = container.scrollHeight
+        }
+
+        handleAlertUpdate(data) {
+          if (data.userId === this.userId) {
+            if (data.status === 'assigned') {
+              this.showNotification(
+                `Agent ${data.agentId} assigned to your emergency`,
+                'success'
+              )
+              document.getElementById('assignedAgent').textContent =
+                data.agentId
+            } else if (data.status === 'resolved') {
+              this.showNotification('Emergency resolved', 'success')
+              this.activeAlert = null
+              document.getElementById('alertStatus').style.display = 'none'
+            }
+          }
+        }
+
+        handleAgentAssignment(data) {
+          if (data.userId === this.userId) {
+            this.assignedAgent = data.agentId
+            document.getElementById('assignedAgent').textContent = data.agentId
+            document.getElementById('responseTime').textContent =
+              data.responseTime || 'Calculating...'
+            this.showNotification(
+              `Agent ${data.agentId} is responding to your emergency`,
+              'success'
+            )
+          }
+        }
+
+        handleLocationRequest(data) {
+          if (data.userId === this.userId) {
+            this.showNotification(
+              'Agent requested your current location',
+              'info'
+            )
+            // Automatically send current location
+            this.sendLocationUpdate()
+          }
+        }
+
+        handleLocationError(error) {
+          let message = 'Location error: '
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              message += 'Permission denied'
+              break
+            case error.POSITION_UNAVAILABLE:
+              message += 'Position unavailable'
+              break
+            case error.TIMEOUT:
+              message += 'Request timeout'
+              break
+            default:
+              message += 'Unknown error'
+          }
+          this.showNotification(message, 'error')
+        }
+
+        updateConnectionStatus(connected) {
+          const statusDot = document.getElementById('connectionStatus')
+          const statusText = document.getElementById('connectionText')
+
+          if (connected) {
+            statusDot.className = 'status-dot online'
+            statusText.textContent = 'Connected'
+          } else {
+            statusDot.className = 'status-dot offline'
+            statusText.textContent = 'Disconnected'
+          }
+        }
+
+        showNotification(message, type = 'info') {
+          const container = document.getElementById('notificationContainer')
+
+          const notification = document.createElement('div')
+          notification.className = `p-4 rounded-lg shadow-lg mb-4 text-white ${
+            type === 'success'
+              ? 'bg-green-600'
+              : type === 'error'
+                ? 'bg-red-600'
+                : type === 'warning'
+                  ? 'bg-yellow-600'
+                  : 'bg-blue-600'
+          }`
+
+          notification.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas ${
+                              type === 'success'
+                                ? 'fa-check-circle'
+                                : type === 'error'
+                                  ? 'fa-exclamation-circle'
+                                  : type === 'warning'
+                                    ? 'fa-exclamation-triangle'
+                                    : 'fa-info-circle'
+                            }"></i>
+                            <span class="text-sm">${message}</span>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" class="text-white/80 hover:text-white">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `
+
+          container.appendChild(notification)
+
+          // Auto remove after 5 seconds
+          setTimeout(() => {
+            if (notification.parentElement) {
+              notification.remove()
+            }
+          }, 5000)
+        }
+      }
+
+      // Emergency system initialized by auth manager
+
+      // Handle page visibility for location tracking
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && window.emergencySystem) {
+          console.log('Page hidden - continuing background location tracking')
+        } else if (window.emergencySystem) {
+          console.log('Page visible - resuming active tracking')
+          window.emergencySystem.sendLocationUpdate()
+        }
+      })
+    </script>
+  </body>
+</html>
