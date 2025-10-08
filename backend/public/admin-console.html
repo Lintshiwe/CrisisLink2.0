@@ -1,0 +1,1655 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CrisisLink Government Admin Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#10B981',
+              secondary: '#3B82F6',
+              danger: '#EF4444',
+              warning: '#F59E0B',
+              dark: '#1F2937',
+              'gov-blue': '#1E40AF',
+              'gov-gold': '#D97706',
+            },
+          },
+        },
+      }
+    </script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1e293b 50%,
+          #334155 100%
+        );
+        min-height: 100vh;
+      }
+
+      .gov-seal {
+        background: radial-gradient(circle, #1e40af 0%, #1e3a8a 100%);
+        border: 3px solid #d97706;
+      }
+
+      /* South Africa Earthquake Alert Animations */
+      @keyframes red-blink {
+        0%,
+        50% {
+          box-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+          border-color: #ef4444;
+          background-color: rgba(239, 68, 68, 0.1);
+        }
+        100% {
+          box-shadow: 0 0 40px rgba(239, 68, 68, 1);
+          border-color: #dc2626;
+          background-color: rgba(239, 68, 68, 0.2);
+        }
+      }
+
+      .sa-earthquake-alert {
+        animation: red-blink 1s ease-in-out infinite alternate;
+      }
+
+      @keyframes sa-pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.02);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .sa-earthquake-card {
+        animation: sa-pulse 1.5s ease-in-out infinite;
+        border-left: 4px solid #ef4444 !important;
+        background: linear-gradient(
+          90deg,
+          rgba(239, 68, 68, 0.1) 0%,
+          rgba(239, 68, 68, 0.05) 100%
+        );
+      }
+
+      .security-badge {
+        background: linear-gradient(45deg, #dc2626, #b91c1c);
+        animation: security-pulse 3s infinite;
+      }
+
+      @keyframes security-pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      .classified-header {
+        background: linear-gradient(
+          90deg,
+          #dc2626 0%,
+          #b91c1c 25%,
+          #dc2626 50%,
+          #b91c1c 75%,
+          #dc2626 100%
+        );
+        animation: classification-sweep 5s linear infinite;
+      }
+
+      @keyframes classification-sweep {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+
+      .data-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+      }
+
+      .metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      .audit-trail {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .audit-entry {
+        border-left: 4px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .audit-entry.critical {
+        border-left-color: #dc2626;
+        background: rgba(220, 38, 38, 0.1);
+      }
+
+      .audit-entry.warning {
+        border-left-color: #f59e0b;
+        background: rgba(245, 158, 11, 0.1);
+      }
+
+      .audit-entry.info {
+        border-left-color: #3b82f6;
+        background: rgba(59, 130, 246, 0.1);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <!-- Classification Header -->
+    <div class="classified-header text-center py-2">
+      <div
+        class="flex justify-center items-center space-x-4 text-white font-bold"
+      >
+        <i class="fas fa-shield-alt"></i>
+        <span>GOVERNMENT CLASSIFIED - AUTHORIZED PERSONNEL ONLY</span>
+        <i class="fas fa-shield-alt"></i>
+      </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div
+      id="authModal"
+      class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-gray-800 rounded-lg p-8 max-w-md w-full mx-4 border-2 border-gov-blue"
+      >
+        <div class="text-center mb-6">
+          <div
+            class="gov-seal w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center"
+          >
+            <i class="fas fa-university text-2xl text-white"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-gov-blue mb-2">
+            Government Access Portal
+          </h2>
+          <div
+            class="security-badge text-white px-4 py-2 rounded-full text-sm font-semibold mb-4"
+          >
+            <i class="fas fa-lock mr-2"></i>CLASSIFIED SYSTEM
+          </div>
+        </div>
+
+        <form id="authForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">
+              <i class="fas fa-id-card mr-2"></i>Government ID
+            </label>
+            <input
+              type="text"
+              id="govId"
+              class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-gov-blue text-white"
+              placeholder="GOV-XXXX-XXXX"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">
+              <i class="fas fa-key mr-2"></i>Security Clearance Code
+            </label>
+            <input
+              type="password"
+              id="clearanceCode"
+              class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-gov-blue text-white"
+              placeholder="••••••••••••"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">
+              <i class="fas fa-fingerprint mr-2"></i>Biometric PIN (Simulated)
+            </label>
+            <input
+              type="password"
+              id="biometricPin"
+              class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-gov-blue text-white"
+              placeholder="••••"
+              maxlength="4"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-gov-blue hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-105"
+          >
+            <i class="fas fa-shield-check mr-2"></i>AUTHENTICATE & ACCESS
+          </button>
+        </form>
+
+        <div class="mt-6 text-xs text-gray-400 text-center">
+          <p>
+            <i class="fas fa-exclamation-triangle text-yellow-500 mr-1"></i>
+            Unauthorized access is strictly prohibited and monitored.
+          </p>
+          <p>All activities are logged and subject to government audit.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="mainDashboard" class="hidden min-h-screen">
+      <!-- Header -->
+      <header class="bg-gray-800 border-b border-gray-700 sticky top-0 z-40">
+        <div class="flex justify-between items-center px-6 py-4">
+          <div class="flex items-center space-x-4">
+            <div
+              class="gov-seal w-12 h-12 rounded-full flex items-center justify-center"
+            >
+              <i class="fas fa-university text-white"></i>
+            </div>
+            <div>
+              <h1 class="text-xl font-bold text-white">
+                CrisisLink Admin Console
+              </h1>
+              <p class="text-sm text-gray-300">
+                Government Emergency Management System
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <div class="text-right text-sm">
+              <p class="text-white font-semibold" id="adminName">
+                Administrator
+              </p>
+              <p class="text-gray-400" id="clearanceLevel">
+                TOP SECRET CLEARANCE
+              </p>
+            </div>
+            <button
+              onclick="logout()"
+              class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition duration-300"
+            >
+              <i class="fas fa-sign-out-alt mr-2"></i>Secure Logout
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Navigation Tabs -->
+      <nav class="bg-gray-800 border-b border-gray-700">
+        <div class="px-6">
+          <div class="flex space-x-8">
+            <button
+              class="tab-button active"
+              onclick="showTab('dashboard')"
+              data-tab="dashboard"
+            >
+              <i class="fas fa-tachometer-alt mr-2"></i>System Overview
+            </button>
+            <button
+              class="tab-button"
+              onclick="showTab('emergencies')"
+              data-tab="emergencies"
+            >
+              <i class="fas fa-exclamation-triangle mr-2"></i>Active Emergencies
+            </button>
+            <button
+              class="tab-button"
+              onclick="showTab('agents')"
+              data-tab="agents"
+            >
+              <i class="fas fa-user-shield mr-2"></i>Agent Management
+            </button>
+            <button
+              class="tab-button"
+              onclick="showTab('analytics')"
+              data-tab="analytics"
+            >
+              <i class="fas fa-chart-line mr-2"></i>Data Analytics
+            </button>
+            <button
+              class="tab-button"
+              onclick="showTab('earthquakes')"
+              data-tab="earthquakes"
+            >
+              <i class="fas fa-globe-americas mr-2"></i>Earthquake Monitor
+            </button>
+            <button
+              class="tab-button"
+              onclick="showTab('audit')"
+              data-tab="audit"
+            >
+              <i class="fas fa-clipboard-list mr-2"></i>Audit Trail
+            </button>
+            <button
+              class="tab-button"
+              onclick="showTab('export')"
+              data-tab="export"
+            >
+              <i class="fas fa-download mr-2"></i>Data Export
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="p-6">
+        <!-- System Overview Tab -->
+        <div id="dashboard" class="tab-content active">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-white mb-4">
+              <i class="fas fa-shield-alt text-gov-blue mr-3"></i>System Status
+              Overview
+            </h2>
+
+            <!-- Key Metrics -->
+            <div class="data-grid mb-8">
+              <div
+                class="metric-card bg-gray-800 rounded-lg p-6 border border-gray-700 transition-all duration-300"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-400 text-sm mb-1">Active Emergencies</p>
+                    <p
+                      class="text-3xl font-bold text-red-400"
+                      id="activeEmergencies"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center"
+                  >
+                    <i
+                      class="fas fa-exclamation-triangle text-white text-lg"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="metric-card bg-gray-800 rounded-lg p-6 border border-gray-700 transition-all duration-300"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-400 text-sm mb-1">Available Agents</p>
+                    <p
+                      class="text-3xl font-bold text-green-400"
+                      id="availableAgents"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center"
+                  >
+                    <i class="fas fa-user-shield text-white text-lg"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="metric-card bg-gray-800 rounded-lg p-6 border border-gray-700 transition-all duration-300"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-400 text-sm mb-1">Total Users</p>
+                    <p class="text-3xl font-bold text-blue-400" id="totalUsers">
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center"
+                  >
+                    <i class="fas fa-users text-white text-lg"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="metric-card bg-gray-800 rounded-lg p-6 border border-gray-700 transition-all duration-300"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-400 text-sm mb-1">System Uptime</p>
+                    <p
+                      class="text-2xl font-bold text-yellow-400"
+                      id="systemUptime"
+                    >
+                      99.9%
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-yellow-600 rounded-full flex items-center justify-center"
+                  >
+                    <i class="fas fa-server text-white text-lg"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Real-time Activity -->
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+              <h3 class="text-xl font-bold text-white mb-4">
+                <i class="fas fa-activity text-green-400 mr-2"></i>Real-time
+                System Activity
+              </h3>
+              <div
+                id="realTimeActivity"
+                class="space-y-2 max-h-60 overflow-y-auto"
+              >
+                <!-- Activity entries will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Emergencies Tab -->
+        <div id="emergencies" class="tab-content hidden">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-white mb-4">
+              <i class="fas fa-exclamation-triangle text-red-400 mr-3"></i
+              >Active Emergency Management
+            </h2>
+
+            <div id="emergencyList" class="space-y-4">
+              <!-- Emergency items will be populated here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent Management Tab -->
+        <div id="agents" class="tab-content hidden">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-white mb-4">
+              <i class="fas fa-user-shield text-blue-400 mr-3"></i>Agent
+              Management & Deployment
+            </h2>
+
+            <div
+              id="agentList"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+            >
+              <!-- Agent cards will be populated here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Analytics Tab -->
+        <div id="analytics" class="tab-content hidden">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-white mb-4">
+              <i class="fas fa-chart-line text-purple-400 mr-3"></i>Emergency
+              Response Analytics
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold text-white mb-4">
+                  Response Times (24h)
+                </h3>
+                <canvas
+                  id="responseTimeChart"
+                  width="400"
+                  height="200"
+                ></canvas>
+              </div>
+
+              <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold text-white mb-4">
+                  Emergency Types Distribution
+                </h3>
+                <canvas
+                  id="emergencyTypeChart"
+                  width="400"
+                  height="200"
+                ></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Earthquake Monitoring Tab -->
+        <div id="earthquakes" class="tab-content hidden">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-white mb-4">
+              <i class="fas fa-globe-americas text-blue-400 mr-3"></i>Global
+              Earthquake Monitor
+            </h2>
+
+            <!-- Earthquake Status Cards -->
+            <div class="data-grid mb-8">
+              <div
+                class="metric-card bg-gray-800 rounded-lg p-6 border border-gray-700 transition-all duration-300"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-400 text-sm mb-1">
+                      Global Earthquakes (1h)
+                    </p>
+                    <p
+                      class="text-3xl font-bold text-blue-400"
+                      id="globalEarthquakes"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center"
+                  >
+                    <i class="fas fa-globe-americas text-white text-lg"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="metric-card bg-gray-800 rounded-lg p-6 border border-gray-700 transition-all duration-300"
+                id="southAfricaCard"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-400 text-sm mb-1">
+                      South Africa Earthquakes
+                    </p>
+                    <p
+                      class="text-3xl font-bold text-orange-400"
+                      id="southAfricaEarthquakes"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center"
+                  >
+                    <i class="fas fa-map-marked-alt text-white text-lg"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="metric-card bg-gray-800 rounded-lg p-6 border border-gray-700 transition-all duration-300"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-400 text-sm mb-1">Critical Alerts</p>
+                    <p
+                      class="text-3xl font-bold text-red-400"
+                      id="criticalEarthquakes"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center"
+                  >
+                    <i
+                      class="fas fa-exclamation-triangle text-white text-lg"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="metric-card bg-gray-800 rounded-lg p-6 border border-gray-700 transition-all duration-300"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-400 text-sm mb-1">Last Update</p>
+                    <p
+                      class="text-lg font-bold text-green-400"
+                      id="lastEarthquakeUpdate"
+                    >
+                      --:--
+                    </p>
+                  </div>
+                  <div
+                    class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center"
+                  >
+                    <i class="fas fa-sync-alt text-white text-lg"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Alert Level Distribution -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold text-white mb-4">
+                  <i class="fas fa-chart-bar mr-2"></i>Alert Level Distribution
+                </h3>
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <div class="w-4 h-4 bg-green-500 rounded-full mr-3"></div>
+                      <span class="text-gray-300">Low (3.0-4.4)</span>
+                    </div>
+                    <span class="text-green-400 font-bold" id="lowLevelCount"
+                      >0</span
+                    >
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <div
+                        class="w-4 h-4 bg-yellow-500 rounded-full mr-3"
+                      ></div>
+                      <span class="text-gray-300">Medium (4.5-5.9)</span>
+                    </div>
+                    <span
+                      class="text-yellow-400 font-bold"
+                      id="mediumLevelCount"
+                      >0</span
+                    >
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <div
+                        class="w-4 h-4 bg-orange-500 rounded-full mr-3"
+                      ></div>
+                      <span class="text-gray-300">High (6.0-6.9)</span>
+                    </div>
+                    <span class="text-orange-400 font-bold" id="highLevelCount"
+                      >0</span
+                    >
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <div class="w-4 h-4 bg-red-500 rounded-full mr-3"></div>
+                      <span class="text-gray-300">Critical (7.0+)</span>
+                    </div>
+                    <span class="text-red-400 font-bold" id="criticalLevelCount"
+                      >0</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-lg font-semibold text-white">
+                    <i class="fas fa-sync-alt mr-2"></i>Monitor Control
+                  </h3>
+                  <button
+                    onclick="refreshEarthquakeData()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"
+                  >
+                    <i class="fas fa-refresh mr-2"></i>Refresh Now
+                  </button>
+                </div>
+                <div class="space-y-4">
+                  <div class="bg-gray-700 rounded-lg p-4">
+                    <div class="flex items-center mb-2">
+                      <div
+                        class="w-3 h-3 bg-green-500 rounded-full animate-pulse mr-2"
+                      ></div>
+                      <span class="text-white font-semibold"
+                        >USGS Feed Status</span
+                      >
+                    </div>
+                    <p class="text-gray-300 text-sm">
+                      Updates every 60 seconds
+                    </p>
+                    <p class="text-green-400 text-sm">
+                      Real-time monitoring active
+                    </p>
+                  </div>
+                  <div class="bg-gray-700 rounded-lg p-4">
+                    <div class="flex items-center mb-2">
+                      <div
+                        class="w-3 h-3 bg-orange-500 rounded-full mr-2"
+                      ></div>
+                      <span class="text-white font-semibold"
+                        >SA Alert System</span
+                      >
+                    </div>
+                    <p class="text-gray-300 text-sm">
+                      Monitoring South African region
+                    </p>
+                    <p class="text-orange-400 text-sm">
+                      Auto-alerts for magnitude 3.0+
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Earthquakes List -->
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+              <h3 class="text-xl font-bold text-white mb-4">
+                <i class="fas fa-list text-blue-400 mr-2"></i>Recent Earthquakes
+              </h3>
+              <div
+                id="earthquakeList"
+                class="space-y-3 max-h-96 overflow-y-auto"
+              >
+                <!-- Earthquake entries will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audit Trail Tab -->
+        <div id="audit" class="tab-content hidden">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-white mb-4">
+              <i class="fas fa-clipboard-list text-yellow-400 mr-3"></i>Security
+              Audit Trail
+            </h2>
+
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-white">
+                  System Activity Log
+                </h3>
+                <button
+                  onclick="refreshAuditLog()"
+                  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"
+                >
+                  <i class="fas fa-sync-alt mr-2"></i>Refresh
+                </button>
+              </div>
+
+              <div id="auditLog" class="audit-trail space-y-2">
+                <!-- Audit entries will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Export Tab -->
+        <div id="export" class="tab-content hidden">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-white mb-4">
+              <i class="fas fa-download text-green-400 mr-3"></i>Government Data
+              Export
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold text-white mb-4">
+                  Export Emergency Data
+                </h3>
+                <div class="space-y-4">
+                  <button
+                    onclick="exportData('emergencies', 'json')"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition duration-300 flex items-center justify-center"
+                  >
+                    <i class="fas fa-file-code mr-2"></i>Export as JSON
+                  </button>
+                  <button
+                    onclick="exportData('emergencies', 'excel')"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg transition duration-300 flex items-center justify-center"
+                  >
+                    <i class="fas fa-file-excel mr-2"></i>Export as Excel
+                  </button>
+                </div>
+              </div>
+
+              <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <h3 class="text-lg font-semibold text-white mb-4">
+                  Export System Logs
+                </h3>
+                <div class="space-y-4">
+                  <button
+                    onclick="exportData('logs', 'json')"
+                    class="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-lg transition duration-300 flex items-center justify-center"
+                  >
+                    <i class="fas fa-file-alt mr-2"></i>Export Activity Logs
+                  </button>
+                  <button
+                    onclick="exportData('audit', 'excel')"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-lg transition duration-300 flex items-center justify-center"
+                  >
+                    <i class="fas fa-shield-alt mr-2"></i>Export Audit Trail
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      class AdminConsole {
+        constructor() {
+          this.socket = null
+          this.isAuthenticated = false
+          this.adminUser = null
+          this.auditEntries = []
+          this.init()
+        }
+
+        init() {
+          this.setupAuthentication()
+          this.setupTabs()
+          this.startRealTimeUpdates()
+        }
+
+        setupAuthentication() {
+          const authForm = document.getElementById('authForm')
+          authForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+            this.authenticate()
+          })
+        }
+
+        async authenticate() {
+          const govId = document.getElementById('govId').value
+          const clearanceCode = document.getElementById('clearanceCode').value
+          const biometricPin = document.getElementById('biometricPin').value
+
+          // Simulated government authentication
+          if (
+            govId === 'GOV-2024-ADMIN' &&
+            clearanceCode === 'CRISISLINK-SECURE' &&
+            biometricPin === '1234'
+          ) {
+            this.isAuthenticated = true
+            this.adminUser = {
+              id: govId,
+              name: 'System Administrator',
+              clearance: 'TOP SECRET',
+              loginTime: new Date(),
+            }
+
+            // Hide auth modal and show dashboard
+            document.getElementById('authModal').classList.add('hidden')
+            document.getElementById('mainDashboard').classList.remove('hidden')
+
+            // Update admin info
+            document.getElementById('adminName').textContent =
+              this.adminUser.name
+
+            // Setup socket and load data
+            this.setupSocket()
+
+            // Load initial data
+            this.loadDashboardData()
+
+            // Log authentication
+            this.addAuditEntry(
+              'Authentication successful',
+              'info',
+              `User ${govId} authenticated with ${this.adminUser.clearance} clearance`
+            )
+          } else {
+            alert(
+              '❌ AUTHENTICATION FAILED\\n\\nInvalid credentials. This incident will be reported.'
+            )
+            this.addAuditEntry(
+              'Authentication failed',
+              'critical',
+              `Failed login attempt with ID: ${govId}`
+            )
+          }
+        }
+
+        setupSocket() {
+          this.socket = io('http://localhost:5000')
+
+        function updateEarthquakeDisplay() {
+          // Update summary counts
+          const globalCount = earthquakeData.length;
+          const southAfricaCount = earthquakeData.filter(eq => eq.location && eq.location.includes('South Africa')).length;
+
+          // Count by alert levels
+          const lowLevel = earthquakeData.filter(eq => eq.properties.mag >= 3.0 && eq.properties.mag < 4.5).length;
+          const mediumLevel = earthquakeData.filter(eq => eq.properties.mag >= 4.5 && eq.properties.mag < 6.0).length;
+          const highLevel = earthquakeData.filter(eq => eq.properties.mag >= 6.0 && eq.properties.mag < 7.0).length;
+          const criticalLevel = earthquakeData.filter(eq => eq.properties.mag >= 7.0).length;
+
+          // Update UI elements
+          document.getElementById('globalEarthquakes').textContent = globalCount;
+          document.getElementById('southAfricaEarthquakes').textContent = southAfricaCount;
+          document.getElementById('criticalEarthquakes').textContent = criticalLevel;
+          document.getElementById('lowLevelCount').textContent = lowLevel;
+          document.getElementById('mediumLevelCount').textContent = mediumLevel;
+          document.getElementById('highLevelCount').textContent = highLevel;
+          document.getElementById('criticalLevelCount').textContent = criticalLevel;
+
+          // Update last update time
+          const now = new Date();
+          document.getElementById('lastEarthquakeUpdate').textContent = now.toLocaleTimeString();
+
+          // Add blinking effect for South Africa earthquakes
+          const saCard = document.getElementById('southAfricaCard');
+          if (southAfricaCount > 0) {
+            saCard.classList.add('animate-pulse');
+            saCard.style.borderColor = '#ef4444';
+            saCard.style.boxShadow = '0 0 20px rgba(239, 68, 68, 0.3)';
+          } else {
+            saCard.classList.remove('animate-pulse');
+            saCard.style.borderColor = '#374151';
+            saCard.style.boxShadow = 'none';
+          }
+
+          // Update earthquake list
+          updateEarthquakeList();
+        }
+
+        function updateEarthquakeList() {
+          const earthquakeList = document.getElementById('earthquakeList');
+
+          if (earthquakeData.length === 0) {
+            earthquakeList.innerHTML = `
+              <div class="text-center py-8 text-gray-400">
+                <i class="fas fa-info-circle text-4xl mb-4"></i>
+                <p>No recent earthquakes detected</p>
+              </div>
+            `;
+            return;
+          }
+
+          // Sort by magnitude (descending) and time (most recent first)
+          const sortedEarthquakes = [...earthquakeData].sort((a, b) => {
+            if (a.properties.mag !== b.properties.mag) {
+              return b.properties.mag - a.properties.mag;
+            }
+            return b.properties.time - a.properties.time;
+          });
+
+          earthquakeList.innerHTML = sortedEarthquakes.map(eq => {
+            const magnitude = eq.properties.mag;
+            const place = eq.properties.place;
+            const time = new Date(eq.properties.time).toLocaleString();
+            const coords = `${eq.geometry.coordinates[1].toFixed(3)}, ${eq.geometry.coordinates[0].toFixed(3)}`;
+            const depth = eq.geometry.coordinates[2];
+
+            // Determine alert level and color
+            let alertLevel, alertColor, alertIcon;
+            if (magnitude >= 7.0) {
+              alertLevel = 'CRITICAL';
+              alertColor = 'text-red-400 border-red-500';
+              alertIcon = 'fas fa-exclamation-triangle';
+            } else if (magnitude >= 6.0) {
+              alertLevel = 'HIGH';
+              alertColor = 'text-orange-400 border-orange-500';
+              alertIcon = 'fas fa-exclamation-circle';
+            } else if (magnitude >= 4.5) {
+              alertLevel = 'MEDIUM';
+              alertColor = 'text-yellow-400 border-yellow-500';
+              alertIcon = 'fas fa-info-circle';
+            } else {
+              alertLevel = 'LOW';
+              alertColor = 'text-green-400 border-green-500';
+              alertIcon = 'fas fa-check-circle';
+            }
+
+            // Check if it's in South Africa
+            const isSouthAfrica = place && place.toLowerCase().includes('south africa');
+            const saClass = isSouthAfrica ? 'animate-pulse bg-red-900 bg-opacity-30' : '';
+
+            return `
+              <div class="bg-gray-700 rounded-lg p-4 border-l-4 ${alertColor} ${saClass}">
+                <div class="flex items-start justify-between">
+                  <div class="flex-1">
+                    <div class="flex items-center mb-2">
+                      <i class="${alertIcon} ${alertColor} mr-2"></i>
+                      <span class="font-bold text-white text-lg">M${magnitude.toFixed(1)}</span>
+                      <span class="ml-2 px-2 py-1 rounded text-xs font-semibold ${alertColor}">${alertLevel}</span>
+                      ${isSouthAfrica ? '<span class="ml-2 px-2 py-1 bg-red-600 text-white rounded text-xs font-bold animate-pulse">🇿🇦 SA ALERT</span>' : ''}
+                    </div>
+                    <p class="text-white font-medium mb-1">${place}</p>
+                    <div class="text-gray-300 text-sm space-y-1">
+                      <p><i class="fas fa-map-marker-alt mr-2"></i>Coordinates: ${coords}</p>
+                      <p><i class="fas fa-arrows-alt-v mr-2"></i>Depth: ${depth.toFixed(1)} km</p>
+                      <p><i class="fas fa-clock mr-2"></i>Time: ${time}</p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-2xl font-bold ${alertColor}">${magnitude.toFixed(1)}</div>
+                    <div class="text-xs text-gray-400">MAGNITUDE</div>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Initialize socket connection
+            this.setupSocket()
+
+            // Load initial data
+            this.loadDashboardData()
+
+            // Log authentication
+            this.addAuditEntry(
+              'Authentication successful',
+              'info',
+              `User ${govId} authenticated with ${this.adminUser.clearance} clearance`
+            )
+          } else {
+            alert(
+              '❌ AUTHENTICATION FAILED\\n\\nInvalid credentials. This incident will be reported.'
+            )
+            this.addAuditEntry(
+              'Authentication failed',
+              'critical',
+              `Failed login attempt with ID: ${govId}`
+            )
+          }
+        }
+
+        setupSocket() {
+          this.socket = io('http://localhost:5000')
+
+          this.socket.on('connect', () => {
+            console.log('Admin console connected to server')
+            this.socket.emit('join', {
+              room: 'admin-console',
+              adminId: this.adminUser.id,
+            })
+            this.addAuditEntry(
+              'System connected',
+              'info',
+              'Admin console connected to CrisisLink server'
+            )
+          })
+
+          // Listen for emergency alerts
+          this.socket.on('new-emergency-alert', (data) => {
+            this.updateEmergencyDisplay(data)
+            this.addAuditEntry(
+              'Emergency alert received',
+              'critical',
+              `New emergency: ${data.type} from user ${data.userId}`
+            )
+          })
+
+          // Listen for agent updates
+          this.socket.on('agent-online', (data) => {
+            this.updateAgentStatus(data.agentId, 'online')
+            this.addAuditEntry(
+              'Agent status change',
+              'info',
+              `Agent ${data.agentName} came online`
+            )
+          })
+
+          this.socket.on('agent-offline', (data) => {
+            this.updateAgentStatus(data.agentId, 'offline')
+            this.addAuditEntry(
+              'Agent status change',
+              'warning',
+              `Agent ${data.agentName} went offline`
+            )
+          })
+
+          // Earthquake monitoring events
+          this.socket.on('earthquakeData', (data) => {
+            earthquakeData = data.earthquakes || [];
+            updateEarthquakeDisplay();
+          })
+
+          this.socket.on('southAfricaEarthquake', (data) => {
+            const { earthquake } = data;
+            // Show critical alert for South Africa earthquakes
+            this.showNotification(
+              `🚨 SOUTH AFRICA EARTHQUAKE ALERT 🚨\nMagnitude: ${earthquake.properties.mag}\nLocation: ${earthquake.properties.place}`,
+              'error'
+            );
+
+            // Add blinking effect
+            const saCard = document.getElementById('southAfricaCard');
+            if (saCard) {
+              saCard.classList.add('animate-pulse');
+              saCard.style.borderColor = '#ef4444';
+              saCard.style.boxShadow = '0 0 30px rgba(239, 68, 68, 0.5)';
+            }
+
+            this.addAuditEntry(
+              'South Africa Earthquake Alert',
+              'critical',
+              `M${earthquake.properties.mag} earthquake detected in ${earthquake.properties.place}`
+            )
+          })
+
+          this.socket.on('earthquakeAlert', (data) => {
+            const { earthquake, alertLevel } = data;
+            let alertType = 'warning';
+            if (alertLevel === 'critical') alertType = 'error';
+            if (alertLevel === 'low') alertType = 'info';
+
+            this.showNotification(
+              `Earthquake Alert (${alertLevel.toUpperCase()}): M${earthquake.properties.mag} - ${earthquake.properties.place}`,
+              alertType
+            );
+
+            this.addAuditEntry(
+              'Global Earthquake Alert',
+              alertLevel === 'critical' ? 'critical' : 'warning',
+              `M${earthquake.properties.mag} earthquake - ${earthquake.properties.place}`
+            )
+          })
+        }
+
+        setupTabs() {
+          const tabButtons = document.querySelectorAll('.tab-button')
+          tabButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+              const tabName = button.dataset.tab
+              this.showTab(tabName)
+            })
+          })
+        }
+
+        showTab(tabName) {
+          // Hide all tab contents
+          const contents = document.querySelectorAll('.tab-content')
+          contents.forEach((content) => content.classList.add('hidden'))
+
+          // Remove active class from all buttons
+          const buttons = document.querySelectorAll('.tab-button')
+          buttons.forEach((button) => button.classList.remove('active'))
+
+          // Show selected tab content
+          const selectedContent = document.getElementById(tabName)
+          if (selectedContent) {
+            selectedContent.classList.remove('hidden')
+          }
+
+          // Add active class to selected button
+          const selectedButton = document.querySelector(
+            `[data-tab="${tabName}"]`
+          )
+          if (selectedButton) {
+            selectedButton.classList.add('active')
+          }
+
+          // Load tab-specific data
+          this.loadTabData(tabName)
+        }
+
+        async loadTabData(tabName) {
+          switch (tabName) {
+            case 'dashboard':
+              await this.loadDashboardData()
+              break
+            case 'emergencies':
+              await this.loadEmergencies()
+              break
+            case 'agents':
+              await this.loadAgents()
+              break
+            case 'earthquakes':
+              loadEarthquakeData()
+              break
+            case 'analytics':
+              await this.loadAnalytics()
+              break
+            case 'audit':
+              this.refreshAuditLog()
+              break
+          }
+        }
+
+        async loadDashboardData() {
+          try {
+            // Fetch system stats
+            const response = await fetch('/api/admin/stats')
+            const stats = await response.json()
+
+            // Update metrics
+            document.getElementById('activeEmergencies').textContent =
+              stats.activeEmergencies || 0
+            document.getElementById('availableAgents').textContent =
+              stats.availableAgents || 0
+            document.getElementById('totalUsers').textContent =
+              stats.totalUsers || 0
+
+            this.addAuditEntry(
+              'Dashboard loaded',
+              'info',
+              'System metrics refreshed'
+            )
+          } catch (error) {
+            console.error('Error loading dashboard data:', error)
+            this.addAuditEntry(
+              'Dashboard error',
+              'warning',
+              'Failed to load system metrics'
+            )
+          }
+        }
+
+        async loadEmergencies() {
+          try {
+            const response = await fetch('/api/admin/emergencies')
+            const emergencies = await response.json()
+
+            const container = document.getElementById('emergencyList')
+            container.innerHTML = ''
+
+            if (emergencies.length === 0) {
+              container.innerHTML = `
+                <div class="text-center py-8 text-gray-400">
+                  <i class="fas fa-check-circle text-4xl mb-4"></i>
+                  <p class="text-lg">No active emergencies</p>
+                </div>
+              `
+            } else {
+              emergencies.forEach((emergency) => {
+                const emergencyEl = this.createEmergencyCard(emergency)
+                container.appendChild(emergencyEl)
+              })
+            }
+          } catch (error) {
+            console.error('Error loading emergencies:', error)
+            this.addAuditEntry(
+              'Emergency load error',
+              'warning',
+              'Failed to load emergency data'
+            )
+          }
+        }
+
+        createEmergencyCard(emergency) {
+          const card = document.createElement('div')
+          card.className = 'bg-gray-800 rounded-lg p-6 border border-red-600'
+          card.innerHTML = `
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <h3 class="text-lg font-bold text-red-400">${emergency.type.toUpperCase()}</h3>
+                <p class="text-gray-300">${emergency.description}</p>
+              </div>
+              <span class="px-3 py-1 rounded-full text-sm font-semibold bg-red-600 text-white">
+                ${emergency.severity}
+              </span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span class="text-gray-400">User ID:</span>
+                <span class="text-white ml-2">${emergency.userId}</span>
+              </div>
+              <div>
+                <span class="text-gray-400">Time:</span>
+                <span class="text-white ml-2">${new Date(emergency.timestamp).toLocaleString()}</span>
+              </div>
+              <div>
+                <span class="text-gray-400">Location:</span>
+                <span class="text-white ml-2">${emergency.location ? emergency.location.latitude + ', ' + emergency.location.longitude : 'Unknown'}</span>
+              </div>
+              <div>
+                <span class="text-gray-400">Status:</span>
+                <span class="text-white ml-2">${emergency.status}</span>
+              </div>
+            </div>
+          `
+          return card
+        }
+
+        async loadAgents() {
+          // Simulated agent data
+          const agents = [
+            {
+              id: 'AGENT-001',
+              name: 'Agent Smith',
+              status: 'online',
+              location: 'Sector A',
+              emergencies: 2,
+            },
+            {
+              id: 'AGENT-002',
+              name: 'Agent Johnson',
+              status: 'busy',
+              location: 'Sector B',
+              emergencies: 1,
+            },
+            {
+              id: 'AGENT-003',
+              name: 'Agent Williams',
+              status: 'offline',
+              location: 'Sector C',
+              emergencies: 0,
+            },
+          ]
+
+          const container = document.getElementById('agentList')
+          container.innerHTML = ''
+
+          agents.forEach((agent) => {
+            const agentCard = this.createAgentCard(agent)
+            container.appendChild(agentCard)
+          })
+        }
+
+        createAgentCard(agent) {
+          const statusColors = {
+            online: 'bg-green-600',
+            busy: 'bg-yellow-600',
+            offline: 'bg-red-600',
+          }
+
+          const card = document.createElement('div')
+          card.className = 'bg-gray-800 rounded-lg p-6 border border-gray-700'
+          card.innerHTML = `
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-white">${agent.name}</h3>
+              <span class="px-3 py-1 rounded-full text-sm font-semibold text-white ${statusColors[agent.status]}">
+                ${agent.status.toUpperCase()}
+              </span>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div>
+                <span class="text-gray-400">ID:</span>
+                <span class="text-white ml-2">${agent.id}</span>
+              </div>
+              <div>
+                <span class="text-gray-400">Location:</span>
+                <span class="text-white ml-2">${agent.location}</span>
+              </div>
+              <div>
+                <span class="text-gray-400">Active Cases:</span>
+                <span class="text-white ml-2">${agent.emergencies}</span>
+              </div>
+            </div>
+          `
+          return card
+        }
+
+        async loadAnalytics() {
+          // Initialize charts
+          this.initializeCharts()
+        }
+
+        initializeCharts() {
+          // Response Time Chart
+          const responseCtx = document.getElementById('responseTimeChart')
+          if (responseCtx) {
+            new Chart(responseCtx, {
+              type: 'line',
+              data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                datasets: [
+                  {
+                    label: 'Average Response Time (minutes)',
+                    data: [8, 6, 12, 15, 10, 7],
+                    borderColor: '#3B82F6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: { labels: { color: '#fff' } },
+                },
+                scales: {
+                  x: { ticks: { color: '#fff' } },
+                  y: { ticks: { color: '#fff' } },
+                },
+              },
+            })
+          }
+
+          // Emergency Type Chart
+          const typeCtx = document.getElementById('emergencyTypeChart')
+          if (typeCtx) {
+            new Chart(typeCtx, {
+              type: 'doughnut',
+              data: {
+                labels: ['Medical', 'Fire', 'Police', 'Natural Disaster'],
+                datasets: [
+                  {
+                    data: [35, 25, 20, 20],
+                    backgroundColor: [
+                      '#EF4444',
+                      '#F59E0B',
+                      '#3B82F6',
+                      '#10B981',
+                    ],
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: { labels: { color: '#fff' } },
+                },
+              },
+            })
+          }
+        }
+
+        addAuditEntry(action, type, details) {
+          const entry = {
+            timestamp: new Date().toISOString(),
+            action,
+            type,
+            details,
+            user: this.adminUser?.name || 'System',
+          }
+
+          this.auditEntries.unshift(entry)
+          this.updateAuditDisplay()
+
+          // Also add to real-time activity
+          this.addRealTimeActivity(action, details)
+        }
+
+        updateAuditDisplay() {
+          const container = document.getElementById('auditLog')
+          if (!container) return
+
+          container.innerHTML = ''
+          this.auditEntries.slice(0, 50).forEach((entry) => {
+            const entryEl = document.createElement('div')
+            entryEl.className = `audit-entry ${entry.type} p-3 rounded-lg mb-2`
+            entryEl.innerHTML = `
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="font-semibold text-white">${entry.action}</p>
+                  <p class="text-sm text-gray-300">${entry.details}</p>
+                </div>
+                <div class="text-right text-xs text-gray-400">
+                  <p>${entry.user}</p>
+                  <p>${new Date(entry.timestamp).toLocaleString()}</p>
+                </div>
+              </div>
+            `
+            container.appendChild(entryEl)
+          })
+        }
+
+        addRealTimeActivity(action, details) {
+          const container = document.getElementById('realTimeActivity')
+          if (!container) return
+
+          const activityEl = document.createElement('div')
+          activityEl.className =
+            'flex items-center justify-between p-2 bg-gray-700 rounded text-sm'
+          activityEl.innerHTML = `
+            <div class="flex items-center space-x-2">
+              <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span class="text-white">${action}</span>
+            </div>
+            <span class="text-gray-400">${new Date().toLocaleTimeString()}</span>
+          `
+
+          container.insertBefore(activityEl, container.firstChild)
+
+          // Keep only last 10 activities
+          while (container.children.length > 10) {
+            container.removeChild(container.lastChild)
+          }
+        }
+
+        refreshAuditLog() {
+          this.addAuditEntry(
+            'Audit log refreshed',
+            'info',
+            'Manual refresh of security audit trail'
+          )
+          this.updateAuditDisplay()
+        }
+
+        async exportData(type, format) {
+          try {
+            const response = await fetch(
+              `/api/admin/export/${type}?format=${format}`
+            )
+            const blob = await response.blob()
+
+            // Create download link
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = `crisislink_${type}_${new Date().toISOString().split('T')[0]}.${format === 'excel' ? 'xlsx' : 'json'}`
+            a.click()
+
+            this.addAuditEntry(
+              'Data exported',
+              'info',
+              `Exported ${type} data in ${format} format`
+            )
+
+            // Cleanup
+            window.URL.revokeObjectURL(url)
+          } catch (error) {
+            console.error('Export error:', error)
+            this.addAuditEntry(
+              'Export failed',
+              'warning',
+              `Failed to export ${type} data`
+            )
+            alert('Export failed. Please try again.')
+          }
+        }
+
+        startRealTimeUpdates() {
+          // Update system metrics every 30 seconds
+          setInterval(() => {
+            if (this.isAuthenticated) {
+              this.loadDashboardData()
+            }
+          }, 30000)
+        }
+
+        logout() {
+          if (
+            confirm(
+              'Are you sure you want to logout? This will end your secure session.'
+            )
+          ) {
+            this.addAuditEntry(
+              'User logout',
+              'info',
+              `Administrator ${this.adminUser?.name} logged out`
+            )
+
+            this.isAuthenticated = false
+            this.adminUser = null
+
+            if (this.socket) {
+              this.socket.disconnect()
+            }
+
+            document.getElementById('mainDashboard').classList.add('hidden')
+            document.getElementById('authModal').classList.remove('hidden')
+
+            // Clear form
+            document.getElementById('authForm').reset()
+          }
+        }
+
+        updateEmergencyDisplay(emergencyData) {
+          // Update emergency count on dashboard
+          const counter = document.getElementById('activeEmergencies')
+          if (counter) {
+            const currentCount = parseInt(counter.textContent) || 0
+            counter.textContent = currentCount + 1
+          }
+        }
+
+        updateAgentStatus(agentId, status) {
+          // Update agent status if agents tab is active
+          // Implementation would update specific agent cards
+        }
+      }
+
+      // CSS for tab functionality
+      const style = document.createElement('style')
+      style.textContent = `
+        .tab-button {
+          padding: 12px 24px;
+          color: #9CA3AF;
+          border-bottom: 3px solid transparent;
+          transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+          color: #F3F4F6;
+          background-color: #374151;
+        }
+
+        .tab-button.active {
+          color: #3B82F6;
+          border-bottom-color: #3B82F6;
+          background-color: #1F2937;
+        }
+
+        .tab-content {
+          animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `
+      document.head.appendChild(style)
+
+      // Global functions
+      function showTab(tabName) {
+        window.adminConsole.showTab(tabName)
+      }
+
+      function logout() {
+        window.adminConsole.logout()
+      }
+
+      function refreshAuditLog() {
+        window.adminConsole.refreshAuditLog()
+      }
+
+      function exportData(type, format) {
+        window.adminConsole.exportData(type, format)
+      }
+
+      function refreshEarthquakeData() {
+        refreshEarthquakeData()
+      }
+
+      // Initialize admin console when page loads
+      document.addEventListener('DOMContentLoaded', () => {
+        window.adminConsole = new AdminConsole()
+      })
+    </script>
+  </body>
+</html>

@@ -1,7 +1,6 @@
 const axios = require('axios')
 const cron = require('node-cron')
-const { Op } = require('sequelize')
-const { WeatherAlert, User, sequelize } = require('../models')
+const { WeatherAlert, User } = require('../models/mongooseIndex')
 const logger = require('../utils/logger')
 const notificationService = require('./notificationService')
 
@@ -93,14 +92,11 @@ class WeatherService {
       return
     }
 
-    // Weather monitoring temporarily disabled to prevent API errors
-    logger.info('Weather monitoring temporarily disabled')
+    // Weather monitoring disabled - using LiveWeatherService instead
+    logger.info(
+      'Traditional weather monitoring disabled - using LiveWeatherService'
+    )
     return
-
-    // Check weather every 15 minutes (disabled)
-    // cron.schedule('*/15 * * * *', () => {
-    //   this.monitorWeatherConditions()
-    // })
 
     // Clean up old weather alerts daily at midnight
     cron.schedule('0 0 * * *', () => {

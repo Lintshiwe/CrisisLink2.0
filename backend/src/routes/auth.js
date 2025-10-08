@@ -1,7 +1,7 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const { body, validationResult } = require('express-validator')
-const { User, Agent } = require('../models')
+const { User, Agent } = require('../models/mongooseIndex')
 
 const router = express.Router()
 

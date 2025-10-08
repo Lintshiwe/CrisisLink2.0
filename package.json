@@ -26,7 +26,8 @@
     "author": "CrisisLink Team",
     "license": "MIT",
     "devDependencies": {
-        "concurrently": "^8.2.2"
+        "concurrently": "^8.2.2",
+        "eslint": "^9.37.0"
     },
     "engines": {
         "node": ">=18.0.0",

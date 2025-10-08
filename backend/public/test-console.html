@@ -1,0 +1,409 @@
+<!doctype html>
+<html>
+  <head>
+    <title>CrisisLink 2.0 - Test Console</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .success {
+        color: green;
+        font-weight: bold;
+      }
+      .error {
+        color: red;
+        font-weight: bold;
+      }
+      .warning {
+        color: orange;
+        font-weight: bold;
+      }
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      #console {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        padding: 15px;
+        height: 300px;
+        overflow-y: auto;
+        font-family: monospace;
+      }
+      .log-entry {
+        margin: 2px 0;
+      }
+      .log-info {
+        color: #007bff;
+      }
+      .log-error {
+        color: #dc3545;
+      }
+      .log-success {
+        color: #28a745;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🚨 CrisisLink 2.0 - System Test Console</h1>
+
+    <div class="test-section">
+      <h3>🌐 Server Status Tests</h3>
+      <button onclick="testServerHealth()">Test Server Health</button>
+      <button onclick="testSocketConnection()">Test WebSocket</button>
+      <button onclick="testDashboardAccess()">Test Dashboard Access</button>
+    </div>
+
+    <div class="test-section">
+      <h3>🌤️ Weather System Tests</h3>
+      <button onclick="testWeatherAPI()">Test Weather API</button>
+      <button onclick="testWeatherLayers()">Test Weather Layers</button>
+      <button onclick="testLocationAPI()">Test Location API</button>
+    </div>
+
+    <div class="test-section">
+      <h3>💬 Messaging System Tests</h3>
+      <button onclick="testMessaging()">Test Agent Messaging</button>
+      <button onclick="testNotifications()">Test Notifications</button>
+    </div>
+
+    <div class="test-section">
+      <h3>🗄️ Database Tests</h3>
+      <button onclick="testMongoDB()">Test MongoDB Connection</button>
+      <button onclick="testDataOperations()">Test Data Operations</button>
+    </div>
+
+    <div class="test-section">
+      <h3>🔧 Quick Actions</h3>
+      <button onclick="openDashboard()">Open Agent Dashboard</button>
+      <button onclick="clearConsole()">Clear Console</button>
+      <button onclick="runAllTests()">🚀 Run All Tests</button>
+    </div>
+
+    <div class="test-section">
+      <h3>📊 Test Console</h3>
+      <div id="console"></div>
+    </div>
+
+    <script>
+      let testResults = {}
+
+      function log(message, type = 'info') {
+        const console = document.getElementById('console')
+        const entry = document.createElement('div')
+        entry.className = `log-entry log-${type}`
+        entry.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`
+        console.appendChild(entry)
+        console.scrollTop = console.scrollHeight
+      }
+
+      function clearConsole() {
+        document.getElementById('console').innerHTML = ''
+        testResults = {}
+      }
+
+      async function testServerHealth() {
+        log('🔍 Testing server health...', 'info')
+        try {
+          const response = await fetch('/api/health')
+          const data = await response.json()
+
+          if (response.ok) {
+            log('✅ Server health check passed', 'success')
+            log(
+              `📊 Database: ${data.services?.database?.status || 'unknown'}`,
+              'info'
+            )
+            log(`🌐 Server: ${data.status}`, 'info')
+            testResults.serverHealth = 'pass'
+          } else {
+            log('❌ Server health check failed', 'error')
+            testResults.serverHealth = 'fail'
+          }
+        } catch (error) {
+          log(`❌ Server health test error: ${error.message}`, 'error')
+          testResults.serverHealth = 'error'
+        }
+      }
+
+      async function testSocketConnection() {
+        log('🔌 Testing WebSocket connection...', 'info')
+        try {
+          const socket = io()
+
+          socket.on('connect', () => {
+            log('✅ WebSocket connected successfully', 'success')
+            testResults.socket = 'pass'
+            socket.disconnect()
+          })
+
+          socket.on('connect_error', (error) => {
+            log(`❌ WebSocket connection failed: ${error.message}`, 'error')
+            testResults.socket = 'fail'
+          })
+
+          setTimeout(() => {
+            if (!testResults.socket) {
+              log('⏰ WebSocket connection timeout', 'error')
+              testResults.socket = 'timeout'
+            }
+          }, 5000)
+        } catch (error) {
+          log(`❌ WebSocket test error: ${error.message}`, 'error')
+          testResults.socket = 'error'
+        }
+      }
+
+      async function testWeatherAPI() {
+        log('🌤️ Testing weather API...', 'info')
+        try {
+          const response = await fetch('/api/weather/live')
+          const data = await response.json()
+
+          if (response.ok && data.length > 0) {
+            log('✅ Weather API working correctly', 'success')
+            log(`📍 Found weather data for ${data.length} provinces`, 'info')
+            testResults.weatherAPI = 'pass'
+          } else {
+            log('❌ Weather API failed or no data', 'error')
+            testResults.weatherAPI = 'fail'
+          }
+        } catch (error) {
+          log(`❌ Weather API test error: ${error.message}`, 'error')
+          testResults.weatherAPI = 'error'
+        }
+      }
+
+      async function testWeatherLayers() {
+        log('🗺️ Testing weather layers...', 'info')
+        try {
+          // Test if OpenWeather tile endpoints are accessible
+          const testImageUrl =
+            'https://tile.openweathermap.org/map/temp_new/1/0/0.png?appid=test'
+
+          // Try to load a test tile image
+          const img = new Image()
+          img.onload = () => {
+            log('✅ Weather layer tiles are accessible', 'success')
+            testResults.weatherLayers = 'pass'
+          }
+          img.onerror = () => {
+            log('⚠️ Weather layer tiles require API key', 'warning')
+            testResults.weatherLayers = 'partial'
+          }
+          img.src = testImageUrl
+
+          // Check if dashboard has weather layers function
+          if (typeof window.toggleWeatherLayers === 'function') {
+            log('✅ Weather layer toggle function exists', 'success')
+          } else {
+            log('❌ Weather layer toggle function missing', 'error')
+            testResults.weatherLayers = 'fail'
+          }
+        } catch (error) {
+          log(`❌ Weather layers test error: ${error.message}`, 'error')
+          testResults.weatherLayers = 'error'
+        }
+      }
+
+      async function testLocationAPI() {
+        log('📍 Testing location API access...', 'info')
+        try {
+          // Test Nominatim API (should work with updated CSP)
+          const nominatimUrl =
+            'https://nominatim.openstreetmap.org/reverse?format=json&lat=-25.7479&lon=28.2293&zoom=12&addressdetails=1'
+
+          const response = await fetch(nominatimUrl)
+          if (response.ok) {
+            const data = await response.json()
+            log('✅ Nominatim API accessible', 'success')
+            log(
+              `📍 Location: ${data.display_name?.substring(0, 50) || 'Unknown'}...`,
+              'info'
+            )
+            testResults.locationAPI = 'pass'
+          } else {
+            log('❌ Nominatim API failed', 'error')
+            testResults.locationAPI = 'fail'
+          }
+        } catch (error) {
+          log(`❌ Location API test error: ${error.message}`, 'error')
+          testResults.locationAPI = 'error'
+        }
+      }
+
+      async function testMessaging() {
+        log('💬 Testing messaging system...', 'info')
+        try {
+          const socket = io()
+
+          socket.on('connect', () => {
+            // Test sending a message
+            socket.emit('agent-send-message', {
+              message: 'Test message from console',
+              timestamp: new Date().toISOString(),
+              agentId: 'TEST-CONSOLE',
+            })
+
+            log('✅ Test message sent successfully', 'success')
+            testResults.messaging = 'pass'
+            socket.disconnect()
+          })
+
+          socket.on('agent-broadcast-message', (data) => {
+            log(`💬 Received broadcast: ${data.message}`, 'info')
+          })
+        } catch (error) {
+          log(`❌ Messaging test error: ${error.message}`, 'error')
+          testResults.messaging = 'error'
+        }
+      }
+
+      async function testMongoDB() {
+        log('🗄️ Testing MongoDB connection...', 'info')
+        try {
+          const response = await fetch('/api/health')
+          const data = await response.json()
+
+          const dbStatus = data.services?.database?.status
+          if (dbStatus === 'connected') {
+            log('✅ MongoDB connection successful', 'success')
+            testResults.mongodb = 'pass'
+          } else {
+            log(`❌ MongoDB connection failed: ${dbStatus}`, 'error')
+            testResults.mongodb = 'fail'
+          }
+        } catch (error) {
+          log(`❌ MongoDB test error: ${error.message}`, 'error')
+          testResults.mongodb = 'error'
+        }
+      }
+
+      async function testDashboardAccess() {
+        log('📊 Testing dashboard access...', 'info')
+        try {
+          const response = await fetch('/agent-dashboard.html')
+          if (response.ok) {
+            log('✅ Agent dashboard is accessible', 'success')
+            testResults.dashboard = 'pass'
+          } else {
+            log('❌ Agent dashboard access failed', 'error')
+            testResults.dashboard = 'fail'
+          }
+        } catch (error) {
+          log(`❌ Dashboard test error: ${error.message}`, 'error')
+          testResults.dashboard = 'error'
+        }
+      }
+
+      async function testNotifications() {
+        log('🔔 Testing notification system...', 'info')
+        // This is a placeholder - would need actual notification implementation
+        log('⚠️ Notification system test not implemented yet', 'warning')
+        testResults.notifications = 'pending'
+      }
+
+      async function testDataOperations() {
+        log('💾 Testing data operations...', 'info')
+        // This would test CRUD operations - placeholder for now
+        log('⚠️ Data operations test not implemented yet', 'warning')
+        testResults.dataOps = 'pending'
+      }
+
+      function openDashboard() {
+        window.open('/agent-dashboard.html', '_blank')
+      }
+
+      async function runAllTests() {
+        clearConsole()
+        log('🚀 Running comprehensive system tests...', 'info')
+        log('='.repeat(50), 'info')
+
+        await testServerHealth()
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
+        await testMongoDB()
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
+        await testSocketConnection()
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
+        await testDashboardAccess()
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
+        await testWeatherAPI()
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
+        await testWeatherLayers()
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
+        await testLocationAPI()
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
+        await testMessaging()
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        // Summary
+        log('='.repeat(50), 'info')
+        log('📋 TEST SUMMARY:', 'info')
+
+        let passCount = 0
+        let totalTests = 0
+
+        Object.entries(testResults).forEach(([test, result]) => {
+          totalTests++
+          if (result === 'pass') {
+            passCount++
+            log(`✅ ${test}: PASSED`, 'success')
+          } else if (result === 'fail') {
+            log(`❌ ${test}: FAILED`, 'error')
+          } else if (result === 'error') {
+            log(`🔥 ${test}: ERROR`, 'error')
+          } else if (result === 'partial') {
+            log(`⚠️ ${test}: PARTIAL`, 'warning')
+          } else {
+            log(`⏳ ${test}: ${result.toUpperCase()}`, 'warning')
+          }
+        })
+
+        log(
+          `📊 Overall: ${passCount}/${totalTests} tests passed`,
+          passCount === totalTests ? 'success' : 'warning'
+        )
+
+        if (passCount === totalTests) {
+          log('🎉 All systems are working correctly!', 'success')
+        } else {
+          log(
+            '⚠️ Some issues detected. Check individual test results above.',
+            'warning'
+          )
+        }
+      }
+
+      // Auto-run basic tests on page load
+      window.addEventListener('load', () => {
+        log('🚨 CrisisLink 2.0 Test Console Initialized', 'success')
+        log('Click "Run All Tests" to check system status', 'info')
+      })
+    </script>
+
+    <!-- Include Socket.IO for testing -->
+    <script src="/socket.io/socket.io.js"></script>
+  </body>
+</html>

@@ -13,8 +13,18 @@ const logger = require('./utils/logger')
 const errorHandler = require('./middleware/errorHandler')
 const { connectDB } = require('./config/database')
 
-// Import models to set up associations
-require('./models')
+// Import Mongoose models
+const {
+  User,
+  Agent,
+  SosAlert,
+  WeatherAlert,
+} = require('./models/mongooseIndex')
+
+// Import services
+const ambeeService = require('./services/ambeeService')
+const LiveWeatherService = require('./services/liveWeatherService')
+const EarthquakeMonitoringService = require('./services/earthquakeService')
 
 // Import routes
 const authRoutes = require('./routes/auth')
@@ -25,6 +35,11 @@ const communicationRoutes = require('./routes/communication')
 const adminRoutes = require('./routes/admin')
 const notificationRoutes = require('./routes/notifications')
 const systemRoutes = require('./routes/system')
+const disasterRoutes = require('./routes/disasters')
+const {
+  router: liveWeatherRoutes,
+  setLiveWeatherService,
+} = require('./routes/liveWeather')
 
 const app = express()
 const server = createServer(app)
@@ -55,7 +70,9 @@ app.use(
           'https://cdn.socket.io',
           'https://cdnjs.cloudflare.com',
           'https://unpkg.com',
+          'https://cdn.jsdelivr.net',
         ],
+        scriptSrcAttr: ["'unsafe-hashes'", "'unsafe-inline'"],
         styleSrc: [
           "'self'",
           "'unsafe-inline'",
@@ -76,6 +93,8 @@ app.use(
           'http://localhost:5000',
           'https://cdn.socket.io',
           'https://api.openweathermap.org',
+          'https://nominatim.openstreetmap.org',
+          'https://tile.openweathermap.org',
           'wss://localhost:5000',
           'https://unpkg.com',
           'https://cdnjs.cloudflare.com',
@@ -84,6 +103,8 @@ app.use(
           "'self'",
           'data:',
           'https://*.tile.openstreetmap.org',
+          'https://tile.openweathermap.org',
+          'https://*.tile.openweathermap.org',
           'https://unpkg.com',
         ],
       },
@@ -169,10 +190,13 @@ app.get('/health', async (req, res) => {
 
   // Check database connection
   try {
-    const { sequelize } = require('./config/database')
-    await sequelize.authenticate()
-    healthData.services.database.status = 'connected'
-    healthData.services.database.message = 'Database connection active'
+    const mongoose = require('mongoose')
+    if (mongoose.connection.readyState === 1) {
+      healthData.services.database.status = 'connected'
+      healthData.services.database.message = 'MongoDB connection active'
+    } else {
+      throw new Error('MongoDB not connected')
+    }
   } catch (error) {
     healthData.services.database.status = 'disconnected'
     healthData.services.database.message =
@@ -606,101 +630,7 @@ app.put('/api/users/:userId/location', (req, res) => {
   })
 })
 
-// Live weather API with fallback
-app.get('/api/weather/live/:province', async (req, res) => {
-  const { province } = req.params
-
-  // South African provinces coordinates
-  const provinces = {
-    'western-cape': { lat: -33.9249, lng: 18.4241, name: 'Western Cape' },
-    gauteng: { lat: -26.2041, lng: 28.0473, name: 'Gauteng' },
-    'kwazulu-natal': { lat: -29.8587, lng: 31.0218, name: 'KwaZulu-Natal' },
-    'eastern-cape': { lat: -33.9608, lng: 25.6022, name: 'Eastern Cape' },
-    limpopo: { lat: -23.9045, lng: 29.4689, name: 'Limpopo' },
-    mpumalanga: { lat: -25.4753, lng: 30.9696, name: 'Mpumalanga' },
-    'north-west': { lat: -25.8069, lng: 25.6441, name: 'North West' },
-    'northern-cape': { lat: -28.7282, lng: 24.7499, name: 'Northern Cape' },
-    'free-state': { lat: -29.0852, lng: 26.1596, name: 'Free State' },
-  }
-
-  const provinceData = provinces[province.toLowerCase()]
-  if (!provinceData) {
-    return res.status(404).json({
-      success: false,
-      message: 'Province not found',
-    })
-  }
-
-  try {
-    // Try OpenWeatherMap API (free tier)
-    const API_KEY = '47f39e2c3c1fb1d2c2c0a0c6f89e2a04' // Free API key
-    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${provinceData.lat}&lon=${provinceData.lng}&appid=${API_KEY}&units=metric`
-
-    const fetch = require('node-fetch')
-    const response = await fetch(weatherUrl)
-
-    if (response.ok) {
-      const data = await response.json()
-
-      const weatherData = {
-        province: provinceData.name,
-        temperature: Math.round(data.main.temp),
-        condition: mapWeatherCondition(data.weather[0].main),
-        humidity: data.main.humidity,
-        windSpeed: Math.round(data.wind?.speed * 3.6 || 0),
-        pressure: data.main.pressure,
-        description: data.weather[0].description,
-        icon: data.weather[0].icon,
-        source: 'OpenWeatherMap API',
-        timestamp: new Date().toISOString(),
-      }
-
-      res.json({
-        success: true,
-        data: weatherData,
-      })
-    } else {
-      throw new Error('Weather API request failed')
-    }
-  } catch (error) {
-    // Fallback to simulated realistic data
-    const weatherData = {
-      province: provinceData.name,
-      temperature: Math.round(18 + Math.random() * 15),
-      condition: ['Sunny', 'Partly Cloudy', 'Cloudy', 'Light Rain'][
-        Math.floor(Math.random() * 4)
-      ],
-      humidity: Math.round(30 + Math.random() * 50),
-      windSpeed: Math.round(Math.random() * 25),
-      pressure: Math.round(1000 + Math.random() * 50),
-      description: 'Simulated weather data',
-      source: 'Simulated Data',
-      timestamp: new Date().toISOString(),
-    }
-
-    res.json({
-      success: true,
-      data: weatherData,
-      note: 'Using simulated data due to API limitations',
-    })
-  }
-})
-
-// Helper function for weather condition mapping
-function mapWeatherCondition(apiCondition) {
-  const conditionMap = {
-    Clear: 'Sunny',
-    Clouds: 'Cloudy',
-    Rain: 'Rainy',
-    Drizzle: 'Light Rain',
-    Thunderstorm: 'Thunderstorms',
-    Snow: 'Snow',
-    Mist: 'Misty',
-    Fog: 'Foggy',
-    Haze: 'Hazy',
-  }
-  return conditionMap[apiCondition] || apiCondition
-}
+// Duplicate route removed - using LiveWeatherService routes instead
 
 // Threat assessment API
 app.get('/api/threats/assessment', (req, res) => {
@@ -796,6 +726,8 @@ app.use('/api/communication', communicationRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/notifications', notificationRoutes)
 app.use('/api/system', systemRoutes)
+app.use('/api/disasters', disasterRoutes)
+app.use('/api/weather', liveWeatherRoutes)
 app.use('/api/location', require('./routes/location'))
 
 // Serve static files from public directory
@@ -816,6 +748,26 @@ app.get('/rescue-tracker', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'rescue-tracker.html'))
 })
 
+// User emergency interface route
+app.get('/user-emergency', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'user-emergency.html'))
+})
+
+// Default user route
+app.get('/emergency', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'user-emergency.html'))
+})
+
+// Admin console route (government access)
+app.get('/admin-console', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'admin-console.html'))
+})
+
+// Admin console alias
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'admin-console.html'))
+})
+
 // Favicon route to prevent 404 errors
 app.get('/favicon.ico', (req, res) => {
   res.status(204).end() // No content
@@ -834,10 +786,19 @@ io.on('connection', (socket) => {
 
   // Handle agent joining the general agents room
   socket.on('join', (data) => {
-    const { room, agentId } = data
+    const { room, agentId, agentName } = data
     if (room === 'agents') {
       socket.join('agents')
+      socket.agentId = agentId
+      socket.agentName = agentName
       logger.info(`Agent ${agentId} joined agents room`)
+
+      // Notify other agents that this agent is online
+      socket.broadcast.to('agents').emit('agent-online', {
+        agentId,
+        agentName,
+        socketId: socket.id,
+      })
     }
   })
 
@@ -1090,8 +1051,574 @@ io.on('connection', (socket) => {
     }
   })
 
+  // Handle agent team messaging
+  socket.on('agent-send-message', (data) => {
+    const { agentId, agentName, message, timestamp } = data
+    logger.info(`Agent ${agentName} sent message: ${message}`)
+
+    // Broadcast message to all agents in the agents room
+    socket.broadcast.to('agents').emit('agent-message-broadcast', {
+      id: data.id,
+      agentId,
+      agentName,
+      message,
+      timestamp,
+      type: 'user',
+    })
+  })
+
+  // ============ USER FRONTEND COMMUNICATION HANDLERS ============
+
+  // Handle user registration
+  socket.on('user-register', (data) => {
+    const { userId, timestamp } = data
+    socket.userId = userId
+    socket.userType = 'user'
+    socket.join(`user-${userId}`)
+    socket.join('users') // Join general users room
+
+    logger.info(`User ${userId} registered and joined rooms`)
+
+    // Notify agents about new user online
+    socket.broadcast.to('agents').emit('user-online', {
+      userId,
+      socketId: socket.id,
+      timestamp,
+    })
+  })
+
+  // Handle user location updates (live tracking)
+  socket.on('user-location-update', (data) => {
+    const { userId, location } = data
+
+    // Store location for this user
+    if (!socket.userLocation) socket.userLocation = {}
+    socket.userLocation = {
+      ...location,
+      lastUpdate: new Date().toISOString(),
+    }
+
+    logger.info(
+      `User ${userId} location updated: ${location.latitude}, ${location.longitude}`
+    )
+
+    // Broadcast to agents for monitoring
+    socket.broadcast.to('agents').emit('user-location-update', {
+      userId,
+      location: socket.userLocation,
+      accuracy: location.accuracy,
+    })
+
+    // If user has active alert, update alert location
+    if (socket.activeAlert) {
+      socket.broadcast.to('agents').emit('alert-location-update', {
+        alertId: socket.activeAlert.alertId,
+        userId,
+        location: socket.userLocation,
+      })
+    }
+  })
+
+  // Handle emergency alerts from users
+  socket.on('emergency-alert', async (alertData) => {
+    const { userId, type, location, description, severity, userInfo } =
+      alertData
+
+    // Create comprehensive alert with unique ID
+    const alert = {
+      alertId: `ALERT-${Date.now()}-${userId}`,
+      userId,
+      type,
+      location,
+      description,
+      severity: severity || 'high',
+      timestamp: new Date().toISOString(),
+      status: 'pending',
+      socketId: socket.id,
+      userInfo: userInfo || {},
+      agentAssigned: null,
+      responseTime: null,
+    }
+
+    // Store active alert for this user
+    socket.activeAlert = alert
+
+    // Store in global active alerts for agent access
+    if (!global.activeEmergencyAlerts) {
+      global.activeEmergencyAlerts = new Map()
+    }
+    global.activeEmergencyAlerts.set(alert.alertId, alert)
+
+    logger.warn(
+      `🚨 EMERGENCY ALERT from User ${userId} (${userInfo?.name || 'Unknown'}): ${type} - ${description}`
+    )
+
+    console.log(`📍 Location: ${location?.latitude}, ${location?.longitude}`)
+    console.log(`👤 User Info: ${JSON.stringify(userInfo)}`)
+    console.log(`🎯 Broadcasting to agents room...`)
+
+    try {
+      // Save to database - match the mongoose schema structure
+      const sosAlert = new SosAlert({
+        user: userId, // Schema expects 'user' not 'userId'
+        type,
+        location: {
+          latitude: location.latitude,
+          longitude: location.longitude,
+          address: location.address || 'Address not provided',
+        },
+        description,
+        severity,
+        status: 'active',
+      })
+
+      await sosAlert.save()
+      alert.dbId = sosAlert._id
+
+      // Count agents in room for debugging
+      const agentsRoom = io.sockets.adapter.rooms.get('agents')
+      const agentCount = agentsRoom ? agentsRoom.size : 0
+      console.log(`📡 Broadcasting to ${agentCount} agents in 'agents' room`)
+
+      // Broadcast to all agents with comprehensive alert data
+      io.to('agents').emit('new-emergency-alert', {
+        ...alert,
+        locationText: location
+          ? `${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}`
+          : 'Unknown',
+        userName: userInfo?.name || 'Unknown User',
+        userPhone: userInfo?.phone || 'Not provided',
+        emergencyContact: userInfo?.phone || 'Not provided',
+        alertPriority:
+          severity === 'critical'
+            ? 'CRITICAL'
+            : severity === 'high'
+              ? 'HIGH'
+              : 'MEDIUM',
+      })
+
+      // Also emit to all connected sockets as backup
+      socket.broadcast.emit('emergency-alert-broadcast', alert)
+
+      console.log(`✅ Alert ${alert.alertId} broadcasted successfully`)
+
+      // Send confirmation back to user
+      socket.emit('alert-confirmed', {
+        alertId: alert.alertId,
+        message: 'Emergency alert sent successfully. Help is being dispatched.',
+        timestamp: new Date().toISOString(),
+        agentsNotified: agentCount,
+      })
+
+      // Update emergency status to user
+      socket.emit('emergency-status-update', {
+        userId: userId,
+        status: 'alert-sent',
+        message: `Emergency alert sent to ${agentCount} available agents`,
+        timestamp: new Date().toISOString(),
+      })
+    } catch (error) {
+      logger.error('Error saving emergency alert:', error)
+      socket.emit('alert-error', {
+        message: 'Failed to send alert. Please try again.',
+        error: error.message,
+      })
+    }
+  })
+
+  // Handle user messages to agents
+  socket.on('user-message-to-agent', (data) => {
+    const { userId, message, timestamp } = data
+
+    logger.info(`User ${userId} sent message to agents: ${message}`)
+
+    const messageData = {
+      userId,
+      message,
+      timestamp,
+      type: 'user-to-agent',
+      socketId: socket.id,
+    }
+
+    // If user has assigned agent, send to specific agent
+    if (socket.assignedAgent) {
+      socket.broadcast
+        .to(`agent-${socket.assignedAgent}`)
+        .emit('user-message', messageData)
+    } else {
+      // Send to all agents
+      socket.broadcast.to('agents').emit('user-message', messageData)
+    }
+  })
+
+  // Handle agent messages to specific user
+  socket.on('agent-message-to-user', (data) => {
+    const { agentId, agentName, userId, message, timestamp } = data
+
+    logger.info(`Agent ${agentName} sent message to User ${userId}: ${message}`)
+
+    const messageData = {
+      agentId,
+      agentName,
+      message,
+      timestamp,
+      type: 'agent-to-user',
+    }
+
+    // Send to specific user
+    socket.broadcast
+      .to(`user-${userId}`)
+      .emit('agent-message-to-user', messageData)
+
+    // Confirm message sent to agent
+    socket.emit('message-delivered', {
+      userId,
+      timestamp: new Date().toISOString(),
+    })
+  })
+
+  // Handle agent assignment to user alert
+  socket.on('agent-assign-to-alert', async (data) => {
+    const {
+      agentId,
+      agentName,
+      alertId,
+      userId,
+      estimatedArrival,
+      location: agentLocation,
+    } = data
+
+    logger.info(
+      `🚨 Agent ${agentName} (${agentId}) assigned to alert ${alertId} for User ${userId}`
+    )
+
+    try {
+      // Update global active alerts
+      if (
+        global.activeEmergencyAlerts &&
+        global.activeEmergencyAlerts.has(alertId)
+      ) {
+        const alert = global.activeEmergencyAlerts.get(alertId)
+        alert.agentAssigned = {
+          agentId,
+          agentName,
+          assignedAt: new Date().toISOString(),
+          estimatedArrival,
+          location: agentLocation,
+        }
+        alert.status = 'agent-assigned'
+        alert.responseTime = Date.now() - new Date(alert.timestamp).getTime()
+      }
+
+      // Update database
+      if (data.dbId) {
+        await SosAlert.findByIdAndUpdate(data.dbId, {
+          assignedAgent: agentId,
+          agentName: agentName,
+          status: 'in-progress',
+          assignedAt: new Date(),
+          estimatedArrival: estimatedArrival,
+        })
+      }
+
+      // Notify user about assignment with comprehensive data
+      const userSocket = [...io.sockets.sockets.values()].find(
+        (s) => s.userId === userId
+      )
+
+      if (userSocket) {
+        userSocket.assignedAgent = agentId
+        userSocket.emit('agent-assigned', {
+          userId,
+          agentId,
+          agentName,
+          alertId,
+          estimatedArrival: estimatedArrival || 'Calculating...',
+          location: agentLocation,
+          distance: data.distance || 'Calculating...',
+          eta: estimatedArrival || 'Calculating...',
+          status: 'Responding to your emergency',
+          message: `Agent ${agentName} has been assigned to your emergency and is responding.`,
+          timestamp: new Date().toISOString(),
+        })
+
+        // Send emergency status update
+        userSocket.emit('emergency-status-update', {
+          userId,
+          status: 'agent-assigned',
+          message: `Agent ${agentName} assigned - ETA: ${estimatedArrival || 'Calculating...'}`,
+          timestamp: new Date().toISOString(),
+        })
+      }
+
+      // Set agent assignment
+      socket.assignedUser = userId
+      socket.assignedAlert = alertId
+
+      // Notify all other agents that this alert is now assigned
+      socket.broadcast.to('agents').emit('alert-assignment-update', {
+        alertId,
+        agentId,
+        agentName,
+        status: 'assigned',
+        timestamp: new Date().toISOString(),
+      })
+
+      // Confirm assignment to agent
+      socket.emit('assignment-confirmed', {
+        userId,
+        alertId,
+        message: `You have been assigned to assist ${userId}`,
+        timestamp: new Date().toISOString(),
+      })
+
+      console.log(
+        `✅ Agent ${agentName} successfully assigned to user ${userId}`
+      )
+    } catch (error) {
+      logger.error('Error assigning agent to alert:', error)
+      socket.emit('assignment-error', {
+        alertId,
+        error: error.message,
+      })
+    }
+  })
+
+  // Handle agent requesting user location
+  socket.on('agent-request-location', (data) => {
+    const { agentId, agentName, userId } = data
+
+    logger.info(`Agent ${agentName} requested location from User ${userId}`)
+
+    // Request location from specific user
+    socket.broadcast.to(`user-${userId}`).emit('location-request', {
+      agentId,
+      agentName,
+      message: `Agent ${agentName} has requested your current location.`,
+      timestamp: new Date().toISOString(),
+    })
+  })
+
+  // Handle alert cancellation
+  socket.on('cancel-alert', async (data) => {
+    const { userId, alertId } = data
+
+    if (socket.activeAlert && socket.activeAlert.alertId === alertId) {
+      logger.info(`User ${userId} cancelled alert ${alertId}`)
+
+      try {
+        // Update database
+        if (socket.activeAlert.dbId) {
+          await SosAlert.findByIdAndUpdate(socket.activeAlert.dbId, {
+            status: 'cancelled',
+            cancelledAt: new Date(),
+          })
+        }
+
+        // Notify agents
+        socket.broadcast.to('agents').emit('alert-cancelled', {
+          alertId,
+          userId,
+          timestamp: new Date().toISOString(),
+        })
+
+        // Clear active alert
+        socket.activeAlert = null
+
+        // Confirm cancellation
+        socket.emit('alert-cancelled-confirmed', {
+          alertId,
+          timestamp: new Date().toISOString(),
+        })
+      } catch (error) {
+        logger.error('Error cancelling alert:', error)
+      }
+    }
+  })
+
+  // Handle alert resolution
+  socket.on('resolve-alert', async (data) => {
+    const { agentId, alertId, userId, resolution } = data
+
+    logger.info(`Agent ${agentId} resolved alert ${alertId} for User ${userId}`)
+
+    try {
+      // Update database
+      if (data.dbId) {
+        await SosAlert.findByIdAndUpdate(data.dbId, {
+          status: 'resolved',
+          resolution,
+          resolvedAt: new Date(),
+          resolvedBy: agentId,
+        })
+      }
+
+      // Notify user
+      socket.broadcast.to(`user-${userId}`).emit('alert-update', {
+        alertId,
+        status: 'resolved',
+        resolution,
+        message: 'Your emergency has been resolved. Stay safe!',
+        timestamp: new Date().toISOString(),
+      })
+
+      // Clear active alert for user
+      const userSocket = [...io.sockets.sockets.values()].find(
+        (s) => s.userId === userId
+      )
+      if (userSocket) {
+        userSocket.activeAlert = null
+        userSocket.assignedAgent = null
+      }
+
+      // Clear assignment for agent
+      socket.assignedUser = null
+    } catch (error) {
+      logger.error('Error resolving alert:', error)
+    }
+  })
+
+  // ============ AGENT CONTROL HANDLERS ============
+
+  // Handle agent control requests (camera, location, etc.)
+  socket.on('agent-control-request', (data) => {
+    const { agentId, agentName, userId, controlType, message } = data
+
+    logger.info(
+      `Agent ${agentName} requesting ${controlType} control from User ${userId}`
+    )
+
+    // Send control request to specific user
+    socket.broadcast.to(`user-${userId}`).emit('agent-control-request', {
+      agentId,
+      agentName,
+      controlType,
+      message:
+        message ||
+        `Agent ${agentName} is requesting ${controlType} access to assist you better.`,
+      timestamp: new Date().toISOString(),
+      userId,
+    })
+  })
+
+  // Handle comprehensive user data from frontend
+  socket.on('user-comprehensive-data', (data) => {
+    const {
+      userId,
+      agentId,
+      timestamp,
+      location,
+      weather,
+      deviceInfo,
+      userInfo,
+      browserInfo,
+      connectivity,
+      batteryInfo,
+      permissions,
+    } = data
+
+    logger.info(
+      `Received comprehensive data from User ${userId} for Agent ${agentId}`
+    )
+
+    // Forward comprehensive data to the requesting agent
+    if (agentId) {
+      const agentSocket = [...io.sockets.sockets.values()].find(
+        (s) => s.agentId === agentId
+      )
+      if (agentSocket) {
+        agentSocket.emit('user-comprehensive-data-received', {
+          userId,
+          timestamp,
+          location,
+          weather,
+          deviceInfo,
+          userInfo,
+          browserInfo,
+          connectivity,
+          batteryInfo,
+          permissions,
+          dataCollectedAt: new Date().toISOString(),
+        })
+      }
+    }
+
+    // Also broadcast to all agents for situational awareness
+    socket.broadcast.to('agents').emit('user-data-update', {
+      userId,
+      location,
+      deviceInfo: {
+        platform: deviceInfo?.platform,
+        browser: browserInfo?.vendor,
+        connectivity: connectivity?.effectiveType,
+        battery: batteryInfo?.level,
+      },
+      timestamp: new Date().toISOString(),
+    })
+  })
+
+  // Handle emergency location updates during active emergencies
+  socket.on('emergency-location-update', (data) => {
+    const { userId, location, timestamp, alertId } = data
+
+    logger.info(`Emergency location update from User ${userId}`)
+
+    // Forward to all agents
+    socket.broadcast.to('agents').emit('emergency-location-update', {
+      userId,
+      location,
+      timestamp,
+      alertId,
+    })
+
+    // If user has assigned agent, also send to specific agent
+    if (socket.assignedAgent) {
+      const agentSocket = [...io.sockets.sockets.values()].find(
+        (s) => s.agentId === socket.assignedAgent
+      )
+      if (agentSocket) {
+        agentSocket.emit('user-location-realtime', {
+          userId,
+          location,
+          timestamp,
+          alertId,
+        })
+      }
+    }
+  })
+
+  // Handle agent control granted notifications
+  socket.on('agent-control-granted', (data) => {
+    const { userId, permissions, timestamp } = data
+
+    logger.info(
+      `User ${userId} granted agent control permissions: ${permissions.join(', ')}`
+    )
+
+    // Notify all agents
+    socket.broadcast.to('agents').emit('user-control-granted', {
+      userId,
+      permissions,
+      timestamp,
+    })
+  })
+
+  // ============ END AGENT CONTROL HANDLERS ============
+
+  // ============ END USER COMMUNICATION HANDLERS ============
+
   socket.on('disconnect', () => {
     logger.info(`Client disconnected: ${socket.id}`)
+
+    // Notify other agents when an agent disconnects
+    const rooms = Array.from(socket.rooms)
+    if (rooms.includes('agents')) {
+      socket.broadcast.to('agents').emit('agent-offline', {
+        socketId: socket.id,
+        agentId: socket.agentId,
+        agentName: socket.agentName,
+      })
+    }
   })
 })
 
@@ -1111,10 +1638,48 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
   logger.info(
     `🚨 CrisisLink server running on port ${PORT} in ${process.env.NODE_ENV} mode`
   )
+
+  // Initialize Ambee natural disaster monitoring
+  try {
+    ambeeService.setSocketServer(io)
+    const initialized = await ambeeService.initialize()
+    if (initialized) {
+      logger.info(
+        '🌪️ Ambee disaster monitoring service initialized successfully'
+      )
+    } else {
+      logger.warn('⚠️ Ambee disaster monitoring service failed to initialize')
+    }
+  } catch (error) {
+    logger.error('Error initializing Ambee service:', error)
+  }
+
+  // Initialize Live Weather Service
+  try {
+    const liveWeatherService = new LiveWeatherService(io)
+    setLiveWeatherService(liveWeatherService)
+    logger.info('🌤️ Live Weather Service initialized successfully')
+  } catch (error) {
+    logger.error('Error initializing Live Weather Service:', error)
+  }
+
+  // Initialize Earthquake Monitoring Service
+  try {
+    const earthquakeService = new EarthquakeMonitoringService()
+    earthquakeService.setSocketIO(io)
+    earthquakeService.startMonitoring()
+
+    // Make it globally available for API routes
+    global.earthquakeService = earthquakeService
+
+    logger.info('🌍 Earthquake Monitoring Service initialized successfully')
+  } catch (error) {
+    logger.error('Error initializing Earthquake Monitoring Service:', error)
+  }
 })
 
 // Graceful shutdown

@@ -1,6 +1,4 @@
-const { Op } = require('sequelize')
-const { sequelize } = require('../config/database')
-const { SosAlert, User, Agent } = require('../models')
+const { SosAlert, User, Agent } = require('../models/mongooseIndex')
 const logger = require('../utils/logger')
 const { calculateDistance, reverseGeocode } = require('../utils/geolocation')
 const weatherService = require('./weatherService')
